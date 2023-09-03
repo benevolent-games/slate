@@ -9,11 +9,23 @@ export class LightElement extends HTMLElement implements BaseElement {
 	#init? = explode_promise<void>()
 	#wait = this.#init!.promise
 
+	#setups = new Set<() => () => void>()
+	#setdowns = new Set<() => void>()
+
+	register_setup(setup: () => () => void) {
+		this.#setups.add(setup)
+	}
+
+	setup() {
+		return () => {}
+	}
+
 	init() {}
 
 	constructor() {
 		super()
 		this.init()
+		this.register_setup(() => this.setup())
 	}
 
 	get updateComplete() {
@@ -42,9 +54,17 @@ export class LightElement extends HTMLElement implements BaseElement {
 	}
 
 	connectedCallback() {
+		for (const setup of this.#setups)
+			this.#setdowns.add(setup())
+
 		this.requestUpdate()
 	}
 
-	disconnectedCallback() {}
+	disconnectedCallback() {
+		for (const setdown of this.#setdowns)
+			setdown()
+
+		this.#setdowns.clear()
+	}
 }
 

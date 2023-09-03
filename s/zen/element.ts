@@ -43,6 +43,10 @@ export class ZenElement extends HTMLElement implements BaseElement {
 		return this.#wait
 	}
 
+	render(): TemplateResult | void {
+		return undefined
+	}
+
 	#render_debounced = debounce(0, () => {
 		const root = this.#root
 		const template = this.render()
@@ -74,10 +78,6 @@ export class ZenElement extends HTMLElement implements BaseElement {
 			setdown()
 
 		this.#setdowns.clear()
-	}
-
-	render(): TemplateResult | void {
-		return undefined
 	}
 }
 
