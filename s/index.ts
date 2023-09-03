@@ -7,8 +7,12 @@ export * from "./base/element.js"
 
 export * from "./flatstate/flat.js"
 
+export * from "./flipview/shale_view.js"
+
 export * from "./op/op.js"
 export * from "./op/prep_render_op.js"
+
+export * from "./prepare/frontend.js"
 
 export * from "./tools/clone/clone.js"
 export * from "./tools/debounce/debounce.js"
