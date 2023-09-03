@@ -6,7 +6,7 @@ import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
 
-export class ZenElement extends HTMLElement implements BaseElement {
+export abstract class ZenElement extends HTMLElement implements BaseElement {
 	static styles?: CSSResultGroup
 
 	#root: ShadowRoot
@@ -40,12 +40,10 @@ export class ZenElement extends HTMLElement implements BaseElement {
 	}
 
 	get updateComplete() {
-		return this.#wait
+		return this.#wait.then(() => true)
 	}
 
-	render(): TemplateResult | void {
-		return undefined
-	}
+	abstract render(): TemplateResult | void
 
 	#render_debounced = debounce(0, () => {
 		const root = this.#root

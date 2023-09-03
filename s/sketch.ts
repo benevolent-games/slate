@@ -1,48 +1,47 @@
 
-/*
+import {css, html} from "lit"
+import {ZenElement} from "./zen/element.js"
+import {ShaleView} from "./flipview/shale_view.js"
+import {BaseContext, prepare_frontend} from "./prepare/frontend.js"
 
-import {TemplateResult, html} from "lit"
+const {component, view, views} = prepare_frontend<BaseContext>()
 
-const {component, view, prep_views} = prepare<Context>()
-
-export const CoolView = view(context => class extends ZenView {
-
-	#state = context.flat.state({
-		count: 123,
-	})
-
-	render(label: string) {
-		return html`
-			<div>
-				<p>${label}: ${this.#state.count}</p>
-			</div>
-		`
+export const MyComponent = component(_ => class extends ZenElement {
+	render() {
 	}
 })
 
-export const CoolComponent = component(context => class extends ZenElement {
+export const MyView = view(_ => class extends ShaleView {
+	name = "MyCoolView"
+	styles = css``
+	render(count: number) {
+		return html`<p>${count}</p>`
+	}
+})
 
-	#view = prep_views(context, {
-		CoolView,
+export const MyView2 = view(context => class extends ShaleView {
+	name = "MyCoolView"
+	styles = css``
+
+	#views = views(context, {
+		MyView,
 	})
 
 	#state = context.flat.state({
-		cow: "moo",
+		count: 0,
 	})
+
+	#increment = () => {
+		this.#state.count++
+	}
 
 	render() {
 		return html`
-			<div>
-				<p>cows say: ${this.#state.cow}</p>
-
-				${this.#views.CoolView({
-					props: ["hello world"],
-					attributes: {gpart: "view"},
-				})}
-			</div>
+			${this.#views.MyView({
+				props: [this.#state.count],
+			})}
+			<button @click=${this.#increment}>increment</button>
 		`
 	}
 })
-
-*/
 

@@ -4,9 +4,9 @@ import {CSSResultGroup, TemplateResult} from "lit"
 export type BaseElement = HTMLElement & {
 	connectedCallback(): void
 	disconnectedCallback(): void
+	requestUpdate(): void
+	readonly updateComplete: Promise<boolean>
 	render(): TemplateResult | void
-	requestUpdate(): Promise<void>
-	readonly updateComplete: Promise<void>
 }
 
 export type BaseElementClass = {

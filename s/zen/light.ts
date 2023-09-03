@@ -29,7 +29,7 @@ export class LightElement extends HTMLElement implements BaseElement {
 	}
 
 	get updateComplete() {
-		return this.#wait
+		return this.#wait.then(() => true)
 	}
 
 	render(): TemplateResult | void {
