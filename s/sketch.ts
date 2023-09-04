@@ -1,12 +1,12 @@
 
 import {css, html} from "lit"
-import {ZenElement} from "./zen/element.js"
+import {GoldElement} from "./gold/element.js"
 import {ShaleView} from "./view/shale_view.js"
 import {BaseContext, prepare_frontend} from "./prepare/frontend.js"
 
 const {component, view, views} = prepare_frontend<BaseContext>()
 
-export const MyComponent = component(_ => class extends ZenElement {
+export const MyComponent = component(_ => class extends GoldElement {
 	render() {
 	}
 })

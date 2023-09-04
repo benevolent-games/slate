@@ -6,7 +6,7 @@ import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
 
-export abstract class ZenElement extends HTMLElement implements BaseElement {
+export abstract class GoldElement extends HTMLElement implements BaseElement {
 	static styles?: CSSResultGroup
 
 	#root: ShadowRoot
@@ -29,7 +29,7 @@ export abstract class ZenElement extends HTMLElement implements BaseElement {
 	constructor() {
 		super()
 		this.#root = this.attachShadow({mode: "open"})
-		const C = this.constructor as typeof ZenElement
+		const C = this.constructor as typeof GoldElement
 		apply_styles_to_shadow(this.#root, C.styles)
 		this.init()
 		this.register_setup(() => this.setup())
