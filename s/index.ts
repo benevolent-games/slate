@@ -7,7 +7,7 @@ export * from "./base/element.js"
 
 export * from "./flatstate/flat.js"
 
-export * from "./flipview/shale_view.js"
+export * from "./view/shale_view.js"
 
 export * from "./op/op.js"
 export * from "./op/prep_render_op.js"
