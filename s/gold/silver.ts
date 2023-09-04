@@ -5,7 +5,7 @@ import {BaseElement} from "../base/element.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 
-export class LightElement extends HTMLElement implements BaseElement {
+export abstract class SilverElement extends HTMLElement implements BaseElement {
 	#init? = explode_promise<void>()
 	#wait = this.#init!.promise
 
@@ -32,9 +32,7 @@ export class LightElement extends HTMLElement implements BaseElement {
 		return this.#wait.then(() => true)
 	}
 
-	render(): TemplateResult | void {
-		return undefined
-	}
+	abstract render(): TemplateResult | void
 
 	#render_debounced = debounce(0, () => {
 		const template = this.render()

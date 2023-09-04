@@ -1,6 +1,6 @@
 
 import {css, html} from "lit"
-import {GoldElement} from "./gold/element.js"
+import {GoldElement} from "./gold/gold.js"
 import {ShaleView} from "./view/shale_view.js"
 import {BaseContext, prepare_frontend} from "./prepare/frontend.js"
 

@@ -26,6 +26,6 @@ export * from "./tools/pipe.js"
 export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
 
-export * from "./gold/element.js"
-export * from "./gold/light.js"
+export * from "./gold/gold.js"
+export * from "./gold/silver.js"
 
