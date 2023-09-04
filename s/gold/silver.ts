@@ -2,30 +2,20 @@
 import {TemplateResult, render} from "lit"
 
 import {BaseElement} from "../base/element.js"
+import {MetallicElement} from "./part/metallic.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 
-export abstract class SilverElement extends HTMLElement implements BaseElement {
+export abstract class SilverElement extends MetallicElement implements BaseElement {
+
 	#init? = explode_promise<void>()
 	#wait = this.#init!.promise
-
-	#setups = new Set<() => () => void>()
-	#setdowns = new Set<() => void>()
-
-	register_setup(setup: () => () => void) {
-		this.#setups.add(setup)
-	}
-
-	setup() {
-		return () => {}
-	}
 
 	init() {}
 
 	constructor() {
 		super()
 		this.init()
-		this.register_setup(() => this.setup())
 	}
 
 	get updateComplete() {
@@ -52,17 +42,8 @@ export abstract class SilverElement extends HTMLElement implements BaseElement {
 	}
 
 	connectedCallback() {
-		for (const setup of this.#setups)
-			this.#setdowns.add(setup())
-
+		super.connectedCallback()
 		this.requestUpdate()
-	}
-
-	disconnectedCallback() {
-		for (const setdown of this.#setdowns)
-			setdown()
-
-		this.#setdowns.clear()
 	}
 }
 
