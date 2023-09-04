@@ -1,7 +1,7 @@
 
 import {css, html} from "lit"
-import {GoldElement} from "./gold/gold.js"
-import {ShaleView} from "./view/shale_view.js"
+import {ShaleView} from "./view/shale.js"
+import {GoldElement} from "./element/gold.js"
 import {BaseContext, prepare_frontend} from "./prepare/frontend.js"
 
 const {component, view, views} = prepare_frontend<BaseContext>()

@@ -7,7 +7,7 @@ export * from "./base/element.js"
 
 export * from "./flatstate/flat.js"
 
-export * from "./view/shale_view.js"
+export * from "./view/shale.js"
 
 export * from "./op/op.js"
 export * from "./op/prep_render_op.js"
@@ -26,6 +26,6 @@ export * from "./tools/pipe.js"
 export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
 
-export * from "./gold/gold.js"
-export * from "./gold/silver.js"
+export * from "./element/gold.js"
+export * from "./element/silver.js"
 
