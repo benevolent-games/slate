@@ -1,9 +1,9 @@
 
 import {render} from "lit"
-import {FlipData} from "./types.js"
+import {ViewInputs} from "./types.js"
 import {apply_attributes} from "./apply_attributes.js"
 
-export function apply_details(element: HTMLElement, fresh: FlipData<any>, old?: FlipData<any>) {
+export function apply_details(element: HTMLElement, fresh: ViewInputs<any>, old?: ViewInputs<any>) {
 
 	function actuate<V>(freshvalue: V, oldvalue: V, name: string, value: () => string) {
 		if (freshvalue !== oldvalue) {

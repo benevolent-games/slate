@@ -4,7 +4,7 @@ import {CSSResultGroup} from "lit"
 import {Pipe} from "../tools/pipe.js"
 import {Flat} from "../flatstate/flat.js"
 import {apply} from "../base/helpers/apply.js"
-import {Flipview} from "../flipview/parts/types.js"
+import {View} from "../flipview/parts/types.js"
 import {BaseElementClass} from "../base/element.js"
 import {ShaleViewClass, shale_view} from "../flipview/shale_view.js"
 import {requirement, RequirementGroup, RequirementGroupProvided} from "../tools/requirement.js"
@@ -31,7 +31,7 @@ export const prepare_frontend = <C extends BaseContext>() => {
 			theme: context.theme,
 		}),
 
-		views: <V extends RequirementGroup<C, Flipview<any>>>(
+		views: <V extends RequirementGroup<C, View<any>>>(
 			context: C,
 			viewgroup: V,
 		) => requirement.provide(context)(viewgroup),

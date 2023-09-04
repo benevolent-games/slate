@@ -1,7 +1,7 @@
 
-import {FlipAttributes} from "./types.js"
+import {ViewAttributes} from "./types.js"
 
-export function apply_attributes(elements: HTMLElement, attributes: FlipAttributes) {
+export function apply_attributes(elements: HTMLElement, attributes: ViewAttributes) {
 	for (const [key, value] of Object.entries(attributes)) {
 
 		if (typeof value === "string")

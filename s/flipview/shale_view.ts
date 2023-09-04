@@ -3,8 +3,8 @@ import {AsyncDirective} from "lit/async-directive.js"
 import {CSSResultGroup, Part, TemplateResult} from "lit"
 
 import {Flat} from "../flatstate/flat.js"
-import {FlipData, Flipview} from "./parts/types.js"
 import {make_view_root} from "./parts/root.js"
+import {ViewInputs, View} from "./parts/types.js"
 import {Constructor} from "../tools/constructor.js"
 import {apply_details} from "./parts/apply_details.js"
 import {custom_directive_with_detail_input} from "./parts/custom_directive_with_detail_input.js"
@@ -22,14 +22,14 @@ export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}
 		flat: Flat
 		theme: CSSResultGroup
 		View: V
-	}): Flipview<Parameters<InstanceType<V>["render"]>> {
+	}): View<Parameters<InstanceType<V>["render"]>> {
 
 	type P = Parameters<InstanceType<V>["render"]>
 
 	return custom_directive_with_detail_input(class extends AsyncDirective {
 		#view = new View()
 
-		#recent_input?: FlipData<P>
+		#recent_input?: ViewInputs<P>
 		#rerender = () => {
 			if (this.#recent_input)
 				this.setValue(
@@ -41,11 +41,11 @@ export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}
 		#stop: (() => void) | undefined
 		#root = make_view_root(this.#view.name, [theme, this.#view.styles])
 
-		update(_: Part, props: [FlipData<P>]) {
+		update(_: Part, props: [ViewInputs<P>]) {
 			return this.#root.render_into_shadow(this.render(...props))
 		}
 
-		render(input: FlipData<P>) {
+		render(input: ViewInputs<P>) {
 			apply_details(this.#root.container, input, this.#recent_input)
 			this.#recent_input = input
 			this.#root.auto_exportparts = (
@@ -78,6 +78,6 @@ export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}
 				this.#stop = undefined
 			}
 		}
-	}) as Flipview<P>
+	}) as View<P>
 }
 

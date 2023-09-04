@@ -1,8 +1,8 @@
 
-import {FlipSetup} from "./types.js"
+import {ViewHooksSetup} from "./types.js"
 import {Flat} from "../../flatstate/flat.js"
 
-export class FlipUse {
+export class ViewUse {
 	#counter: {count: number}
 	#flat: Flat
 	#states: Map<number, {}>
@@ -31,7 +31,7 @@ export class FlipUse {
 		this.rerender = rerender
 	}
 
-	setup<R>(up: FlipSetup<R>): R {
+	setup<R>(up: ViewHooksSetup<R>): R {
 		const count = this.#counter.count++
 		if (!this.#setdowns.has(count)) {
 			const {result, setdown} = up()

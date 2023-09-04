@@ -1,5 +1,5 @@
 
-import {FlipUse} from "./use.js"
+import {ViewUse} from "./use.js"
 import {Flat} from "../../flatstate/flat.js"
 
 export function hooks(flat: Flat, element: HTMLElement, rerender: () => void) {
@@ -8,7 +8,7 @@ export function hooks(flat: Flat, element: HTMLElement, rerender: () => void) {
 	const setdata = new Map<number, any>()
 	const setdowns = new Map<number, () => void>()
 
-	const use = new FlipUse(
+	const use = new ViewUse(
 		flat,
 		counter,
 		states,

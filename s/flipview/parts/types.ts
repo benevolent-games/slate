@@ -1,45 +1,45 @@
 
 import {CSSResultGroup, TemplateResult} from "lit"
 
-import {FlipUse} from "./use.js"
+import {ViewUse} from "./use.js"
 import {Flat} from "../../flatstate/flat.js"
 
-export type FlipAttributes = {
+export type ViewAttributes = {
 	[key: string]: string | number | boolean | undefined
 }
 
-export type FlipSettings = {
+export type ViewSettings = {
 	class?: string
 	part?: string
 	gpart?: string
-	attributes?: FlipAttributes
+	attributes?: ViewAttributes
 	auto_exportparts?: boolean
 }
 
-export type FlipData<P extends any[]> = FlipSettings & {
+export type ViewInputs<P extends any[]> = ViewSettings & {
 	props: P
-	attributes?: FlipAttributes
+	attributes?: ViewAttributes
 	content?: TemplateResult | void
 }
 
-export type FlipRender<P extends any[]> = (
-	(use: FlipUse) => (...props: P) => (TemplateResult | void)
+export type ViewHooksRenderer<P extends any[]> = (
+	(use: ViewUse) => (...props: P) => (TemplateResult | void)
 )
 
-export type FlipOptions<P extends any[]> = {
+export type ViewHooks<P extends any[]> = {
 	flat: Flat
 	name: string
 	styles: CSSResultGroup
 	default_auto_exportparts: boolean
-	render: FlipRender<P>
+	render: ViewHooksRenderer<P>
 }
 
-export type Flipview<P extends any[]> = (data: FlipData<P>) => (TemplateResult | void)
+export type View<P extends any[]> = (data: ViewInputs<P>) => (TemplateResult | void)
 
-export type FlipSetupDetails<R> = {
+export type ViewHooksSetupDetails<R> = {
 	result: R
 	setdown: () => void
 }
 
-export type FlipSetup<R> = () => FlipSetupDetails<R>
+export type ViewHooksSetup<R> = () => ViewHooksSetupDetails<R>
 
