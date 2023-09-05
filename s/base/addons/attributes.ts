@@ -1,9 +1,10 @@
 
 import {BaseElement} from "../element.js"
+import {ShaleView} from "../../view/shale.js"
 
-type Strings = {[key: string]: string}
+type AttrStrings = {[key: string]: string}
 
-export class Attributes<A extends Strings> {
+export class Attributes<A extends AttrStrings> {
 
 	static on_change(element: HTMLElement, on_change: () => void) {
 		const observer = new MutationObserver(on_change)
@@ -11,11 +12,23 @@ export class Attributes<A extends Strings> {
 		return () => observer.disconnect()
 	}
 
-	static element<A extends Strings>(element: BaseElement) {
-		this.on_change(element, () => element.requestUpdate())
-		const observer = new MutationObserver(() => element.requestUpdate())
-		observer.observe(element, {attributes: true})
+	static create<A extends AttrStrings>(element: HTMLElement, on_change: () => void) {
+		this.on_change(element, on_change)
 		return new this<A>(element)
+	}
+
+	static base<A extends AttrStrings>(element: BaseElement) {
+		return this.create<A>(element, () => element.requestUpdate())
+	}
+
+	static view<A extends AttrStrings>(view: ShaleView) {
+		return this.create<A>(view.element, () => view.requestUpdate())
+	}
+
+	static setup<A extends AttrStrings>(target: BaseElement | ShaleView) {
+		return (target instanceof ShaleView)
+			? this.view<A>(target)
+			: this.base<A>(target)
 	}
 
 	#element: HTMLElement

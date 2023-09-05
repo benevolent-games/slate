@@ -5,20 +5,35 @@ import {CSSResultGroup, Part, TemplateResult} from "lit"
 import {Flat} from "../flatstate/flat.js"
 import {make_view_root} from "./parts/root.js"
 import {ViewInputs, View} from "./parts/types.js"
-import {Constructor} from "../tools/constructor.js"
 import {apply_details} from "./parts/apply_details.js"
 import {custom_directive_with_detail_input} from "./parts/custom_directive_with_detail_input.js"
 
 export abstract class ShaleView {
-	abstract name: string
-	abstract styles: CSSResultGroup
+	static name: string
+	static styles: CSSResultGroup
 	abstract render(...args: any[]): TemplateResult | void
 	default_auto_exportparts = true
+
+	#root: ReturnType<typeof make_view_root>
+	#rerender: () => void
+
+	constructor(root: ReturnType<typeof make_view_root>, rerender: () => void) {
+		this.#root = root
+		this.#rerender = rerender
+	}
+
+	get element() { return this.#root.container }
+	get shadow() { return this.#root.shadow }
+	requestUpdate() { this.#rerender() }
 }
 
-export type ShaleViewClass = Constructor<ShaleView>
+export type ShaleViewClass = {
+	new(...params: ConstructorParameters<typeof ShaleView>): ShaleView
+	name: string
+	styles: CSSResultGroup
+}
 
-export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}: {
+export function shale_view<V extends ShaleViewClass>({flat, theme, View}: {
 		flat: Flat
 		theme: CSSResultGroup
 		View: V
@@ -27,8 +42,6 @@ export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}
 	type P = Parameters<InstanceType<V>["render"]>
 
 	return custom_directive_with_detail_input(class extends AsyncDirective {
-		#view = new View()
-
 		#recent_input?: ViewInputs<P>
 		#rerender = () => {
 			if (this.#recent_input)
@@ -39,7 +52,8 @@ export function shale_view<V extends Constructor<ShaleView>>({flat, theme, View}
 				)
 		}
 		#stop: (() => void) | undefined
-		#root = make_view_root(this.#view.name, [theme, this.#view.styles])
+		#root = make_view_root(View.name, [theme, View.styles])
+		#view = new View(this.#root, this.#rerender)
 
 		update(_: Part, props: [ViewInputs<P>]) {
 			return this.#root.render_into_shadow(this.render(...props))
