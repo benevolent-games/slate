@@ -105,12 +105,12 @@ it's just like `GoldElement`, except it's light dom (no shadow dom), and thus it
 
 ```ts
 export const MyView = view(context => class extends ShaleView {
-	name = "my-view"
-	styles = css``
+  name = "my-view"
+  styles = css``
 
-	render(count: number) {
-		return html`<p>${count}</p>`
-	}
+  render(count: number) {
+    return html`<p>${count}</p>`
+  }
 })
 ```
 - views are very similar to components
