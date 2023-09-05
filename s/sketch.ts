@@ -57,8 +57,10 @@ export const MyView2 = view(context => class extends ShaleView {
 	})
 
 	render() {
+		const lol = this.#attrs.lol
+		const hello = this.#attrs.hello
 		return html`
-			<p>${this.#attrs.hello} ${this.#attrs.world}</p>
+			<p>${hello} ${this.#attrs.world} ${lol && "lol"}</p>
 			${this.#views.MyView({
 				props: [this.#state.count],
 			})}

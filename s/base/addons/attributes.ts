@@ -11,10 +11,10 @@ export namespace Attributes {
 
 	type SoftenValue<H extends HardValue> = (
 		H extends typeof String
-			? string
+			? string | undefined
 
 		: H extends typeof Number
-			? number
+			? number | undefined
 
 		: H extends typeof Boolean
 			? boolean
@@ -27,7 +27,7 @@ export namespace Attributes {
 	}
 
 	type SoftenSpec<A extends Spec> = {
-		[P in keyof A]: SoftenValue<A[P]> | undefined
+		[P in keyof A]: SoftenValue<A[P]>
 	}
 
 	export const proxy = <A extends Spec>(
