@@ -77,13 +77,22 @@ export const MyElement = component(context => class extends GoldElement {
     count: 0,
   })
 
-  #views = views(context, {
-    MyView,
-  })
-
+  // component auto rerenders on state changes
   #increment => () => {
     this.#state.count++
   }
+
+  // access to attributes, rerenders on changes
+  #attrs = Attributes.setup(this as GoldElement, {
+    "example-string": String,
+    "example-number": Number,
+    "example-boolean": Boolean,
+  })
+
+  // declare which views this component uses
+  #views = views(context, {
+    MyView,
+  })
 
   render() {
     return html`
@@ -99,7 +108,7 @@ export const MyElement = component(context => class extends GoldElement {
 
 ## 🥈 SilverElement
 
-it's just like `GoldElement`, except it's light dom (no shadow dom), and thus it cannot have its own stylesheet (relies on styling from above).
+- it's just like `GoldElement`, except it's light dom (no shadow dom), and thus it cannot have its own stylesheet (relies on styling from above).
 
 <br/>
 
@@ -107,18 +116,35 @@ it's just like `GoldElement`, except it's light dom (no shadow dom), and thus it
 
 ```ts
 export const MyView = view(context => class extends ShaleView {
-  name = "my-view"
-  styles = css``
+  static name = "my-view"
+  static styles = css``
 
-  render(count: number) {
-    return html`<p>${count}</p>`
+  #state = context.flat.state({
+    count: 0,
+  })
+
+  #increment => () => {
+    this.#state.count++
+  }
+
+  #attrs = Attributes.setup(this as ShaleView, {
+    "example-string": String,
+  })
+
+  #views = views(context, {
+    SomeOtherView,
+  })
+
+  render(x: number) {
+    return html`<p>${x}</p>`
   }
 })
 ```
 - views are very similar to components
-- they even have their own shadow dom
-- but they are not custom elements
-- they don't need to be registered to the dom
+  - you can use all the same `#state`, `#attrs`, `#views` patterns as your components
+- views even have their own shadow dom
+  - but they are not custom elements
+  - they don't need to be registered to the dom
 - they do this cool thing called `auto_exportparts`
   - it automatically exports shadow parts across many shadow layers
   - it's on by default
