@@ -22,43 +22,43 @@
 ## 👷 recommended setup
 
 1. install slate into your project
-  ```sh
-  npm i @benev/slate
-  ```
+    ```sh
+    npm i @benev/slate
+    ```
 1. establish a "context" for your app
-  ```ts
-  import {css} from "lit"
-  import {BaseContext} from "@benev/slate"
+    ```ts
+    import {css} from "lit"
+    import {BaseContext} from "@benev/slate"
 
-  export class Context extends BaseContext {
+    export class Context extends BaseContext {
 
-    // state management system
-    flat = new Flat()
+      // state management system
+      flat = new Flat()
 
-    // applied to components and views
-    theme = css`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-    `
-  }
-  ```
+      // applied to components and views
+      theme = css`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+      `
+    }
+    ```
 1. prepare your frontend
-  ```ts
-  export const {component, components, view, views} = prepare_frontend<Context>()
-  ```
+    ```ts
+    export const {component, components, view, views} = prepare_frontend<Context>()
+    ```
 1. register all your components to the dom
-  ```ts
-  import {register_to_dom} from `@benev/slate`
+    ```ts
+    import {register_to_dom} from `@benev/slate`
 
-  register_to_dom(components(context, {
-    MyElement,
-    AnotherElement,
-    WhateverElement,
-  }))
-  ```
+    register_to_dom(components(context, {
+      MyElement,
+      AnotherElement,
+      WhateverElement,
+    }))
+    ```
 
 <br/>
 
