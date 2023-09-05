@@ -3,7 +3,7 @@ import {css, html} from "lit"
 import {Flat} from "./flatstate/flat.js"
 import {ShaleView} from "./view/shale.js"
 import {GoldElement} from "./element/gold.js"
-import {Attrite} from "./base/addons/attrite.js"
+import {Attributes} from "./base/addons/attributes.js"
 import {register_to_dom} from "./base/helpers/register_to_dom.js"
 import {BaseContext, ComponentClass, ComponentInstance, prepare_frontend} from "./prepare/frontend.js"
 
@@ -42,7 +42,7 @@ export const MyView2 = view(context => class extends ShaleView {
 		count: 0,
 	})
 
-	#attrs = Attrite.setup(this as ShaleView, {
+	#attrs = Attributes.setup(this as ShaleView, {
 		hello: String,
 		world: Number,
 		lol: Boolean,

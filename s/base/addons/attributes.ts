@@ -2,7 +2,7 @@
 import {BaseElement} from "../element.js"
 import {ShaleView} from "../../view/shale.js"
 
-export namespace Attrite {
+export namespace Attributes {
 	type HardValue = (
 		| typeof String
 		| typeof Number

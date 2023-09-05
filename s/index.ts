@@ -1,4 +1,5 @@
 
+export * from "./base/addons/attributes.js"
 export * from "./base/helpers/apply.js"
 export * from "./base/helpers/mixin.js"
 export * from "./base/helpers/register_to_dom.js"
