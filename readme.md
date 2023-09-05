@@ -68,7 +68,7 @@
 import {html, css} from "lit"
 import {GoldElement} from "@benev/slate"
 
-export const MyComponent = component(context => class extends GoldElement {
+export const MyElement = component(context => class extends GoldElement {
   static styles = css``
 
   #state = context.flat.state({
