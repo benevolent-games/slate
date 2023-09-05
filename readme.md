@@ -53,6 +53,8 @@
     ```ts
     import {register_to_dom} from `@benev/slate`
 
+    const context = new Context()
+
     register_to_dom(components(context, {
       MyElement,
       AnotherElement,
