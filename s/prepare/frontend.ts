@@ -10,19 +10,23 @@ import {ShaleViewClass, shale_view} from "../view/shale.js"
 import {requirement, RequirementGroup, RequirementGroupProvided} from "../tools/requirement.js"
 
 export type BaseContext = {flat: Flat, theme: CSSResultGroup}
+export type ComponentClass<C extends (...args: any[]) => BaseElementClass> = ReturnType<C>
+export type ComponentInstance<C extends (...args: any[]) => BaseElementClass> = InstanceType<ReturnType<C>>
 
 export const prepare_frontend = <C extends BaseContext>() => {
 
 	return ({
-		component: requirement<C>()<BaseElementClass>,
+		component: <E extends BaseElementClass>(fun: (context: C) => E) => fun,
 
-		components: <E extends RequirementGroup<C, BaseElementClass>>(e: E) => (
-			(context: C) => (Pipe.with(e)
+		components: <E extends RequirementGroup<C, BaseElementClass>>(
+				context: C,
+				elements: E
+			) => (
+			Pipe.with(elements)
 				.to(requirement.provide(context))
 				.to(apply.flat(context.flat))
 				.to(apply.theme(context.theme))
 				.done() as RequirementGroupProvided<E>
-			)
 		),
 
 		view: <V extends ShaleViewClass>(fun: (context: C) => V) => (context: C) => shale_view({
