@@ -114,13 +114,15 @@ export const MyView = view(context => class extends ShaleView {
 })
 ```
 - views are very similar to components
+- they even have their own shadow dom
 - but they are not custom elements
 - they don't need to be registered to the dom
-- views have their own shadow dom
-- they do this thing called `auto_exportparts`
-  - automatically exports shadow parts across many shadow layers
+- they do this cool thing called `auto_exportparts`
+  - it automatically exports shadow parts across many shadow layers
   - it's on by default
-  - you just give the view a `part`, and it will use that part as a prefix to any sub-parts
+  - you just give the view a `part`, and it will use that part as the prefix to any sub-parts
+  - so each view auto exports any child parts
+  - so when you have a hierarchy of views, parts get exported all the way up to the top, and prefixed too, so you don't have name collisions
 
 <br/>
 
