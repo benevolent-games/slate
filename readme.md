@@ -21,16 +21,16 @@
 
 ## 👷 recommended setup
 
-1. install slate into your project
+1. install slate (and lit) into your project
     ```sh
-    npm i @benev/slate
+    npm i @benev/slate lit
     ```
 1. establish a "context" for your app
     ```ts
     import {css} from "lit"
     import {BaseContext} from "@benev/slate"
 
-    export class Context extends BaseContext {
+    export class Context implements BaseContext {
 
       // state management system
       flat = new Flat()
