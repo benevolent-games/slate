@@ -78,7 +78,7 @@ export const MyElement = component(context => class extends GoldElement {
   })
 
   // component auto rerenders on state changes
-  #increment => () => {
+  #increment = () => {
     this.#state.count++
   }
 
@@ -123,7 +123,7 @@ export const MyView = view(context => class extends ShaleView {
     count: 0,
   })
 
-  #increment => () => {
+  #increment = () => {
     this.#state.count++
   }
 
