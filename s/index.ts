@@ -28,4 +28,5 @@ export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
 
 export * from "./view/shale.js"
+export * from "./view/parts/types.js"
 
