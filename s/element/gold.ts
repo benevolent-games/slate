@@ -28,6 +28,10 @@ export abstract class GoldElement extends MetallicElement implements BaseElement
 		return this.#root
 	}
 
+	get wait() {
+		return this.#wait
+	}
+
 	get updateComplete() {
 		return this.#wait.then(() => true)
 	}

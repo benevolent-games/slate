@@ -15,8 +15,10 @@ export class MetallicElement extends HTMLElement {
 	}
 
 	connectedCallback() {
-		for (const setup of this.#setups)
+		for (const setup of this.#setups) {
+			setup()()
 			this.#setdowns.add(setup())
+		}
 	}
 
 	disconnectedCallback() {
