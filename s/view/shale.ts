@@ -6,6 +6,8 @@ import {Flat} from "../flatstate/flat.js"
 import {make_view_root} from "./parts/root.js"
 import {ViewInputs, View} from "./parts/types.js"
 import {apply_details} from "./parts/apply_details.js"
+import {debounce} from "../tools/debounce/debounce.js"
+import {explode_promise} from "../tools/explode_promise.js"
 import {custom_directive_with_detail_input} from "./parts/custom_directive_with_detail_input.js"
 
 export abstract class ShaleView {
@@ -14,17 +16,66 @@ export abstract class ShaleView {
 	abstract render(...args: any[]): TemplateResult | void
 	default_auto_exportparts = true
 
+	#init? = explode_promise<void>()
+	#wait = this.#init!.promise
 	#root: ReturnType<typeof make_view_root>
 	#rerender: () => void
+
+	init() {}
 
 	constructor(root: ReturnType<typeof make_view_root>, rerender: () => void) {
 		this.#root = root
 		this.#rerender = rerender
+		this.init()
 	}
 
 	get element() { return this.#root.container }
 	get shadow() { return this.#root.shadow }
-	requestUpdate() { this.#rerender() }
+	get updateComplete() { return this.#wait.then(() => true) }
+
+	#setups = new Set<() => () => void>()
+		.add(() => this.setup())
+
+	#setdowns = new Set<() => void>()
+
+	register_setup(setup: () => () => void) {
+		this.#setups.add(setup)
+	}
+
+	setup() {
+		return () => {}
+	}
+
+	connectedCallback() {
+		for (const setup of this.#setups) {
+			setup()()
+			this.#setdowns.add(setup())
+		}
+	}
+
+	disconnectedCallback() {
+		for (const setdown of this.#setdowns)
+			setdown()
+		this.#setdowns.clear()
+	}
+
+	#render_debounced = debounce(0, () => {
+		const template = this.render()
+		this.render(template, this, {host: this})
+	})
+
+	requestUpdate() {
+		this.#rerender()
+		const promise = this.#render_debounced()
+
+		if (this.#init) {
+			promise.then(this.#init.resolve)
+			this.#init = undefined
+		}
+
+		this.#wait = promise
+		return promise
+	}
 }
 
 export type ShaleViewClass = {
@@ -60,6 +111,9 @@ export function shale_view<V extends ShaleViewClass>({flat, theme, View}: {
 		}
 
 		render(input: ViewInputs<P>) {
+			if (this.isConnected) {
+				this.#view.connectedCallback()
+			}
 			apply_details(this.#root.container, input, this.#recent_input)
 			this.#recent_input = input
 			this.#root.auto_exportparts = (
@@ -91,6 +145,12 @@ export function shale_view<V extends ShaleViewClass>({flat, theme, View}: {
 				this.#stop()
 				this.#stop = undefined
 			}
+
+			this.#view.disconnectedCallback()
+		}
+
+		reconnected() {
+			this.#view.connectedCallback()
 		}
 	}) as View<P>
 }
