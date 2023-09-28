@@ -47,7 +47,7 @@ export namespace Attributes {
 					return raw && Number(raw)
 
 				case Boolean:
-					return raw
+					return raw !== null
 						? raw !== "false"
 						: false
 
