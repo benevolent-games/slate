@@ -2,7 +2,17 @@
 import {CSSResultGroup, TemplateResult} from "lit"
 
 import {ViewUse} from "./use.js"
+import {BaseView} from "./base_view.js"
 import {Flat} from "../../flatstate/flat.js"
+
+export type ViewClass = {
+	new(...p: any[]): BaseView
+	directive: (...args: any[]) => any
+}
+
+export type ViewParams<V extends ViewClass> = (
+	Parameters<InstanceType<V>["render"]>
+)
 
 export type ViewAttributes = {
 	[key: string]: string | number | boolean | undefined
@@ -34,7 +44,13 @@ export type ViewHooks<P extends any[]> = {
 	render: ViewHooksRenderer<P>
 }
 
-export type View<P extends any[]> = (data: ViewInputs<P>) => (TemplateResult | void)
+export type View<P extends any[]> = (
+	(data: ViewInputs<P>) => (TemplateResult | void)
+)
+
+export type LightView<P extends any[]> = (
+	(...props: P) => (TemplateResult | void)
+)
 
 export type ViewHooksSetupDetails<R> = {
 	result: R

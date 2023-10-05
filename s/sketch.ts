@@ -1,5 +1,7 @@
 
 import {css, html} from "lit"
+
+import {ClayView} from "./view/clay.js"
 import {Flat} from "./flatstate/flat.js"
 import {ShaleView} from "./view/shale.js"
 import {GoldElement} from "./element/gold.js"
@@ -14,14 +16,6 @@ export class Context implements BaseContext {
 
 const {component, components, view, views} = prepare_frontend<Context>()
 
-export const MyComponent = component(_ => class extends GoldElement {
-	render() {
-	}
-})
-
-export type MyComponentClass = ComponentClass<typeof MyComponent>
-export type MyComponentInstance = ComponentInstance<typeof MyComponent>
-
 export const MyView = view(context => class extends ShaleView {
 	static name = "my-view"
 	static styles = css``
@@ -31,6 +25,12 @@ export const MyView = view(context => class extends ShaleView {
 			<p>${count}</p>
 			<p></p>
 		`
+	}
+})
+
+export const MyClay = view(context => class extends ClayView {
+	render(greeting: string) {
+		return html`<p>${greeting}</p>`
 	}
 })
 
@@ -68,6 +68,24 @@ export const MyView2 = view(context => class extends ShaleView {
 		`
 	}
 })
+
+export const MyComponent = component(context => class extends GoldElement {
+	#views = views(context, {
+		MyView,
+		MyView2,
+		MyClay,
+	})
+
+	render() {
+		return html`
+			${this.#views.MyView({props: [123]})}
+			${this.#views.MyClay("hello")}
+		`
+	}
+})
+
+export type MyComponentClass = ComponentClass<typeof MyComponent>
+export type MyComponentInstance = ComponentInstance<typeof MyComponent>
 
 const context = new Context()
 
