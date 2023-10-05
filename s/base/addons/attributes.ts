@@ -41,15 +41,15 @@ export namespace Attributes {
 
 			switch (type) {
 				case String:
-					return raw
+					return raw ?? undefined
 
 				case Number:
-					return raw && Number(raw)
+					return raw !== null
+						? Number(raw)
+						: undefined
 
 				case Boolean:
 					return raw !== null
-						? raw !== "false"
-						: false
 
 				default:
 					throw new Error(`invalid attribute type for "${name}"`)
