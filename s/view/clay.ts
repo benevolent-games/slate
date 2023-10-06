@@ -38,6 +38,11 @@ export abstract class ClayView extends BaseView {
 			#stop: (() => void) | undefined
 			#view = new View(this.#rerender)
 
+			constructor(...args: ConstructorParameters<typeof AsyncDirective>) {
+				super(...args)
+				this.#view.connectedCallback()
+			}
+
 			render(...props: P) {
 				this.#recent_input = props
 
@@ -61,10 +66,15 @@ export abstract class ClayView extends BaseView {
 			}
 
 			disconnected() {
+				this.#view.disconnectedCallback()
 				if (this.#stop) {
 					this.#stop()
 					this.#stop = undefined
 				}
+			}
+
+			reconnected() {
+				this.#view.connectedCallback()
 			}
 		}) as LightView<P>
 	}

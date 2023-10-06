@@ -56,6 +56,11 @@ export abstract class ShaleView extends BaseView {
 			#root = make_view_root(View.name, [theme, View.styles])
 			#view = new View(this.#root, this.#rerender)
 
+			constructor(...args: ConstructorParameters<typeof AsyncDirective>) {
+				super(...args)
+				this.#view.connectedCallback()
+			}
+
 			update(_: Part, props: [ViewInputs<P>]) {
 				return this.#root.render_into_shadow(this.render(...props))
 			}
@@ -88,10 +93,15 @@ export abstract class ShaleView extends BaseView {
 			}
 
 			disconnected() {
+				this.#view.disconnectedCallback()
 				if (this.#stop) {
 					this.#stop()
 					this.#stop = undefined
 				}
+			}
+
+			reconnected() {
+				this.#view.connectedCallback()
 			}
 		}) as View<P>
 	}
