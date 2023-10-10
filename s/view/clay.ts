@@ -14,9 +14,12 @@ export type ClayViewClass = ({
 export abstract class ClayView extends BaseView {
 	#rerender: () => void
 
+	init() {}
+
 	constructor(rerender: () => void) {
 		super()
 		this.#rerender = rerender
+		this.init()
 	}
 
 	requestUpdate() { this.#rerender() }

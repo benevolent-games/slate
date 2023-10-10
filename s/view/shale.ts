@@ -21,10 +21,13 @@ export abstract class ShaleView extends BaseView {
 	#root: ReturnType<typeof make_view_root>
 	#rerender: () => void
 
+	init() {}
+
 	constructor(root: ReturnType<typeof make_view_root>, rerender: () => void) {
 		super()
 		this.#root = root
 		this.#rerender = rerender
+		this.init()
 	}
 
 	get element() { return this.#root.container }
