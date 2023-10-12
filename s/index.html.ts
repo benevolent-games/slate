@@ -19,7 +19,9 @@ export default template(async basics => {
 					<p><a href="https://github.com/benevolent-games/slate">github.com/benevolent-games/slate</a></p>
 				</div>
 				<div class=plate>
-					<slate-counter></slate-counter>
+					<slate-gold-counter></slate-gold-counter>
+					<slate-silver-subtractor></slate-silver-subtractor>
+					<slate-doubler></slate-doubler>
 				</div>
 			</div>
 		`,
