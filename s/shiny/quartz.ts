@@ -199,7 +199,7 @@ export type ObsidianInput<P extends any[]> = {
 
 export const obsidian_custom_lit_directive = (
 	<C extends DirectiveClass, P extends any[]>(c: C) => (
-		(...props: P) => (meta: ObsidianMeta = {}): DirectiveResult<C> => ({
+		(props: P, meta: ObsidianMeta = {}): DirectiveResult<C> => ({
 			['_$litDirective$']: c,
 			values: [{meta, props}],
 		})
@@ -260,11 +260,17 @@ export function apply_details(
 
 export const prepare_obsidian = (
 	<C extends CoreContext>(context: C) =>
-	(settings: ObsidianSettings = {}) =>
-	<P extends any[]>(fun: QuartzFun<C, P>) => (
+	<P extends any[]>(
+		settings: ObsidianSettings = {},
+		fun: QuartzFun<C, P>,
+	) => (
 
 	obsidian_custom_lit_directive(class extends AsyncDirective {
 		#input?: ObsidianInput<P>
+		#root = make_view_root(
+			settings.name ?? "",
+			[context.theme, settings.styles ?? css``],
+		)
 		#rerender = debounce(0, () => {
 			if (this.#input)
 				this.setValue(
@@ -273,10 +279,6 @@ export const prepare_obsidian = (
 					)
 				)
 		})
-		#root = make_view_root(
-			settings.name ?? "",
-			[context.theme, settings.styles ?? css``],
-		)
 
 		#use = new Use(this.#rerender, context)
 		#rend = Use.wrap(this.#use, fun(this.#use))

@@ -36,6 +36,7 @@ a {
 	max-width: 25em;
 	margin: auto;
 	margin-top: 1em;
+	padding-bottom: 2em;
 
 	.logo {
 		display: block;

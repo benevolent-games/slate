@@ -21,6 +21,7 @@ export default template(async basics => {
 				<div class=plate>
 					<slate-gold-counter></slate-gold-counter>
 					<slate-silver-subtractor></slate-silver-subtractor>
+					<br/>
 					<slate-doubler></slate-doubler>
 				</div>
 			</div>
