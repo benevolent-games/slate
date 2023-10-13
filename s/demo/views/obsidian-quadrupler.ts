@@ -1,7 +1,7 @@
 
 import {css} from "lit"
 import {obsidian} from "../frontend.js"
-import {html} from "../../shiny/quartz.js"
+import {html} from "../../shiny/html.js"
 
 const name = "quadrupler"
 const styles = css`span { color: yellow }`

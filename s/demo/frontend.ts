@@ -1,11 +1,9 @@
 
-import {CoreContext, prepare_obsidian, prepare_quartz} from "../shiny/quartz.js"
-import {BaseContext, prepare_frontend} from "../prepare/frontend.js"
+import {Context} from "../shiny/context.js"
+import {prepare_frontend} from "../shiny/frontend.js"
+import {BaseContext, prepare_frontend as old_prepare_frontend} from "../prepare/frontend.js"
 
-export const context = new CoreContext()
+export const {quartz, obsidian} = prepare_frontend(new Context())
 
-export const {view, views, component, components} = prepare_frontend<BaseContext>()
-
-export const quartz = prepare_quartz(context)
-export const obsidian = prepare_obsidian(context)
+export const {view, views, component, components} = old_prepare_frontend<BaseContext>()
 
