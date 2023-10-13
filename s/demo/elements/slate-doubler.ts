@@ -4,7 +4,7 @@ import {component, views} from "../frontend.js"
 import {ClayDoubler} from "../views/clay-doubler.js"
 import {SilverElement} from "../../element/silver.js"
 import {ShaleDoubler} from "../views/shale-doubler.js"
-import { QuartzDoubler } from "../views/quartz-doubler.js"
+import {QuartzTripler} from "../views/quartz-tripler.js"
 
 export const SlateDoubler = component(context => class extends SilverElement {
 
@@ -14,7 +14,7 @@ export const SlateDoubler = component(context => class extends SilverElement {
 		return html`
 			${this.#views.ShaleDoubler({props: []})}
 			${this.#views.ClayDoubler()}
-			${QuartzDoubler(99)}
+			${QuartzTripler(1)}
 		`
 	}
 })
