@@ -1,6 +1,6 @@
 
-import {html} from "lit"
 import {quartz} from "../frontend.js"
+import {html} from "../../shiny/quartz.js"
 
 export const QuartzTripler = quartz(use => (start: number) => {
 
@@ -23,7 +23,7 @@ export const QuartzTripler = quartz(use => (start: number) => {
 		<span>${bravo.count}</span>
 		<button @click=${increaseBravo}>bravo</button>
 
-		<span>${charlie.value}</span>
+		<span>${charlie}</span>
 		<button @click=${increaseCharlie}>charlie</button>
 	`
 })

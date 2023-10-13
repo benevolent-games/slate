@@ -1,5 +1,5 @@
 
-import {CSSResultGroup, TemplateResult, css} from "lit"
+import {CSSResultGroup, TemplateResult, css, html as lit_html} from "lit"
 import {AsyncDirective, directive} from "lit/async-directive.js"
 
 import {Cue} from "../cues/cue.js"
@@ -7,6 +7,18 @@ import {Flat} from "../flatstate/flat.js"
 import {CueGroup} from "../cues/group.js"
 import {maptool} from "../tools/maptool.js"
 import {debounce} from "../tools/debounce/debounce.js"
+
+export const html = (
+		strings: TemplateStringsArray,
+		...values: any[]
+	): TemplateResult => (
+
+	lit_html(strings, ...values.map(value => (
+		(value instanceof Cue)
+			? value.value
+			: value
+	)))
+)
 
 export class CoreContext {
 	theme: CSSResultGroup = css``
