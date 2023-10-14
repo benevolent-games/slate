@@ -1,7 +1,7 @@
 
 import {CSSResultGroup, TemplateResult, render} from "lit"
 
-import {SlateView} from "./slate-view.element.js"
+import {ObsidianView} from "./obsidian-view.element.js"
 import {auto_exportparts} from "./auto_exportparts/auto.js"
 import {apply_styles_to_shadow} from "../../base/utils/apply_styles_to_shadow.js"
 
@@ -10,7 +10,7 @@ export function make_view_root(
 		css: CSSResultGroup | undefined,
 	) {
 
-	const container = document.createElement(SlateView.tag)
+	const container = document.createElement(ObsidianView.tag)
 	container.setAttribute("view", name)
 
 	const shadow = container.attachShadow({mode: "open"})

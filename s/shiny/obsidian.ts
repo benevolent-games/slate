@@ -8,13 +8,13 @@ import {make_view_root} from "./parts/root.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {apply_details} from "./parts/apply_details.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
-import {ObsidianInput, ObsidianSettings, ViewRenderer} from "./parts/types.js"
+import {ObsidianInput, ShadowSettings, ViewRenderer} from "./parts/types.js"
 import {obsidian_custom_lit_directive} from "./parts/obsidian_custom_lit_directive.js"
 
 export const prepare_obsidian = (
 	<C extends Context>(context: C) =>
 	<P extends any[]>(
-		settings: ObsidianSettings = {},
+		settings: ShadowSettings = {},
 		renderer: ViewRenderer<C, P>,
 	) => (
 

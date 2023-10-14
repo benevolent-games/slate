@@ -12,7 +12,7 @@ export const SlateGold = component(context => class extends GoldElement {
 	render() {
 		return html`
 			<span>${this.#state.count}</span>
-			<button @click=${() => this.#state.count++}>+</button>
+			<button @click=${() => this.#state.count++}>gold</button>
 		`
 	}
 })

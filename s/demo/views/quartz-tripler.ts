@@ -18,13 +18,13 @@ export const QuartzTripler = quartz(use => (start: number) => {
 
 	return html`
 		<span>${alpha}</span>
-		<button @click=${increaseAlpha}>alpha</button>
+		<button @click=${increaseAlpha}>quartz-a</button>
 
 		<span>${bravo.count}</span>
-		<button @click=${increaseBravo}>bravo</button>
+		<button @click=${increaseBravo}>quartz-b</button>
 
 		<span>${charlie}</span>
-		<button @click=${increaseCharlie}>charlie</button>
+		<button @click=${increaseCharlie}>quartz-c</button>
 	`
 })
 

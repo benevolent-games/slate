@@ -18,11 +18,7 @@ export type ShadowRenderer<C extends Context> = (
 	(use: UseShadow<C>) => (TemplateResult | void)
 )
 
-export type ViewAttributes = {
-	[key: string]: string | number | boolean | undefined
-}
-
-export type ObsidianAttributes = Partial<{
+export type ShadowAttrs = Partial<{
 	class: string
 	part: string
 	gpart: string
@@ -32,7 +28,7 @@ export type ObsidianAttributes = Partial<{
 export type ObsidianMeta = Partial<{
 	content: TemplateResult
 	auto_exportparts: boolean
-	attrs: ObsidianAttributes
+	attrs: ShadowAttrs
 }>
 
 export type ObsidianInput<P extends any[]> = {
@@ -40,7 +36,7 @@ export type ObsidianInput<P extends any[]> = {
 	props: P
 }
 
-export type ObsidianSettings = {
+export type ShadowSettings = {
 	name?: string
 	styles?: CSSResultGroup
 	auto_exportparts?: boolean

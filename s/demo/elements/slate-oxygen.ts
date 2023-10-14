@@ -8,7 +8,7 @@ export const SlateOxygen = oxygen(use => {
 
 	return html`
 		<span>${count}</span>
-		<button @click=${decrease}>oxy-</button>
+		<button @click=${decrease}>oxygen</button>
 	`
 })
 

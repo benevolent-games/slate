@@ -14,7 +14,7 @@ export const ObsidianQuadrupler = obsidian({name, styles}, use =>
 
 	return html`
 		<span>${count}</span>
-		<button @click=${increase}>quadrupler</button>
+		<button @click=${increase}>obsidian</button>
 	`
 })
 
