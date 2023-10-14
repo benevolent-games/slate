@@ -2,6 +2,7 @@
 import {CSSResultGroup, TemplateResult} from "lit"
 
 import {Flat} from "../../flatstate/flat.js"
+import {CueGroup} from "../../cues/group.js"
 import {BaseElementClass} from "../element.js"
 
 export namespace mixin {
@@ -13,6 +14,32 @@ export namespace mixin {
 					Base.styles,
 					newStyles,
 				)
+			}
+		}
+	}
+
+	export function cues(group: CueGroup) {
+		return function<C extends BaseElementClass>(Base: C): C {
+			return class extends Base {
+				#untracks: (() => void)[] = []
+
+				connectedCallback() {
+					super.connectedCallback()
+
+					this.#untracks.push(group.track(
+						() => this.render(),
+						() => this.requestUpdate(),
+					))
+				}
+
+				disconnectedCallback() {
+					super.disconnectedCallback()
+
+					for (const untrack of this.#untracks)
+						untrack()
+
+					this.#untracks = []
+				}
 			}
 		}
 	}
