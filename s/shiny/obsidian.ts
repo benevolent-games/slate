@@ -4,7 +4,7 @@ import {AsyncDirective} from "lit/async-directive.js"
 
 import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
-import {make_view_root} from "../view/parts/root.js"
+import {make_view_root} from "./parts/root.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {apply_details} from "./parts/apply_details.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"

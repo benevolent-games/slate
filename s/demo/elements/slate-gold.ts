@@ -3,7 +3,7 @@ import {html} from "lit"
 import {component} from "../frontend.js"
 import {GoldElement} from "../../element/gold.js"
 
-export const SlateGoldCounter = component(context => class extends GoldElement {
+export const SlateGold = component(context => class extends GoldElement {
 
 	#state = context.flat.state({
 		count: 0,

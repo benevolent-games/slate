@@ -1,6 +1,5 @@
 
 import {BaseElement} from "../element.js"
-import {ShaleView} from "../../view/shale.js"
 
 export namespace Attributes {
 	type HardValue = (
@@ -94,17 +93,6 @@ export namespace Attributes {
 	export function base<A extends Spec>(element: BaseElement, spec: A) {
 		on_change(element, () => element.requestUpdate())
 		return proxy(element, spec)
-	}
-
-	export function view<A extends Spec>(view: ShaleView, spec: A) {
-		on_change(view.element, () => view.requestUpdate())
-		return proxy(view.element, spec)
-	}
-
-	export function setup<A extends Spec>(target: ShaleView | BaseElement, spec: A) {
-		return (target instanceof ShaleView)
-			? view(target, spec)
-			: base(target, spec)
 	}
 }
 

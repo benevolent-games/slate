@@ -18,6 +18,10 @@ export type ShadowRenderer<C extends Context> = (
 	(use: UseShadow<C>) => (TemplateResult | void)
 )
 
+export type ViewAttributes = {
+	[key: string]: string | number | boolean | undefined
+}
+
 export type ObsidianAttributes = Partial<{
 	class: string
 	part: string

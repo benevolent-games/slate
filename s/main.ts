@@ -1,28 +1,15 @@
 
-import {Context} from "./sketch.js"
-import {components} from "./demo/frontend.js"
-import {SlateDoubler} from "./demo/elements/slate-doubler.js"
-import {register_to_dom} from "./base/helpers/register_to_dom.js"
-import {SlateGoldCounter} from "./demo/elements/slate-gold-counter.js"
-import {SlateOxygenDecreaser} from "./demo/elements/slate-oxygen-decreaser.js"
-import {SlateCarbonRandomizer} from "./demo/elements/slate-carbon-randomizer.js"
-import {SlateSilverSubtractor} from "./demo/elements/slate-silver-subtractor.js"
+import {SlateGold} from "./demo/elements/slate-gold.js"
+import {SlateSilver} from "./demo/elements/slate-silver.js"
+import {SlateCarbon} from "./demo/elements/slate-carbon.js"
+import {SlateOxygen} from "./demo/elements/slate-oxygen.js"
 
-register_to_dom(
-	components(
-		new Context(),
-		{
-			SlateGoldCounter,
-			SlateSilverSubtractor,
-			SlateDoubler,
-		},
-	)
-)
+import {register_to_dom} from "./base/helpers/register_to_dom.js"
 
 register_to_dom({
-	SlateOxygenDecreaser,
-	SlateCarbonRandomizer,
+	SlateCarbon,
+	SlateGold,
+	SlateOxygen,
+	SlateSilver,
 })
-
-console.log("slate")
 
