@@ -17,7 +17,7 @@ export const prepare_frontend = <C extends Context>(context: C) => ({
 		Pipe.with(prep(context))
 			.to(mixin.css(context.theme))
 			.to(mixin.flat(context.flat))
-			.to(mixin.cues(context.cues))
+			.to(mixin.signals(context.signals))
 			.done()
 	),
 })

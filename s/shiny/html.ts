@@ -1,5 +1,5 @@
 
-import {Cue} from "../cues/cue.js"
+import {Signal} from "../signals/signal.js"
 import {TemplateResult, html as lit_html} from "lit"
 
 export {svg, css} from "lit"
@@ -10,7 +10,7 @@ export const html = (
 	): TemplateResult => (
 
 	lit_html(strings, ...values.map(value => (
-		(value instanceof Cue)
+		(value instanceof Signal)
 			? value.value
 			: value
 	)))

@@ -1,13 +1,13 @@
 
-import {CueListener} from "./parts/listener.js"
+import {SignalListener} from "./parts/listener.js"
 import {debounce} from "../tools/debounce/debounce.js"
-import {CueCircularError} from "./parts/circular_error.js"
+import {SignalCircularError} from "./parts/circular_error.js"
 
-export class Cue<V> {
+export class Signal<V> {
 	#value: V
 	#lock = false
 	#wait: Promise<V>
-	#listeners = new Set<CueListener<V>>()
+	#listeners = new Set<SignalListener<V>>()
 
 	accessed = false
 
@@ -16,7 +16,7 @@ export class Cue<V> {
 		this.#wait = Promise.resolve(v)
 	}
 
-	subscribe(listener: CueListener<V>) {
+	subscribe(listener: SignalListener<V>) {
 		this.#listeners.add(listener)
 		return () => void this.#listeners.delete(listener)
 	}
@@ -52,7 +52,7 @@ export class Cue<V> {
 
 	set value(s: V) {
 		if (this.#lock)
-			throw new CueCircularError(
+			throw new SignalCircularError(
 				"you can't set a cue in a cue's subscription listener (infinite loop forbidden)"
 			)
 		this.#value = s

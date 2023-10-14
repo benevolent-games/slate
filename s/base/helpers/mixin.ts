@@ -2,8 +2,8 @@
 import {CSSResultGroup, TemplateResult} from "lit"
 
 import {Flat} from "../../flatstate/flat.js"
-import {CueGroup} from "../../cues/group.js"
 import {BaseElementClass} from "../element.js"
+import {SignalTower} from "../../signals/tower.js"
 
 export namespace mixin {
 
@@ -18,7 +18,7 @@ export namespace mixin {
 		}
 	}
 
-	export function cues(group: CueGroup) {
+	export function signals(group: SignalTower) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
 				#untracks: (() => void)[] = []

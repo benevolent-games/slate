@@ -1,6 +1,6 @@
 
-import {Cue} from "../../cues/cue.js"
 import {Context} from "../context.js"
+import {Signal} from "../../signals/signal.js"
 import {maptool} from "../../tools/maptool.js"
 
 type Setdown = () => void
@@ -83,8 +83,8 @@ export class Use<C extends Context = Context> {
 	signal<T>(init: T) {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.cues.create(init)
-		)) as Cue<T>
+			this.#context.signals.create(init)
+		)) as Signal<T>
 	}
 }
 

@@ -17,7 +17,7 @@ export function setup_reactivity<P extends any[]>(
 
 		let result: TemplateResult | void = undefined
 
-		stop_cues = context.cues.track(
+		stop_cues = context.signals.track(
 			() => { result = render(...props) },
 			rerender,
 		)
