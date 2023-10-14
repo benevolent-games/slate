@@ -23,6 +23,8 @@ export default template(async basics => {
 					<slate-silver-subtractor></slate-silver-subtractor>
 					<br/>
 					<slate-doubler></slate-doubler>
+					<br/>
+					<slate-oxygen-decreaser></slate-oxygen-decreaser>
 				</div>
 			</div>
 		`,

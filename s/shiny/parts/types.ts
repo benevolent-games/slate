@@ -1,10 +1,15 @@
 
 import {Use} from "./use.js"
 import {Context} from "../context.js"
+import {UseLight} from "./use_light.js"
 import {CSSResultGroup, TemplateResult} from "lit"
 
-export type QuartzFun<C extends Context, P extends any[]> = (
+export type ViewRenderer<C extends Context, P extends any[]> = (
 	(use: Use<C>) => (...props: P) => (TemplateResult | void)
+)
+
+export type LightRenderer<C extends Context> = (
+	(use: UseLight<C>) => (TemplateResult | void)
 )
 
 export type ObsidianAttributes = Partial<{
