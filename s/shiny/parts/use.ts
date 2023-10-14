@@ -7,7 +7,6 @@ type Setdown = () => void
 type Setup = () => Setdown
 
 export class Use<C extends Context = Context> {
-
 	static wrap<F extends (...args: any[]) => any>(use: Use, fun: F) {
 		return ((...args: any[]) => {
 			use.#counter.value = 0
@@ -34,6 +33,7 @@ export class Use<C extends Context = Context> {
 	#setdowns = new Set<Setdown>()
 
 	#states = new Map<number, any>()
+	#preparations = new Map<number, any>()
 	#flatstates = new Map<number, Record<string, any>>()
 	#signals = new Map<number, any>()
 
@@ -52,6 +52,11 @@ export class Use<C extends Context = Context> {
 			this.#setups.set(count, up)
 			this.#setdowns.add(up())
 		}
+	}
+
+	prepare<T>(prep: () => T) {
+		const count = this.#counter.value++
+		return maptool(this.#preparations).grab(count, prep)
 	}
 
 	state<T>(init: T | (() => T)) {
