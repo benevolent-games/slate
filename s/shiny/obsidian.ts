@@ -10,6 +10,7 @@ import {apply_details} from "./parts/apply_details.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 import {ObsidianInput, ShadowSettings, ViewRenderer} from "./parts/types.js"
 import {obsidian_custom_lit_directive} from "./parts/obsidian_custom_lit_directive.js"
+import { UseShadow } from "./parts/use_shadow.js"
 
 export const prepare_obsidian = (
 	<C extends Context>(context: C) =>
@@ -33,7 +34,13 @@ export const prepare_obsidian = (
 				)
 		})
 
-		#use = new Use(this.#rerender, context)
+		#use = new UseShadow(
+			this.#root.container,
+			this.#root.shadow,
+			this.#rerender,
+			context,
+		)
+
 		#rend = Use.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(

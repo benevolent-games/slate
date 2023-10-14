@@ -46,6 +46,10 @@ export class Use<C extends Context = Context> {
 		return this.#context
 	}
 
+	rerender() {
+		this.#rerender()
+	}
+
 	setup(up: Setup) {
 		const count = this.#counter.value
 		if (!this.#setups.has(count)) {

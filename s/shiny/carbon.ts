@@ -20,7 +20,7 @@ export const prepare_carbon = (
 		]
 
 		#use = new UseShadow(
-			this as any,
+			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),
 			context,
