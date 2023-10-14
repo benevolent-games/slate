@@ -3,9 +3,9 @@ import {CSSResultGroup, TemplateResult} from "lit"
 
 import {Use} from "./use.js"
 import {Context} from "../context.js"
-import {UseLight} from "./use_light.js"
+import {UseGold} from "./use_gold.js"
 import {UseShadow} from "./use_shadow.js"
-import {GoldElement} from "../../element/gold.js"
+import {UseSilver} from "./use_silver.js"
 
 export type QuartzRenderer<C extends Context, P extends any[]> = (
 	(use: Use<C>) => (...props: P) => (TemplateResult | void)
@@ -16,11 +16,11 @@ export type ObsidianRenderer<C extends Context, P extends any[]> = (
 )
 
 export type OxygenRenderer<C extends Context> = (
-	(use: UseLight<C>) => (TemplateResult | void)
+	(use: UseSilver<C>) => (TemplateResult | void)
 )
 
 export type CarbonRenderer<C extends Context> = (
-	(use: UseShadow<C, GoldElement>) => (TemplateResult | void)
+	(use: UseGold<C>) => (TemplateResult | void)
 )
 
 export type ShadowAttrs = Partial<{

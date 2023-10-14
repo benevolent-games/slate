@@ -89,10 +89,14 @@ export class Use<C extends Context = Context> {
 		)) as S
 	}
 
-	signal<T>(init: T) {
+	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.signals.create(init)
+			this.#context.signals.create(
+				(typeof init === "function")
+					? (init as () => T)()
+					: init
+			)
 		)) as Signal<T>
 	}
 }

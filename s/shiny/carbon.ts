@@ -3,8 +3,8 @@ import {CSSResultGroup, css} from "lit"
 
 import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
+import {UseGold} from "./parts/use_gold.js"
 import {GoldElement} from "../element/gold.js"
-import {UseShadow} from "./parts/use_shadow.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 import {ShadowSettings, CarbonRenderer} from "./parts/types.js"
 
@@ -19,7 +19,7 @@ export const prepare_carbon = (
 			settings.styles ?? css``,
 		]
 
-		#use = new UseShadow(
+		#use = new UseGold(
 			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),

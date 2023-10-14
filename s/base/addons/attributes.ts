@@ -25,7 +25,7 @@ export namespace Attributes {
 		[key: string]: HardValue
 	}
 
-	type SoftenSpec<A extends Spec> = {
+	export type SoftenSpec<A extends Spec> = {
 		[P in keyof A]: SoftenValue<A[P]>
 	}
 
