@@ -3,13 +3,13 @@ import {AsyncDirective, directive} from "lit/async-directive.js"
 
 import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
-import {ViewRenderer} from "./parts/types.js"
+import {QuartzRenderer} from "./parts/types.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 
 export const prepare_quartz = (
 	<C extends Context>(context: C) =>
-	<P extends any[]>(renderer: ViewRenderer<C, P>) =>
+	<P extends any[]>(renderer: QuartzRenderer<C, P>) =>
 
 	directive(class extends AsyncDirective {
 		#props?: P

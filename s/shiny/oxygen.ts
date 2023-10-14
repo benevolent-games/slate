@@ -2,13 +2,13 @@
 import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
 import {UseLight} from "./parts/use_light.js"
-import {LightRenderer} from "./parts/types.js"
+import {OxygenRenderer} from "./parts/types.js"
 import {SilverElement} from "../element/silver.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 
 export const prepare_oxygen = (
 	<C extends Context>(context: C) =>
-	(renderer: LightRenderer<C>) => (
+	(renderer: OxygenRenderer<C>) => (
 
 	class extends SilverElement {
 		#use = new UseLight(

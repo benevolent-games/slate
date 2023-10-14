@@ -5,17 +5,22 @@ import {Use} from "./use.js"
 import {Context} from "../context.js"
 import {UseLight} from "./use_light.js"
 import {UseShadow} from "./use_shadow.js"
+import {GoldElement} from "../../element/gold.js"
 
-export type ViewRenderer<C extends Context, P extends any[]> = (
+export type QuartzRenderer<C extends Context, P extends any[]> = (
 	(use: Use<C>) => (...props: P) => (TemplateResult | void)
 )
 
-export type LightRenderer<C extends Context> = (
+export type ObsidianRenderer<C extends Context, P extends any[]> = (
+	(use: UseShadow<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
+)
+
+export type OxygenRenderer<C extends Context> = (
 	(use: UseLight<C>) => (TemplateResult | void)
 )
 
-export type ShadowRenderer<C extends Context> = (
-	(use: UseShadow<C>) => (TemplateResult | void)
+export type CarbonRenderer<C extends Context> = (
+	(use: UseShadow<C, GoldElement>) => (TemplateResult | void)
 )
 
 export type ShadowAttrs = Partial<{

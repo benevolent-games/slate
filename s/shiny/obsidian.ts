@@ -5,18 +5,18 @@ import {AsyncDirective} from "lit/async-directive.js"
 import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
 import {make_view_root} from "./parts/root.js"
+import {UseShadow} from "./parts/use_shadow.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {apply_details} from "./parts/apply_details.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
-import {ObsidianInput, ShadowSettings, ViewRenderer} from "./parts/types.js"
+import {ObsidianInput, ShadowSettings, ObsidianRenderer} from "./parts/types.js"
 import {obsidian_custom_lit_directive} from "./parts/obsidian_custom_lit_directive.js"
-import { UseShadow } from "./parts/use_shadow.js"
 
 export const prepare_obsidian = (
 	<C extends Context>(context: C) =>
 	<P extends any[]>(
 		settings: ShadowSettings = {},
-		renderer: ViewRenderer<C, P>,
+		renderer: ObsidianRenderer<C, P>,
 	) => (
 
 	obsidian_custom_lit_directive(class extends AsyncDirective {
