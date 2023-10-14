@@ -1,18 +1,15 @@
 
 import {Use} from "./use.js"
 import {Context} from "../context.js"
-import {BaseElement} from "../../base/element.js"
-import {MetallicElement} from "../../element/part/metallic.js"
+import {SilverElement} from "../../element/silver.js"
 
 export class UseLight<C extends Context = Context> extends Use<C> {
-	#element: MetallicElement & BaseElement
 
-	get element() {
-		return this.#element
-	}
+	#element: SilverElement
+	get element() { return this.#element }
 
 	constructor(
-			element: MetallicElement & BaseElement,
+			element: SilverElement,
 			rerender: () => void,
 			context: C,
 		) {

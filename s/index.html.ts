@@ -25,6 +25,7 @@ export default template(async basics => {
 					<slate-doubler></slate-doubler>
 					<br/>
 					<slate-oxygen-decreaser></slate-oxygen-decreaser>
+					<slate-carbon-randomizer></slate-carbon-randomizer>
 				</div>
 			</div>
 		`,

@@ -1,5 +1,5 @@
 
-import {css} from "lit"
+import {Part, css} from "lit"
 import {AsyncDirective} from "lit/async-directive.js"
 
 import {Use} from "./parts/use.js"
@@ -41,6 +41,10 @@ export const prepare_obsidian = (
 			this.#rend,
 			this.#rerender,
 		)
+
+		update(_: Part, props: [ObsidianInput<P>]) {
+			return this.#root.render_into_shadow(this.render(...props))
+		}
 
 		render(input: ObsidianInput<P>) {
 			apply_details(this.#root.container, input.meta, this.#input?.meta)

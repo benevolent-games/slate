@@ -1,8 +1,10 @@
 
+import {CSSResultGroup, TemplateResult} from "lit"
+
 import {Use} from "./use.js"
 import {Context} from "../context.js"
 import {UseLight} from "./use_light.js"
-import {CSSResultGroup, TemplateResult} from "lit"
+import {UseShadow} from "./use_shadow.js"
 
 export type ViewRenderer<C extends Context, P extends any[]> = (
 	(use: Use<C>) => (...props: P) => (TemplateResult | void)
@@ -10,6 +12,10 @@ export type ViewRenderer<C extends Context, P extends any[]> = (
 
 export type LightRenderer<C extends Context> = (
 	(use: UseLight<C>) => (TemplateResult | void)
+)
+
+export type ShadowRenderer<C extends Context> = (
+	(use: UseShadow<C>) => (TemplateResult | void)
 )
 
 export type ObsidianAttributes = Partial<{
@@ -22,7 +28,7 @@ export type ObsidianAttributes = Partial<{
 export type ObsidianMeta = Partial<{
 	content: TemplateResult
 	auto_exportparts: boolean
-	attributes: ObsidianAttributes
+	attrs: ObsidianAttributes
 }>
 
 export type ObsidianInput<P extends any[]> = {

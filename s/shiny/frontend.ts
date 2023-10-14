@@ -1,5 +1,6 @@
 
 import {Context} from "./context.js"
+import {prepare_carbon} from "./carbon.js"
 import {prepare_oxygen} from "./oxygen.js"
 import {prepare_quartz} from "./quartz.js"
 import {prepare_obsidian} from "./obsidian.js"
@@ -8,5 +9,6 @@ export const prepare_frontend = <C extends Context>(context: C) => ({
 	quartz: prepare_quartz(context),
 	obsidian: prepare_obsidian(context),
 	oxygen: prepare_oxygen(context),
+	carbon: prepare_carbon(context),
 })
 

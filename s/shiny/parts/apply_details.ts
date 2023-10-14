@@ -9,8 +9,8 @@ export function apply_details(
 		oldMeta: ObsidianMeta = {},
 	) {
 
-	const {content, attributes: fresh = {}} = freshMeta
-	const {attributes: old = {}} = oldMeta
+	const {content, attrs: fresh = {}} = freshMeta
+	const {attrs: old = {}} = oldMeta
 
 	function actuate<V>(freshvalue: V, oldvalue: V, name: string, value: () => string) {
 		if (freshvalue !== oldvalue) {
