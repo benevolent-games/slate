@@ -13,6 +13,8 @@ export * from "./flatstate/flat.js"
 export * from "./op/op.js"
 export * from "./op/prep_render_op.js"
 
+export * from "./shiny/parts/use/tailored.js"
+export * from "./shiny/parts/use/parts/use.js"
 export * from "./shiny/carbon.js"
 export * from "./shiny/context.js"
 export * from "./shiny/frontend.js"
@@ -37,4 +39,19 @@ export * from "./tools/ob.js"
 export * from "./tools/pipe.js"
 export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
+
+export {
+	CSSResultGroup,
+	CSSResult,
+	CSSResultOrNative,
+	CSSResultArray,
+	render,
+	TemplateResult,
+	SVGTemplateResult,
+	RenderOptions,
+	Disconnectable,
+} from "lit"
+
+export {AsyncDirective} from "lit/async-directive.js"
+export {DirectiveClass, DirectiveResult, PartInfo} from "lit/directive.js"
 
