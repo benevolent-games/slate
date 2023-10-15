@@ -1,26 +1,23 @@
 
 import {CSSResultGroup, TemplateResult} from "lit"
 
-import {Use} from "./use.js"
 import {Context} from "../context.js"
-import {UseGold} from "./use_gold.js"
-import {UseShadow} from "./use_shadow.js"
-import {UseSilver} from "./use_silver.js"
+import {UseCarbon, UseObsidian, UseOxygen, UseQuartz} from "./use/tailored.js"
 
 export type QuartzRenderer<C extends Context, P extends any[]> = (
-	(use: Use<C>) => (...props: P) => (TemplateResult | void)
+	(use: UseQuartz<C>) => (...props: P) => (TemplateResult | void)
 )
 
 export type ObsidianRenderer<C extends Context, P extends any[]> = (
-	(use: UseShadow<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
+	(use: UseObsidian<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
 )
 
 export type OxygenRenderer<C extends Context> = (
-	(use: UseSilver<C>) => (TemplateResult | void)
+	(use: UseOxygen<C>) => (TemplateResult | void)
 )
 
 export type CarbonRenderer<C extends Context> = (
-	(use: UseGold<C>) => (TemplateResult | void)
+	(use: UseCarbon<C>) => (TemplateResult | void)
 )
 
 export type ShadowAttrs = Partial<{
