@@ -144,11 +144,6 @@ views accept js parameters called `props`.
 
 ### using your views
 
-1. import your views
-    ```ts
-    import {MyQuartz} from "./my-quartz.js"
-    import {MyObsidian} from "./my-obsidian.js"
-    ```
 1. inject your quartz views into any html template like this
     ```ts
     html`
@@ -213,14 +208,10 @@ views accept js parameters called `props`.
     html`<span>${count}</span>`
     ```
 - **use.op**  
-    create an OpSignal in a loading/error/ready state, and can hold a result value
+    create an OpSignal in a loading/error/ready state, and it can hold a result value
     ```ts
     const count = use.op()
     count.run(async() => fetchCount("/count"))
-    ```
-    you can directly inject the whole signal into html
-    ```ts
-    html`<span>${count}</span>`
     ```
 - **use.flatstate**  
     create a reactive object *(inspired by [mobx](https://mobx.js.org/) and [snapstate](https://github.com/chase-moskal/snapstate))*
@@ -250,17 +241,17 @@ views accept js parameters called `props`.
 
 ### special `use` access
 
-- **use.element** *~ carbon, oxygen, obsidian ~*  
+- **use.element** ~ *carbon, oxygen, obsidian*  
     access the underlying html element
     ```ts
     use.element.querySelector("p")
     ```
-- **use.shadow** *~ carbon, obsidian ~*  
+- **use.shadow** ~ *carbon, obsidian*  
     access to the shadow root
     ```ts
     use.shadow.querySelector("slot")
     ```
-- **use.attrs** *~ carbon, oxygen ~*  
+- **use.attrs** ~ *carbon, oxygen*  
     declare accessors for html attributes
     ```ts
     const attrs = use.attrs({
@@ -295,7 +286,7 @@ views accept js parameters called `props`.
 - these are used as primitives underlying carbon/oxygen components
 - they do not have context, theme, or any state management reactivity applied
   - you can apply those with the mixins found by importing `mixins`
-  - you can use `Attributes.base(this as BaseElement)` to create attribute accessors
+  - you can use `Attributes.base(this as BaseElement, {label: String})` to create attribute accessors
 
 ### `prepare_frontend` vs `deferred_frontend`
 
@@ -340,10 +331,10 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
 - setup a reaction
   ```ts
   flat.reaction(() => console.log(state.count))
-    //-> 0
+    //> 0
 
   state.count++
-    //-> 1
+    //> 1
   ```
   - flatstate records which state properties your reaction reads
   - flatstate calls your reaction whenever those specific properties change
@@ -357,10 +348,10 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   const state = flat.state({amount: 100})
 
   state.amount = 101
-  console.log(state.amount) //-> 100 (old value)
+  console.log(state.amount) //> 100 (old value)
 
   await flat.wait
-  console.log(state.amount) //-> 101 (now it's ready)
+  console.log(state.amount) //> 101 (now it's ready)
   ```
 - you can stop a reaction
   ```ts
@@ -426,7 +417,7 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
 
   state.count = 1
   await flat.wait
-  console.log(rstate.count) //-> 1
+  console.log(rstate.count) //> 1
 
   rstate.count = 2 // !! ReadonlyError !!
   ```
