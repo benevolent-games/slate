@@ -1,6 +1,6 @@
 
 import {Use} from "./use.js"
-import {Context} from "../context.js"
+import {Context} from "../../../context.js"
 
 export class UseShadow<C extends Context = Context, E extends HTMLElement = HTMLElement> extends Use<C> {
 

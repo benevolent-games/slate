@@ -1,8 +1,8 @@
 
-import {Context} from "../context.js"
-import {Signal} from "../../signals/signal.js"
-import {maptool} from "../../tools/maptool.js"
-import {OpSignal} from "../../signals/op_signal.js"
+import {Context} from "../../../context.js"
+import {Signal} from "../../../../signals/signal.js"
+import {maptool} from "../../../../tools/maptool.js"
+import {OpSignal} from "../../../../signals/op_signal.js"
 
 type Setdown = () => void
 type Setup = () => Setdown

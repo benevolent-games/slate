@@ -2,10 +2,9 @@
 import {Part, css} from "lit"
 import {AsyncDirective} from "lit/async-directive.js"
 
-import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
 import {make_view_root} from "./parts/root.js"
-import {UseShadow} from "./parts/use_shadow.js"
+import {UseObsidian} from "./parts/use/tailored.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {apply_details} from "./parts/apply_details.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
@@ -34,14 +33,14 @@ export const prepare_obsidian = (
 				)
 		})
 
-		#use = new UseShadow(
+		#use = new UseObsidian(
 			this.#root.container,
 			this.#root.shadow,
 			this.#rerender,
 			context,
 		)
 
-		#rend = Use.wrap(this.#use, renderer(this.#use))
+		#rend = UseObsidian.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(
 			context,
@@ -63,11 +62,11 @@ export const prepare_obsidian = (
 		}
 
 		reconnected() {
-			Use.reconnect(this.#use)
+			UseObsidian.reconnect(this.#use)
 		}
 
 		disconnected() {
-			Use.disconnect(this.#use)
+			UseObsidian.disconnect(this.#use)
 		}
 	})
 ))

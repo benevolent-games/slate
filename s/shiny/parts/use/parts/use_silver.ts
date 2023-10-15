@@ -1,8 +1,8 @@
 
 import {Use} from "./use.js"
-import {Context} from "../context.js"
-import {SilverElement} from "../../element/silver.js"
-import {SetupAttrs, setup_use_attrs} from "./setup_use_attrs.js"
+import {Context} from "../../../context.js"
+import {SilverElement} from "../../../../element/silver.js"
+import {SetupAttrs, setup_use_attrs} from "../../setup_use_attrs.js"
 
 export class UseSilver<C extends Context = Context> extends Use<C> {
 

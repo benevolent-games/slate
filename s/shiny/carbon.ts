@@ -1,10 +1,9 @@
 
 import {CSSResultGroup, css} from "lit"
 
-import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
-import {UseGold} from "./parts/use_gold.js"
 import {GoldElement} from "../element/gold.js"
+import {UseCarbon} from "./parts/use/tailored.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 import {ShadowSettings, CarbonRenderer} from "./parts/types.js"
 
@@ -19,14 +18,14 @@ export const prepare_carbon = (
 			settings.styles ?? css``,
 		]
 
-		#use = new UseGold(
+		#use = new UseCarbon(
 			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),
 			context,
 		)
 
-		#rend = Use.wrap(this.#use, () => renderer(this.#use))
+		#rend = UseCarbon.wrap(this.#use, () => renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<[]>(
 			context,
@@ -40,12 +39,12 @@ export const prepare_carbon = (
 
 		connectedCallback() {
 			super.connectedCallback()
-			Use.reconnect(this.#use)
+			UseCarbon.reconnect(this.#use)
 		}
 
 		disconnectedCallback() {
 			super.disconnectedCallback()
-			Use.disconnect(this.#use)
+			UseCarbon.disconnect(this.#use)
 		}
 	}
 ))

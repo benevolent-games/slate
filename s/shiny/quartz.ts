@@ -1,9 +1,9 @@
 
 import {AsyncDirective, directive} from "lit/async-directive.js"
 
-import {Use} from "./parts/use.js"
 import {Context} from "./context.js"
 import {QuartzRenderer} from "./parts/types.js"
+import {UseQuartz} from "./parts/use/tailored.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {setup_reactivity} from "./parts/setup_reactivity.js"
 
@@ -17,8 +17,8 @@ export const prepare_quartz = (
 			if (this.#props)
 				this.setValue(this.render(...this.#props!))
 		})
-		#use = new Use(this.#rerender, context)
-		#rend = Use.wrap(this.#use, renderer(this.#use))
+		#use = new UseQuartz(this.#rerender, context)
+		#rend = UseQuartz.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(
 			context,
@@ -32,12 +32,12 @@ export const prepare_quartz = (
 		}
 
 		reconnected() {
-			Use.reconnect(this.#use)
+			UseQuartz.reconnect(this.#use)
 		}
 
 		disconnected() {
-			Use.disconnect(this.#use)
+			UseQuartz.disconnect(this.#use)
 		}
-	})
+	}) as (...props: P) => any
 )
 

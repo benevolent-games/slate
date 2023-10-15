@@ -1,8 +1,8 @@
 
-import {Context} from "../context.js"
 import {UseShadow} from "./use_shadow.js"
-import {GoldElement} from "../../element/gold.js"
-import {SetupAttrs, setup_use_attrs} from "./setup_use_attrs.js"
+import {Context} from "../../../context.js"
+import {GoldElement} from "../../../../element/gold.js"
+import {SetupAttrs, setup_use_attrs} from "../../setup_use_attrs.js"
 
 export class UseGold<C extends Context = Context> extends UseShadow<C, GoldElement> {
 
