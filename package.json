@@ -18,7 +18,7 @@
 		"test-watch": "chokidar 'x/**/*.js' -c 'npm test'",
 		"test": "cynic node x/tests.test.js"
 	},
-	"peerDependencies": {
+	"dependencies": {
 		"lit": "^3.0.0"
 	},
 	"devDependencies": {
