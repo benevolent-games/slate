@@ -18,7 +18,7 @@ export const prepare_frontend = <C extends Context>(context: C) => ({
 		Pipe.with(prep(context))
 			.to(mixin.css(context.theme))
 			.to(mixin.flat(context.flat))
-			.to(mixin.signals(context.signals))
+			.to(mixin.signals(context.tower))
 			.done()
 	),
 })
@@ -48,7 +48,7 @@ export const deferred_frontend = <C extends Context>() => ({
 		(context: C) => Pipe.with(prep(context))
 			.to(mixin.css(context.theme))
 			.to(mixin.flat(context.flat))
-			.to(mixin.signals(context.signals))
+			.to(mixin.signals(context.tower))
 			.done()
 	),
 })

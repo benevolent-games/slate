@@ -2,6 +2,7 @@
 import {Context} from "../context.js"
 import {Signal} from "../../signals/signal.js"
 import {maptool} from "../../tools/maptool.js"
+import {OpSignal} from "../../signals/op_signal.js"
 
 type Setdown = () => void
 type Setup = () => Setdown
@@ -92,12 +93,20 @@ export class Use<C extends Context = Context> {
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.signals.create(
+			this.#context.tower.signal(
 				(typeof init === "function")
 					? (init as () => T)()
 					: init
 			)
 		)) as Signal<T>
+	}
+
+	op<T>() {
+		const count = this.#counter.value++
+		return maptool(this.#signals).grab(
+			count,
+			() => this.#context.tower.op(),
+		) as OpSignal<T>
 	}
 }
 

@@ -6,6 +6,6 @@ import {SignalTower} from "../signals/tower.js"
 export class Context {
 	theme: CSSResultGroup = css``
 	flat = new Flat()
-	signals = new SignalTower()
+	tower = new SignalTower()
 }
 

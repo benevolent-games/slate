@@ -10,9 +10,9 @@ export namespace Op {
 	export type For<X> = Loading | Error | Ready<X>
 	export type Setter<X> = (op: For<X>) => void
 
-	export const loading = (): Loading => ({mode: "loading"})
-	export const error = (reason: string): Error => ({mode: "error", reason})
-	export const ready = <X>(payload: X): Ready<X> => ({mode: "ready", payload})
+	export const loading = <X>(): For<X> => ({mode: "loading"})
+	export const error = <X>(reason: string): For<X> => ({mode: "error", reason})
+	export const ready = <X>(payload: X): For<X> => ({mode: "ready", payload})
 
 	export const is = Object.freeze({
 		loading: (op: For<any>) => op.mode === "loading",
@@ -26,7 +26,7 @@ export namespace Op {
 			: undefined
 	}
 
-	type Choices<X, R> = {
+	export type Choices<X, R> = {
 		loading: () => R
 		error: (reason: string) => R
 		ready: (payload: X) => R
@@ -50,11 +50,15 @@ export namespace Op {
 		}
 	}
 
-	export async function run<X>(set_op: Setter<X>, fun: () => Promise<X>) {
+	export async function run<X>(
+			set_op: Setter<X>,
+			operation: () => Promise<X>,
+		) {
+
 		set_op(loading())
 
 		try {
-			const payload = await fun()
+			const payload = await operation()
 			set_op(ready(payload))
 			return payload as X
 		}
