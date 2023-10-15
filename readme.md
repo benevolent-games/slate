@@ -237,7 +237,7 @@ views accept js parameters called `props`.
     ```ts
     await use.context.flat.wait
     ```
-    by default, context has `theme`, `signals`, and `flat`, but you specify your own context in `prepare_frontend`, so you can put any app-level state in there that you might want
+    by default, context has `theme`, `tower`, and `flat`, but you specify your own context in `prepare_frontend`, so you can put any app-level state in there that you might want
 
 ### special `use` access
 
