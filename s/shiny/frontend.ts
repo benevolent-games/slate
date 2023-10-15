@@ -23,7 +23,7 @@ export const prepare_frontend = <C extends Context>(context: C) => ({
 	),
 })
 
-export const portable_frontend = <C extends Context>() => ({
+export const deferred_frontend = <C extends Context>() => ({
 	provide: <G extends RequirementGroup<C, any>>(context: C, group: G) => (
 		requirement.provide(context)(group)
 	),
