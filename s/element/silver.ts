@@ -6,8 +6,7 @@ import {MetallicElement} from "./part/metallic.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 
-export abstract class SilverElement extends MetallicElement implements BaseElement {
-
+export class SilverElement extends MetallicElement implements BaseElement {
 	#init? = explode_promise<void>()
 	#wait = this.#init!.promise
 
@@ -22,7 +21,7 @@ export abstract class SilverElement extends MetallicElement implements BaseEleme
 		return this.#wait.then(() => true)
 	}
 
-	abstract render(): TemplateResult | void
+	render(): TemplateResult | void {}
 
 	#render_debounced = debounce(0, () => {
 		const template = this.render()

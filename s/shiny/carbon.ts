@@ -46,6 +46,6 @@ export const prepare_carbon = (
 			super.disconnectedCallback()
 			UseCarbon.disconnect(this.#use)
 		}
-	}
+	} as typeof GoldElement
 ))
 

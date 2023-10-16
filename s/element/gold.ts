@@ -7,7 +7,7 @@ import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
 
-export abstract class GoldElement extends MetallicElement implements BaseElement {
+export class GoldElement extends MetallicElement implements BaseElement {
 	static styles?: CSSResultGroup
 
 	#root: ShadowRoot
@@ -32,7 +32,7 @@ export abstract class GoldElement extends MetallicElement implements BaseElement
 		return this.#wait.then(() => true)
 	}
 
-	abstract render(): TemplateResult | void
+	render(): TemplateResult | void {}
 
 	#render_debounced = debounce(0, () => {
 		const root = this.#root
