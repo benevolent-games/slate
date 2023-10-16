@@ -20,9 +20,6 @@ export class Flat {
 	#stopper = new Stopper()
 	#scheduler = new Scheduler()
 
-	// // TODO
-	// #lock2 = false
-
 	#proxy_handlers = proxy_handlers(
 		this.#tracker,
 		this.#recorder,
@@ -40,29 +37,14 @@ export class Flat {
 	}
 
 	manual(reaction: Reaction) {
-
-		// // TODO
-		// if (this.#lock2)
-		// 	throw new Error("LOCK2 FAIL")
-		// this.#lock2 = true
-
 		const symbol = Symbol()
 		const recorded = this.#recorder.record(
-
-			// // TODO
-			// problem is that this collector is a view render function,
-			// which calls another view,
-			// which runs another nested render function
 			() => this.#locker.lock(reaction.collector)
 		)
 		this.#stopper.add(
 			symbol,
 			save_reaction(symbol, recorded, this.#tracker, reaction),
 		)
-
-		// // TODO
-		// this.#lock2 = false
-
 		return () => this.#stopper.stop(symbol)
 	}
 

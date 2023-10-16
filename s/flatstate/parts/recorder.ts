@@ -4,33 +4,20 @@ import {make_map, make_set} from "./makers.js"
 import {maptool} from "../../tools/maptool.js"
 
 export class Recorder {
-	#recording?: Recording
+	#recordings: Recording[] = []
 
 	record(fun: Fun) {
-		this.#recording = make_map()
-
-		// // TODO
-		// this ends up calling another nested `record` call from sub-views.
+		const recording: Recording = make_map()
+		this.#recordings.push(recording)
 		fun()
-
-		// TODO this ends up being undefined...
-		const recording = this.#recording
-
-		// TODO ...because the nested call hits this line
-		this.#recording = undefined
-
+		this.#recordings.pop()
 		return recording
 	}
 
-	entries() {
-		return this.#recording
-			? [...this.#recording.entries()]
-			: []
-	}
-
 	record_that_key_was_accessed(state: {}, key: string) {
-		if (this.#recording) {
-			const keyset = maptool(this.#recording).grab(state, make_set)
+		const recording = this.#recordings.at(-1)
+		if (recording) {
+			const keyset = maptool(recording).grab(state, make_set)
 			keyset.add(key)
 		}
 	}
