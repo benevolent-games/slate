@@ -18,7 +18,7 @@ export const prepare_obsidian = (
 		renderer: ObsidianRenderer<C, P>,
 	) => (
 
-	obsidian_custom_lit_directive(class extends AsyncDirective {
+	obsidian_custom_lit_directive<P>(class extends AsyncDirective {
 		#input?: ObsidianInput<P>
 		#root = make_view_root(
 			settings.name ?? "",

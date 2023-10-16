@@ -1,5 +1,5 @@
 
-import {AsyncDirective, directive} from "lit/async-directive.js"
+import {AsyncDirective, DirectiveResult, directive} from "lit/async-directive.js"
 
 import {Context} from "./context.js"
 import {QuartzRenderer} from "./parts/types.js"
@@ -38,6 +38,6 @@ export const prepare_quartz = (
 		disconnected() {
 			UseQuartz.disconnect(this.#use)
 		}
-	}) as (...props: P) => any
+	}) as (...props: P) => DirectiveResult<any>
 )
 

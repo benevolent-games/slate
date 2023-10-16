@@ -1,5 +1,6 @@
 
-import {CSSResultGroup, TemplateResult} from "lit"
+import {DirectiveResult} from "lit/async-directive.js"
+import {CSSResult, CSSResultGroup, TemplateResult} from "lit"
 
 import {Context} from "../context.js"
 import {UseCarbon, UseObsidian, UseOxygen, UseQuartz} from "./use/tailored.js"
@@ -18,6 +19,14 @@ export type OxygenRenderer<C extends Context> = (
 
 export type CarbonRenderer<C extends Context> = (
 	(use: UseCarbon<C>) => (TemplateResult | void)
+)
+
+export type QuartzView<P extends any[]> = (
+	(...props: P) => DirectiveResult<any>
+)
+
+export type ObsidianView<P extends any[]> = (
+	(props: P, meta?: ObsidianMeta) => DirectiveResult<any>
 )
 
 export type ShadowAttrs = Partial<{
@@ -40,7 +49,7 @@ export type ObsidianInput<P extends any[]> = {
 
 export type ShadowSettings = {
 	name?: string
-	styles?: CSSResultGroup
+	styles?: CSSResultGroup | CSSResult
 	auto_exportparts?: boolean
 }
 
