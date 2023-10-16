@@ -177,6 +177,15 @@ export default <Suite>{
 	},
 
 	async "nested rendering doesn't cause circular issues"() {
+
+		// // TODO
+		// the problem seems to be that we have views,
+		// and we use the render function as a reaction collector,
+		// and that render function will be calling sub-views,
+		// which in turn also are setting up a manual reaction.
+		// this, the parent's view reaction collector calls another reaction,
+		// and flatstate doesn't like that.
+
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let calls = 0

@@ -8,9 +8,17 @@ export class Recorder {
 
 	record(fun: Fun) {
 		this.#recording = make_map()
+
+		// // TODO
+		// this ends up calling another nested `record` call from sub-views.
 		fun()
+
+		// TODO this ends up being undefined...
 		const recording = this.#recording
+
+		// TODO ...because the nested call hits this line
 		this.#recording = undefined
+
 		return recording
 	}
 
