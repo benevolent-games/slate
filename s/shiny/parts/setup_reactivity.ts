@@ -8,16 +8,16 @@ export function setup_reactivity<P extends any[]>(
 		rerender: () => void,
 	): (...props: P) => (TemplateResult | void) {
 
-	let stop_cues: (() => void) | undefined = undefined
+	let stop_signals: (() => void) | undefined = undefined
 	let stop_flat: (() => void) | undefined = undefined
 
-	function render_and_track_cues(...props: P) {
-		if (stop_cues)
-			stop_cues()
+	function render_and_track_signals(...props: P) {
+		if (stop_signals)
+			stop_signals()
 
 		let result: TemplateResult | void = undefined
 
-		stop_cues = context.tower.track(
+		stop_signals = context.tower.track(
 			() => { result = render(...props) },
 			rerender,
 		)
@@ -34,7 +34,7 @@ export function setup_reactivity<P extends any[]>(
 		stop_flat = context.flat.manual({
 			debounce: true,
 			discover: false,
-			collector: () => { result = render_and_track_cues(...props) },
+			collector: () => { result = render_and_track_signals(...props) },
 			responder: rerender,
 		})
 

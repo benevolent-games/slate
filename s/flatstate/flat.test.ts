@@ -176,6 +176,43 @@ export default <Suite>{
 		}).throws()
 	},
 
+	async "nested rendering doesn't cause circular issues"() {
+		const flat = new Flat()
+		const state = flat.state({outer: 0, inner: 0})
+		let outerCalls = 0
+		let innerCalls = 0
+
+		const miniview = (collector: () => void, responder: () => void) => {
+			flat.manual({
+				debounce: true,
+				discover: false,
+				collector,
+				responder,
+			})
+		}
+
+		miniview(
+			() => {
+				void state.outer
+				miniview(
+					() => void state.inner,
+					() => innerCalls++,
+				)
+			},
+			() => outerCalls++
+		)
+
+		state.outer++
+		await flat.wait
+		expect(outerCalls).equals(1)
+		expect(innerCalls).equals(0)
+
+		state.inner++
+		await flat.wait
+		expect(outerCalls).equals(1)
+		expect(innerCalls).equals(1)
+	},
+
 	async "stop a reaction"() {
 		const flat = new Flat()
 		const state = flat.state({count: 0})

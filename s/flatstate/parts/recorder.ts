@@ -4,25 +4,20 @@ import {make_map, make_set} from "./makers.js"
 import {maptool} from "../../tools/maptool.js"
 
 export class Recorder {
-	#recording?: Recording
+	#recordings: Recording[] = []
 
 	record(fun: Fun) {
-		this.#recording = make_map()
+		const recording: Recording = make_map()
+		this.#recordings.push(recording)
 		fun()
-		const recording = this.#recording
-		this.#recording = undefined
+		this.#recordings.pop()
 		return recording
 	}
 
-	entries() {
-		return this.#recording
-			? [...this.#recording.entries()]
-			: []
-	}
-
 	record_that_key_was_accessed(state: {}, key: string) {
-		if (this.#recording) {
-			const keyset = maptool(this.#recording).grab(state, make_set)
+		const recording = this.#recordings.at(-1)
+		if (recording) {
+			const keyset = maptool(recording).grab(state, make_set)
 			keyset.add(key)
 		}
 	}

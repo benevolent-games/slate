@@ -53,7 +53,7 @@ export class Signal<V> {
 	set value(s: V) {
 		if (this.#lock)
 			throw new SignalCircularError(
-				"you can't set a cue in a cue's subscription listener (infinite loop forbidden)"
+				"you can't set a signal in a signal's subscription listener (infinite loop forbidden)"
 			)
 		this.#value = s
 		this.publish()
