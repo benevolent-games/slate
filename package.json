@@ -31,8 +31,8 @@
 		"http-server": "^14.1.1",
 		"importly": "^0.2.1",
 		"npm-run-all": "^4.1.5",
-		"rollup": "^4.1.1",
-		"terser": "^5.21.0",
+		"rollup": "^4.1.4",
+		"terser": "^5.22.0",
 		"typescript": "^5.2.2"
 	},
 	"keywords": [
