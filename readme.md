@@ -178,94 +178,98 @@ export const MyQuartz = quartz(use => (start: number) => {
 ### universal hooks for all views and components
 
 - **use.state**  
-    works like react useState hook
-    ```ts
-    const [count, setCount] = use.state(0)
-    const increment = () => setCount(count + 1)
-    ```
+  works like react useState hook
+  ```ts
+  const [count, setCount] = use.state(0)
+  const increment = () => setCount(count + 1)
+  ```
 - **use.signal**  
-    create a reactive container for a value *(inspired by [preact signals](https://preactjs.com/blog/introducing-signals/))*
-    ```ts
-    const count = use.signal(0)
-    const increment = () => count.value++
-    ```
-    you can directly inject the whole signal into html
-    ```ts
-    html`<span>${count}</span>`
-    ```
+  create a reactive container for a value *(inspired by [preact signals](https://preactjs.com/blog/introducing-signals/))*
+  ```ts
+  const count = use.signal(0)
+  const increment = () => count.value++
+  ```
+  you can directly inject the whole signal into html
+  ```ts
+  html`<span>${count}</span>`
+  ```
 - **use.computed**
-    create a signal that is derived from other signals
-    ```ts
-    const count = use.signal(2)
-    const tripled = use.computed(() => count.value * 3)
-    console.log(tripled.value) //> 6
-    ```
+  create a signal that is derived from other signals
+  ```ts
+  const count = use.signal(2)
+  const tripled = use.computed(() => count.value * 3)
+  console.log(tripled.value) //> 6
+  ```
 - **use.op**  
-    create an OpSignal in a loading/error/ready state, and it can hold a result value
-    ```ts
-    const count = use.op()
-    count.run(async() => fetchCount("/count"))
-    ```
+  create an OpSignal in a loading/error/ready state, and it can hold a result value
+  ```ts
+  const count = use.op()
+  count.run(async() => fetchCount("/count"))
+  ```
 - **use.flatstate**  
-    create a reactive object *(inspired by [mobx](https://mobx.js.org/) and [snapstate](https://github.com/chase-moskal/snapstate))*
-    ```ts
-    const state = use.flatstate({count: 0})
-    const increment = () => state.count++
-    ```
+  create a reactive object *(inspired by [mobx](https://mobx.js.org/) and [snapstate](https://github.com/chase-moskal/snapstate))*
+  ```ts
+  const state = use.flatstate({count: 0})
+  const increment = () => state.count++
+  ```
 - **use.setup**  
-    perform setup/cleanup on dom connected/disconnected
-    ```ts
-    use.setup(() => {
-      const interval = setInterval(increment, 1000)
-      return () => clearInterval(interval)
-    })
-    ```
+  perform setup/cleanup on dom connected/disconnected
+  ```ts
+  use.setup(() => {
+    const interval = setInterval(increment, 1000)
+    return () => clearInterval(interval)
+  })
+  ```
 - **use.prepare**  
-    initialize a value once
-    ```ts
-    const random_number = use.prepare(() => Math.random())
-    ```
+  initialize a value once
+  ```ts
+  const random_number = use.prepare(() => Math.random())
+  ```
 - **use.context**  
-    access to your app's context, for whatever reason
-    ```ts
-    await use.context.flat.wait
-    ```
-    by default, context has `theme`, `tower`, and `flat`, but you specify your own context in `prepare_frontend`, so you can put any app-level state in there that you might want
+  access to your app's context, for whatever reason
+  ```ts
+  // wait for all flatstate reactions to complete
+  await use.context.flat.wait
+
+  // wait for all signal tower reactons to complete
+  await use.context.tower.wait
+  ```
+  by default, context has `theme`, `tower`, and `flat`, but you specify your own context in `prepare_frontend`, so you can put any app-level state in there that you might want
 
 ### special `use` access
 
 - **use.element** ~ *carbon, oxygen, obsidian*  
-    access the underlying html element
-    ```ts
-    use.element.querySelector("p")
-    ```
+  access the underlying html element
+  ```ts
+  use.element.querySelector("p")
+  ```
 - **use.shadow** ~ *carbon, obsidian*  
-    access to the shadow root
-    ```ts
-    use.shadow.querySelector("slot")
-    ```
+  access to the shadow root
+  ```ts
+  use.shadow.querySelector("slot")
+  ```
 - **use.attrs** ~ *carbon, oxygen*  
-    declare accessors for html attributes
-    ```ts
-    const attrs = use.attrs({
-      start: Number,
-      label: String,
-      ["data-active"]: Boolean,
-    })
-    ```
-    set them like normal js properties
-    ```ts
-    attrs.start = 123
-    attrs.label = "hello"
-    attrs["data-active"] = true
-    ```
-    get them like normal js properties
-    ```ts
-    console.log(attrs.start) // 123
-    console.log(attrs.label) // "hello"
-    console.log(attrs["data-active"]) // true
-    ```
-    components rerender when any attributes change from outside
+  declare accessors for html attributes
+  ```ts
+  const attrs = use.attrs({
+    start: Number,
+    label: String,
+    ["data-active"]: Boolean,
+  })
+  ```
+  set them like normal js properties
+  ```ts
+  attrs.start = 123
+  attrs.label = "hello"
+  attrs["data-active"] = true
+  ```
+  get them like normal js properties
+  ```ts
+  console.log(attrs.start) // 123
+  console.log(attrs.label) // "hello"
+  console.log(attrs["data-active"]) // true
+  ```
+  components rerender when any attributes change from outside
 
 <br/>
 
