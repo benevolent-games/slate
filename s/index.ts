@@ -25,6 +25,7 @@ export * from "./shiny/quartz.js"
 
 export * from "./signals/parts/circular_error.js"
 export * from "./signals/parts/listener.js"
+export * from "./signals/op_signal.js"
 export * from "./signals/signal.js"
 export * from "./signals/tower.js"
 
