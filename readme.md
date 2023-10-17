@@ -78,7 +78,7 @@ export const MyOxygen = oxygen(use => {
 })
 ```
 
-### use your components
+### using your components
 
 - register components to the dom
   ```ts
@@ -123,9 +123,9 @@ export const MyObsidian = obsidian({styles}, use => (start: number) => {
 ```
 
 - **`auto_exportparts` is enabled by default.**
-  - auto exportparts is an obsidian feature that makes it bearable to use the shadow dom extensively.  
-  - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.  
-  - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.  
+  - auto exportparts is an obsidian feature that makes it bearable to use the shadow dom extensively.
+  - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
+  - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
 ### quartz — *light-dom view*
 
