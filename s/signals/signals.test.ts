@@ -85,6 +85,28 @@ export default <Suite>{
 			await tower.wait
 			expect(calls).equals(2)
 		},
+		"computed values are updated": async() => {
+			const tower = new SignalTower()
+			const count = tower.signal(1)
+			const doubled = tower.computed(() => count.value * 2)
+			let count_calls = 0
+			let doubled_calls = 0
+			tower.track(() => {
+				void count.value
+				count_calls++
+			})
+			tower.track(() => {
+				void doubled.value
+				doubled_calls++
+			})
+			expect(count_calls).equals(1)
+			expect(doubled_calls).equals(1)
+			count.value = 5
+			await tower.wait
+			expect(count_calls).equals(2)
+			expect(doubled_calls).equals(2)
+			expect(doubled.value).equals(10)
+		},
 	},
 }
 

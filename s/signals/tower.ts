@@ -20,7 +20,7 @@ export class SignalTower {
 
 	computed<V>(fun: () => V) {
 		const signal = this.signal<V>(fun())
-		this.track(fun, () => signal.value = fun())
+		this.track(() => { signal.value = fun() })
 		return signal
 	}
 
