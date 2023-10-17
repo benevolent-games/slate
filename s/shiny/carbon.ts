@@ -1,5 +1,5 @@
 
-import {CSSResultGroup, css} from "lit"
+import {css} from "lit"
 
 import {Context} from "./context.js"
 import {GoldElement} from "../element/gold.js"
@@ -13,10 +13,12 @@ export const prepare_carbon = (
 
 	class extends GoldElement {
 		static name = settings.name
-		static styles: CSSResultGroup = [
-			context.theme,
-			settings.styles ?? css``,
-		]
+		static get styles() {
+			return [
+				context.theme,
+				settings.styles ?? css``,
+			]
+		}
 
 		#use = new UseCarbon(
 			this as GoldElement,

@@ -8,7 +8,7 @@ import {explode_promise} from "../tools/explode_promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
 
 export class GoldElement extends MetallicElement implements BaseElement {
-	static styles?: CSSResultGroup
+	static get styles(): CSSResultGroup | undefined { return undefined }
 
 	#root: ShadowRoot
 	#init? = explode_promise<void>()

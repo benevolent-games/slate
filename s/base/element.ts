@@ -11,7 +11,7 @@ export type BaseElement = HTMLElement & {
 
 export type BaseElementClass = {
 	new(...args: any[]): BaseElement
-	styles?: CSSResultGroup
+	readonly styles?: CSSResultGroup
 }
 
 export type HTMLElementClasses = {

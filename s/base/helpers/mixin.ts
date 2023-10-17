@@ -10,10 +10,12 @@ export namespace mixin {
 	export function css(...newStyles: (undefined | CSSResultGroup)[]) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
-				static styles = combineStyles(
-					Base.styles,
-					newStyles,
-				)
+				static get styles() {
+					return combineStyles(
+						Base.styles,
+						newStyles,
+					)
+				}
 			}
 		}
 	}
@@ -111,6 +113,6 @@ function combineStyles(
 
 	return styles
 		.flat()
-		.filter(notUndefined)
+		.filter(notUndefined) as CSSResultGroup
 }
 
