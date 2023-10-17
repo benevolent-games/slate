@@ -7,11 +7,13 @@
 
 > 🚧 prerelease wip under constructon subject to change
 
-- frontend ui framework
-- built on [lit](https://lit.dev/)
-- views and web components
-- hooks syntax
-- state management
+- frontend ui framework, built on [lit](https://lit.dev/)
+- wonderful web components
+- versatile views
+- hipster hooks syntax
+- satisfying state management
+- useful utilities
+- top-tier typescript typings
 
 <br/>
 
@@ -337,13 +339,11 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   - signal towers are completely separated from one another
   - you probably only want one in your app, except for special testing situations where isolated signal contexts may be desirable
   - you could export this tower from a module that you import all over your app
-- **signal**
+- **signals** — they hold values
   ```ts
   const count = tower.signal(0)
   const greeting = tower.signal("hello")
-  ```
-- **signal.value**
-  ```ts
+
   count.value++
   greeting.value = "bonjour"
 
@@ -352,9 +352,7 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```
 - **track** — react when signals change
   ```ts
-  tower.track(() => {
-    console.log("doubled", count.value * 2)
-  })
+  tower.track(() => console.log("doubled", count.value * 2))
   //> doubled 2
 
   count.value = 2
