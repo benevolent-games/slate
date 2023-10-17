@@ -101,6 +101,13 @@ export class Use<C extends Context = Context> {
 		)) as Signal<T>
 	}
 
+	computed<T>(update: () => T) {
+		const count = this.#counter.value++
+		return maptool(this.#signals).grab(count, () => (
+			this.#context.tower.computed(update)
+		)) as Signal<T>
+	}
+
 	op<T>() {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(
