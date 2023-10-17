@@ -15,14 +15,32 @@ export class OpSignal<V> extends Signal<Op.For<V>> {
 		)
 	}
 
-	get payload() {
-		return Op.payload(this.value)
+	setLoading() {
+		this.value = Op.loading()
 	}
 
-	is = {
-		loading: () => Op.is.loading(this.value),
-		error: () => Op.is.error(this.value),
-		ready: () => Op.is.ready(this.value),
+	setError(reason: string) {
+		this.value = Op.error(reason)
+	}
+
+	setReady(payload: V) {
+		this.value = Op.ready(payload)
+	}
+
+	get loading() {
+		return Op.is.loading(this.value)
+	}
+
+	get error() {
+		return Op.is.error(this.value)
+	}
+
+	get ready() {
+		return Op.is.ready(this.value)
+	}
+
+	get payload() {
+		return Op.payload(this.value)
 	}
 
 	select<R>(choices: Op.Choices<V, R>) {
