@@ -20,6 +20,19 @@ export namespace mixin {
 		}
 	}
 
+	export function css_deferred(getNewStyles: () => (CSSResultGroup | undefined)[]) {
+		return function<C extends BaseElementClass>(Base: C): C {
+			return class extends Base {
+				static get styles() {
+					return combineStyles(
+						Base.styles,
+						getNewStyles(),
+					)
+				}
+			}
+		}
+	}
+
 	export function signals(group: SignalTower) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {

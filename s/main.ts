@@ -11,6 +11,7 @@ import {register_to_dom} from "./base/helpers/register_to_dom.js"
 
 demoContext.theme = css`
 	button {
+		font-weight: bold;
 		color: red;
 	}
 `

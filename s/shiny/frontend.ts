@@ -16,7 +16,7 @@ export const prepare_frontend = <C extends Context>(context: C) => ({
 	obsidian: prepare_obsidian(context),
 	component: <E extends BaseElementClass>(prep: (context: C) => E) => (
 		Pipe.with(prep(context))
-			.to(mixin.css(context.theme))
+			.to(mixin.css_deferred(() => [context.theme]))
 			.to(mixin.flat(context.flat))
 			.to(mixin.signals(context.tower))
 			.done()
@@ -46,7 +46,7 @@ export const deferred_frontend = <C extends Context>() => ({
 
 	component: <E extends BaseElementClass>(prep: (context: C) => E) => (
 		(context: C) => Pipe.with(prep(context))
-			.to(mixin.css(context.theme))
+			.to(mixin.css_deferred(() => [context.theme]))
 			.to(mixin.flat(context.flat))
 			.to(mixin.signals(context.tower))
 			.done()
