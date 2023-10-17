@@ -46,144 +46,132 @@
 
 ## ⚙️ components
 
-### define your components
+you can create custom html elements that work in plain html or any web framework.
 
-this is how you create web components that are custom html elements.
+### carbon — *shadow-dom component*
 
-they can be used in plain html `<my-oxygen></my-oxygen>`.
+```ts
+const styles = css`span {color: yellow}`
 
-1. **oxygen** — light-dom element
-    ```ts
-    export const MyOxygen = oxygen(use => {
-      const count = use.signal(0)
-      const increment = () => count.value++
+export const MyCarbon = carbon({styles}, use => {
+  const count = use.signal(0)
+  const increment = () => count.value++
 
-      return html`
-        <span>${count}</span>
-        <button @click=${increment}>increment</button>
-      `
-    })
-    ```
-1. **carbon** — shadow-dom element
-    ```ts
-    const styles = css`span {color: yellow}`
+  return html`
+    <span>${count}</span>
+    <button @click=${increment}>increment</button>
+  `
+})
+```
 
-    export const MyCarbon = carbon({styles}, use => {
-      const count = use.signal(0)
-      const increment = () => count.value++
+### oxygen — *light-dom component*
 
-      return html`
-        <span>${count}</span>
-        <button @click=${increment}>increment</button>
-      `
-    })
-    ```
+```ts
+export const MyOxygen = oxygen(use => {
+  const count = use.signal(0)
+  const increment = () => count.value++
 
-### register and use your components
+  return html`
+    <span>${count}</span>
+    <button @click=${increment}>increment</button>
+  `
+})
+```
 
-1. register your components to the dom
-    ```ts
-    import {register_to_dom} from "@benev/slate"
+### use your components
 
-    register_to_dom({
-      MyOxygen,
-      MyCarbon,
-    })
-    ```
-    - the component names are automatically converted from `CamelCase` to `kebab-case`
-1. use your components in any html on the page
-    ```html
-    <section>
-      <my-oxygen></my-oxygen>
-      <my-carbon></my-carbon>
-    </section>
-    ```
+- register components to the dom
+  ```ts
+  import {register_to_dom} from "@benev/slate"
+
+  register_to_dom({
+    MyCarbon,
+    MyOxygen,
+  })
+  ```
+- now use your components via html
+  ```html
+  <section>
+    <my-carbon></my-carbon>
+    <my-oxygen></my-oxygen>
+  </section>
+  ```
 
 <br/>
 
 ## 🖼️ views
 
-### define your views
+views are just like components, but are not registered to the dom as custom html elements.  
+instead, they are used via javascript.  
+you import them, and inject them into your lit-html templates.  
+they accept js parameters called `props`, and are fully typescript-typed.  
 
-views are like components, but they are not custom html elements.
+### obsidian — *shadow-dom view*
 
-what's great about them, is that they are javascript functions which are imported and injected into the html templates for other views or components -- and as javascript functions, your IDE can rename them across the codebase, and find-all-references, and you get full typescript typings for their props (whereas html-based web components do not afford you the same luxuries).
+```ts
+const styles = css`span {color: yellow}`
 
-views accept js parameters called `props`.
+export const MyObsidian = obsidian({styles}, use => (start: number) => {
+  const count = use.signal(start)
+  const increment = () => count.value++
 
-1. **quartz** — light-dom view
-    ```ts
-    export const MyQuartz = quartz(use => (start: number) => {
-      const count = use.signal(start)
-      const increment = () => count.value++
+  return html`
+    <span>${count}</span>
+    <button @click=${increment}>increment</button>
+  `
+})
+```
 
-      return html`
-        <span>${count}</span>
-        <button @click=${increment}>increment</button>
-      `
-    })
-    ```
-1. **obsidian** — shadow-dom view
-    ```ts
-    const styles = css`span {color: yellow}`
+- **`auto_exportparts` is enabled by default.**
+  - auto exportparts is an obsidian feature that makes it bearable to use the shadow dom extensively.  
+  - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.  
+  - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.  
 
-    export const MyObsidian = obsidian({styles}, use => (start: number) => {
-      const count = use.signal(start)
-      const increment = () => count.value++
+### quartz — *light-dom view*
 
-      return html`
-        <span>${count}</span>
-        <button @click=${increment}>increment</button>
-      `
-    })
-    ```
-    - `auto_exportparts` is enabled by default:
-      - auto exportparts is an awesome feature that makes it bearable to use the shadow dom extensively.
-      - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix
-      - thus, parts can bubble up, each shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`
+```ts
+export const MyQuartz = quartz(use => (start: number) => {
+  const count = use.signal(start)
+  const increment = () => count.value++
+
+  return html`
+    <span>${count}</span>
+    <button @click=${increment}>increment</button>
+  `
+})
+```
 
 ### using your views
 
-1. inject your quartz views into any html template like this
+1. **use a quartz view**
     ```ts
-    html`
-      <aside>
-        ${MyQuartz(123)}
-      </aside>
-    `
+    html`<div>${MyQuartz(123)}</div>`
     ```
     - quartz views are beautifully simple
     - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
-1. inject your obsidian views like this
+1. **use an obsidian view**
     ```ts
-    html`
-      <aside>
-        ${MyObsidian([123])}
-      </aside>
-    `
+    html`<div>${MyObsidian([123])}</div>`
     ```
-    - your obsidian views need their props wrapped in an array
-1. obsidian views will accept a settings object
-    ```ts
-    html`
-      <aside>
-        ${MyObsidian([123], {
-          auto_exportparts: true,
-          attrs: {
-            part: "cool",
-            "data-whatever": true,
-          },
-          content: html`
-            <p>slotted content</p>
-          `,
-        })}
-      </aside>
-    `
-    ```
-    - obsidian views are wrapped in a `<obsidian-view>` component
-    - this is where the shadow root is attached
-    - in the settings object, you can pass attributes, slotted content, etc
-    - this is why obsidian views are more complex than their simpler counterparts, quartz views
+    - obsidian views need their props wrapped in an array
+    - obsidian views will accept a settings object
+      ```ts
+      html`
+        <div>
+          ${MyObsidian([123], {
+            content: html`<p>slotted content</p>`,
+            auto_exportparts: true,
+            attrs: {
+              part: "cool",
+              "data-whatever": true,
+            },
+          })}
+        </div>
+      `
+      ```
+      - in the settings object, you can pass attributes, slotted content, etc
+      - when rendered, obsidian views are wrapped in a `<obsidian-view>` component
+      - this is where the shadow root is attached
 
 <br/>
 
@@ -299,12 +287,6 @@ views accept js parameters called `props`.
 <br/>
 
 # 🛠️ standalone utilities
-
-<br/>
-
-## 🛎️ signals
-
-no docs for this yet
 
 <br/>
 
@@ -526,4 +508,10 @@ useful for implementing async operations that involve loading indicators.
       // otherwise, return undefined
   }
   ```
+
+<br/>
+
+## 🛎️ signals
+
+no docs for this yet
 
