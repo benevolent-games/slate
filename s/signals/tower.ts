@@ -10,6 +10,8 @@ export class SignalTower {
 	// TODO wrap all signals in WeakRef, to promote garbage collection?
 	#signals = new Set<Signal<any>>()
 
+	#waiters = new Set<Promise<void>>()
+
 	signal<V>(value: V): Signal<V> {
 		const signal = new Signal(value)
 		this.#signals.add(signal)
@@ -34,7 +36,7 @@ export class SignalTower {
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 
-	track(reader: () => any, actor: () => any) {
+	track(reader: () => any, actor: () => any = reader) {
 		const actuate = debounce(0, actor)
 		const accessed: Signal<any>[] = []
 
@@ -47,11 +49,21 @@ export class SignalTower {
 			if (signal.accessed)
 				accessed.push(signal)
 
-		const unsubscribe_functions = accessed
-			.map(signal => signal.subscribe(() => actuate()))
+		const unsubscribe_functions = accessed.map(signal => {
+			return signal.subscribe(() => {
+				const promise = actuate()
+				this.#waiters.add(promise)
+			})
+		})
 
 		return () => unsubscribe_functions
 			.forEach(unsub => unsub())
+	}
+
+	get wait(): Promise<void> {
+		return Promise.all([...this.#signals].map(s => s.wait))
+			.then(() => Promise.all([...this.#waiters]))
+			.then(() => { this.#waiters.clear() })
 	}
 }
 
