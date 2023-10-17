@@ -322,6 +322,84 @@ however, the following utilities are little libraries in their own right, and ca
 
 <br/>
 
+## 🛎️ signals
+
+signals are a simple form of state management.
+
+this implementation is inspired by [preact signals](https://preactjs.com/blog/introducing-signals/).
+
+- **signal tower**
+  ```ts
+  import {SignalTower} from "@benev/slate"
+
+  const tower = new SignalTower()
+  ```
+  - signal towers are completely separated from one another
+  - you probably only want one in your app, except for special testing situations where isolated signal contexts may be desirable
+  - you could export this tower from a module that you import all over your app
+- **signal**
+  ```ts
+  const count = tower.signal(0)
+  const greeting = tower.signal("hello")
+  ```
+- **signal.value**
+  ```ts
+  count.value++
+  greeting.value = "bonjour"
+
+  console.log(count.value) //> 1
+  console.log(greeting.value) //> "bonjour"
+  ```
+- **track** — react when signals change
+  ```ts
+  tower.track(() => {
+    console.log("doubled", count.value * 2)
+  })
+  //> doubled 2
+
+  count.value = 2
+  //> doubled 4
+  ```
+- **html templating** — you can omit .value
+  ```ts
+  html`<p>count is ${count}</p>`
+  ```
+- **op signal** — to represent async operations
+  ```ts
+  const json = tower.op<MyJson>()
+
+  console.log(json.loading) //> true
+
+  await json.run(async() => {
+    const data = await fetch_remote_data()
+    return JSON.parse(data)
+  })
+
+  console.log(json.ready) //> true
+  console.log(json.payload) //> {"your": "json data"}
+  ```
+- **computed** — signal derived from other signals
+  ```ts
+  count.value = 1
+
+  const tripled = tower.computed(() => count.value * 3)
+
+  console.log(tripled.value) //> 3
+  ```
+- **wait** — for debounced tracking
+  ```ts
+  const tripled = tower.computed(() => count.value * 3)
+  console.log(tripled.value) //> 3
+
+  count.value = 10
+  console.log(tripled.value) //> 3 (too soon!)
+
+  await tower.wait
+  console.log(tripled.value) //> 30 (there we go)
+  ```
+
+<br/>
+
 ## 🥞 flatstate
 
 flatstate help you create state objects and react when properties change.
@@ -442,39 +520,6 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, carbon, and oxygen
 
 <br/>
-<br/>
-
-## 🪈 pipe
-
-- pipe data through a series of functions
-- maybe you've done silly nesting like this:
-  ```ts
-  // bad
-  register_to_dom(
-    apply.signals(signals)(
-      apply.flat(flat)(
-        apply.css(theme)(
-          requirement.provide(context)(elements)
-        )
-      )
-    )
-  )
-  ```
-- now you can do this instead:
-  ```ts
-  import {Pipe} from "@benev/slate"
-
-  // good
-  Pipe.with(elements)
-    .to(requirement.provide(context))
-    .to(apply.css(theme))
-    .to(apply.flat(flat))
-    .to(apply.signals(signals))
-    .to(register_to_dom)
-  ```
-
-<br/>
-<br/>
 
 ## 💫 op
 
@@ -536,78 +581,32 @@ you get a better dev-experience if you use ops via signals, but here is the docu
 
 <br/>
 
-## 🛎️ signals
+## 🪈 pipe
 
-signals are a simple form of state management.
-
-this implementation is inspired by [preact signals](https://preactjs.com/blog/introducing-signals/).
-
-- **signal tower**
+- pipe data through a series of functions
+- maybe you've done silly nesting like this:
   ```ts
-  import {SignalTower} from "@benev/slate"
-
-  const tower = new SignalTower()
+  // bad
+  register_to_dom(
+    apply.signals(signals)(
+      apply.flat(flat)(
+        apply.css(theme)(
+          requirement.provide(context)(elements)
+        )
+      )
+    )
+  )
   ```
-  - signal towers are completely separated from one another
-  - you probably only want one in your app, except for special testing situations where isolated signal contexts may be desirable
-  - you could export this tower from a module that you import all over your app
-- **signal**
+- now you can do this instead:
   ```ts
-  const count = tower.signal(0)
-  const greeting = tower.signal("hello")
+  import {Pipe} from "@benev/slate"
+
+  // good
+  Pipe.with(elements)
+    .to(requirement.provide(context))
+    .to(apply.css(theme))
+    .to(apply.flat(flat))
+    .to(apply.signals(signals))
+    .to(register_to_dom)
   ```
-- **signal.value**
-  ```ts
-  count.value++
-  greeting.value = "bonjour"
 
-  console.log(count.value) //> 1
-  console.log(greeting.value) //> "bonjour"
-  ```
-- **track** — react when signals change
-  ```ts
-  tower.track(() => {
-    console.log("doubled", count.value * 2)
-  })
-  //> doubled 2
-
-  count.value = 2
-  //> doubled 4
-  ```
-- **html templating** — you can omit .value
-  ```ts
-  html`<p>count is ${count}</p>`
-  ```
-- **op signal** — to represent async operations
-  ```ts
-  const json = tower.op<MyJson>()
-
-  console.log(json.loading) //> true
-
-  await json.run(async() => {
-    const data = await fetch_remote_data()
-    return JSON.parse(data)
-  })
-
-  console.log(json.ready) //> true
-  console.log(json.payload) //> {"your": "json data"}
-  ```
-- **computed** — signal derived from other signals
-  ```ts
-  count.value = 1
-
-  const tripled = tower.computed(() => count.value * 3)
-
-  console.log(tripled.value) //> 3
-  ```
-- **wait** — for debounced tracking
-  ```ts
-  const tripled = tower.computed(() => count.value * 3)
-  console.log(tripled.value) //> 3
-
-  count.value = 10
-  console.log(tripled.value) //> 3 (too soon!)
-
-  await tower.wait
-  console.log(tripled.value) //> 30 (there we go)
-  ```
