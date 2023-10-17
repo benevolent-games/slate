@@ -59,14 +59,14 @@ export class Use<C extends Context = Context> {
 		}
 	}
 
-	prepare<T>(prep: () => T) {
+	prepare<T>(prep: () => T): T {
 		const count = this.#counter.value++
 		return maptool(this.#preparations).grab(count, prep)
 	}
 
 	state<T>(init: T | (() => T)) {
 		const count = this.#counter.value++
-		const value = maptool(this.#states).grab(count, () => (
+		const value: T = maptool(this.#states).grab(count, () => (
 			(typeof init === "function")
 				? (init as () => T)()
 				: init
@@ -75,7 +75,7 @@ export class Use<C extends Context = Context> {
 			this.#states.set(count, v)
 			this.#rerender()
 		}
-		const getter = () => this.#states.get(count)
+		const getter = () => this.#states.get(count) as T
 		return [value, setter, getter] as const
 	}
 
