@@ -227,6 +227,20 @@ export const MyQuartz = quartz(use => (start: number) => {
   ```ts
   const random_number = use.prepare(() => Math.random())
   ```
+- **use.init**  
+  perform a setup/cleanup, but also return a value
+  ```ts
+  const scene = use.init(() => {
+
+    // called whenever dom is connected
+    const scene = setup_3d_scene_for_example()
+
+    return [
+      canvas, // value returned
+      () => scene.cleanup(), // cleanup called on dom disconnect
+    ]
+  })
+  ```
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
