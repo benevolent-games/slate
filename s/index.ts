@@ -41,6 +41,8 @@ export * from "./tools/pipe.js"
 export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
 
+export * from "./watch/watch_tower.js"
+
 export {
 	CSSResultGroup,
 	CSSResult,
