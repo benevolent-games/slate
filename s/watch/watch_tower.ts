@@ -40,7 +40,7 @@ export class WatchTower {
 		return collector()
 	}
 
-	tree<S>(state: S) {
+	stateTree<S>(state: S) {
 		return new StateTree(state, () => this.dispatch())
 	}
 }

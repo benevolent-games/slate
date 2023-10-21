@@ -4,7 +4,7 @@ import {WatchTower} from "./watch_tower.js"
 
 function setup() {
 	const watch = new WatchTower()
-	const tree = watch.tree({
+	const tree = watch.stateTree({
 		count: 0,
 		group: {
 			greeting: "hello",
@@ -119,6 +119,40 @@ export default <Suite>{
 		expect(updates_for_greeting).equals(0)
 		expect(updates_for_active).equals(1)
 		expect(updates_for_group).equals(1)
+	},
+	"we can make slices of the state": async() => {
+		const {tree, watch} = setup()
+		let calls_alpha = 0
+		watch.track(
+			() => tree.state.group.greeting,
+			() => { calls_alpha++ },
+		)
+		expect(calls_alpha).equals(1)
+		const slice = tree.slice({
+			getter: (state) => state.group,
+			setter: (state, group) => {
+				state.group = group
+				return state
+			},
+		})
+		let calls_bravo = 0
+		watch.track(
+			() => slice.state.greeting,
+			() => { calls_bravo++ },
+		)
+		expect(calls_bravo).equals(1)
+		slice.transmute(state => {
+			state.greeting = "bonjour"
+			return state
+		})
+		expect(calls_alpha).equals(2)
+		expect(calls_bravo).equals(2)
+		tree.transmute(state => {
+			state.group.greeting = "hola"
+			return state
+		})
+		expect(calls_alpha).equals(3)
+		expect(calls_bravo).equals(3)
 	},
 }
 

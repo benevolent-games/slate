@@ -151,5 +151,18 @@ export class Use<C extends Context = Context> {
 			() => this.#context.tower.op(),
 		) as OpSignal<T>
 	}
+
+	#watches = new Map<number, any>()
+
+	watch<T>(collector: () => T) {
+		const count = this.#counter.value++
+		return maptool(this.#watches).grab(
+			count,
+			() => this.#context.watch.track(collector, data => {
+				this.#watches.set(count, data)
+				this.#rerender()
+			}),
+		)
+	}
 }
 

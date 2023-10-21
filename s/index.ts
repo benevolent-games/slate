@@ -42,6 +42,7 @@ export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
 
 export * from "./watch/watch_tower.js"
+export * from "./watch/state_tree.js"
 
 export {
 	CSSResultGroup,
