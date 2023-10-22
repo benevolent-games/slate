@@ -154,7 +154,7 @@ export class Use<C extends Context = Context> {
 
 	#watches = new Map<number, any>()
 
-	watch<T>(collector: () => T) {
+	watch<T>(collector: () => T): T {
 		const count = this.#counter.value++
 		return maptool(this.#watches).grab(
 			count,
