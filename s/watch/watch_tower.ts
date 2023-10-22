@@ -1,5 +1,6 @@
 
 import {StateTree} from "./state_tree.js"
+import {WatchBox} from "./parts/types.js"
 import {deepEqual} from "../tools/deep_equal/deep_equal.js"
 
 export class WatchTower {
@@ -14,7 +15,7 @@ export class WatchTower {
 			listener()
 	}
 
-	computed<T>(fun: () => T) {
+	computed<V>(fun: () => V): WatchBox<V> {
 		let data = fun()
 		this.#computeds.add(() => { data = fun() })
 		return {
