@@ -5,13 +5,18 @@ import {ObsidianView} from "./obsidian-view.element.js"
 import {auto_exportparts} from "./auto_exportparts/auto.js"
 import {apply_styles_to_shadow} from "../../base/utils/apply_styles_to_shadow.js"
 
-export function make_view_root(
+export function make_view_root({name, css, onConnected, onDisconnected}: {
 		name: string,
 		css: CSSResultGroup | undefined,
-	) {
+		onConnected: () => void
+		onDisconnected: () => void
+	}) {
 
-	const container = document.createElement(ObsidianView.tag)
+	const container = document.createElement(ObsidianView.tag) as ObsidianView
 	container.setAttribute("view", name)
+
+	container.onConnected(onConnected)
+	container.onDisconnected(onDisconnected)
 
 	const shadow = container.attachShadow({mode: "open"})
 	apply_styles_to_shadow(shadow, css)

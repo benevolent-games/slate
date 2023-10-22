@@ -20,10 +20,17 @@ export const prepare_obsidian = (
 
 	obsidian_custom_lit_directive<P>(class extends AsyncDirective {
 		#input?: ObsidianInput<P>
-		#root = make_view_root(
-			settings.name ?? "",
-			[context.theme, settings.styles ?? css``],
-		)
+		#first_connection = true
+		#root = make_view_root({
+			name: settings.name ?? "",
+			css: [context.theme, settings.styles ?? css``],
+			onDisconnected: () => this.disconnected(),
+			onConnected: () => {
+				if (!this.#first_connection)
+					this.reconnected()
+				this.#first_connection = false
+			},
+		})
 		#rerender = debounce(0, () => {
 			if (this.#input)
 				this.setValue(
