@@ -1,5 +1,4 @@
 
-import {pub} from "../tools/pub.js"
 import {Slice} from "./parts/slice.js"
 import {deepFreeze} from "../tools/deep_freeze.js"
 import {SliceAccessors, Sliceable} from "./parts/types.js"
@@ -7,19 +6,18 @@ import {SliceAccessors, Sliceable} from "./parts/types.js"
 export class StateTree<S> implements Sliceable<S> {
 	#state: S
 	#readable: S
+	#onChange: () => void
 	#circularity_lock = false
 
 	#make_frozen_clone() {
 		return deepFreeze(structuredClone(this.#state))
 	}
 
-	constructor(state: S, handleChange = () => {}) {
+	constructor(state: S, onChange = () => {}) {
 		this.#state = structuredClone(state)
 		this.#readable = this.#make_frozen_clone()
-		this.#onChange(handleChange)
+		this.#onChange = onChange
 	}
-
-	#onChange = pub<void>()
 
 	get state() {
 		return this.#readable
@@ -32,7 +30,7 @@ export class StateTree<S> implements Sliceable<S> {
 
 		this.#state = fun(structuredClone(this.#state))
 		this.#readable = this.#make_frozen_clone()
-		this.#onChange.publish()
+		this.#onChange()
 
 		this.#circularity_lock = false
 	}
