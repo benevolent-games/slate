@@ -3,10 +3,10 @@ import {html, css} from "lit"
 import {component} from "../frontend.js"
 import {GoldElement} from "../../element/gold.js"
 
-export const SlateGold = component(context => class extends GoldElement {
+export const SlateGold = component(shell => class extends GoldElement {
 	static styles = css`span {color: orange}`
 
-	#state = context.flat.state({
+	#state = shell.context.flat.state({
 		count: 0,
 	})
 
