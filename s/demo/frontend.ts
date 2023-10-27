@@ -10,11 +10,11 @@ export class DemoContext extends Context {
 }
 
 export const {
-	setContext,
+	shell,
+	set_context,
 	oxygen,
 	carbon,
 	quartz,
 	obsidian,
-	component,
 } = prepare_frontend<DemoContext>()
 

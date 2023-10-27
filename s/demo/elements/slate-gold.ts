@@ -1,9 +1,9 @@
 
 import {html, css} from "lit"
-import {component} from "../frontend.js"
+import {shell} from "../frontend.js"
 import {GoldElement} from "../../element/gold.js"
 
-export const SlateGold = component(shell => class extends GoldElement {
+export const SlateGold = class extends GoldElement {
 	static styles = css`span {color: orange}`
 
 	#state = shell.context.flat.state({
@@ -16,5 +16,5 @@ export const SlateGold = component(shell => class extends GoldElement {
 			<button @click=${() => this.#state.count++}>gold</button>
 		`
 	}
-})
+}
 

@@ -33,7 +33,7 @@ export namespace mixin {
 		}
 	}
 
-	export function signals(group: SignalTower) {
+	export function signals(tower: SignalTower) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
 				#untracks: (() => void)[] = []
@@ -41,7 +41,7 @@ export namespace mixin {
 				connectedCallback() {
 					super.connectedCallback()
 
-					this.#untracks.push(group.track(
+					this.#untracks.push(tower.track(
 						() => this.render(),
 						() => this.requestUpdate(),
 					))
