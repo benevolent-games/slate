@@ -129,7 +129,7 @@ export class Use<C extends Context = Context> {
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.tower.signal(
+			this.#context.signals.signal(
 				(typeof init === "function")
 					? (init as () => T)()
 					: init
@@ -140,7 +140,7 @@ export class Use<C extends Context = Context> {
 	computed<T>(update: () => T) {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.tower.computed(update)
+			this.#context.signals.computed(update)
 		)) as Signal<T>
 	}
 
@@ -148,7 +148,7 @@ export class Use<C extends Context = Context> {
 		const count = this.#counter.value++
 		return maptool(this.#signals).grab(
 			count,
-			() => this.#context.tower.op(),
+			() => this.#context.signals.op(),
 		) as OpSignal<T>
 	}
 

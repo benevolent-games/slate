@@ -25,7 +25,7 @@ export function prepare_frontend<C extends Context>(context?: C | undefined) {
 			Pipe.with(prep(shell))
 				.to(mixin.css_deferred(() => [shell.context.theme]))
 				.to(mixin.flat(shell.context.flat))
-				.to(mixin.signals(shell.context.tower))
+				.to(mixin.signals(shell.context.signals))
 				.done()
 		),
 	}

@@ -7,7 +7,7 @@ import {WatchTower} from "../watch/watch_tower.js"
 export class Context {
 	theme: CSSResultGroup = css``
 	flat = new Flat()
-	tower = new SignalTower()
+	signals = new SignalTower()
 	watch = new WatchTower()
 }
 
