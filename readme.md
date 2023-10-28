@@ -430,15 +430,15 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```ts
   import {SignalTower} from "@benev/slate"
 
-  const tower = new SignalTower()
+  const signals = new SignalTower()
   ```
   - signal towers are completely separated from one another
-  - you probably only want one in your app, except for special testing situations where isolated signal contexts may be desirable
-  - you could export this tower from a module that you import all over your app
+  - you probably only want one in your app (unless you're running isolated tests)
+  - you could export your single signal tower from a module, and then import it all over your app
 - **signals** — they hold values
   ```ts
-  const count = tower.signal(0)
-  const greeting = tower.signal("hello")
+  const count = signals.signal(0)
+  const greeting = signals.signal("hello")
 
   count.value++
   greeting.value = "bonjour"
@@ -448,7 +448,7 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```
 - **track** — react when signals change
   ```ts
-  tower.track(() => console.log("doubled", count.value * 2))
+  signals.track(() => console.log("doubled", count.value * 2))
   //> doubled 2
 
   count.value = 2
@@ -460,7 +460,7 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```
 - **op signal** — to represent async operations
   ```ts
-  const json = tower.op<MyJson>()
+  const json = signals.op<MyJson>()
 
   console.log(json.loading) //> true
 
@@ -476,19 +476,19 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```ts
   count.value = 1
 
-  const tripled = tower.computed(() => count.value * 3)
+  const tripled = signals.computed(() => count.value * 3)
 
   console.log(tripled.value) //> 3
   ```
 - **wait** — for debounced tracking
   ```ts
-  const tripled = tower.computed(() => count.value * 3)
+  const tripled = signals.computed(() => count.value * 3)
   console.log(tripled.value) //> 3
 
   count.value = 10
   console.log(tripled.value) //> 3 (too soon!)
 
-  await tower.wait
+  await signals.wait
   console.log(tripled.value) //> 30 (there we go)
   ```
 
