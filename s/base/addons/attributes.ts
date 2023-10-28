@@ -1,6 +1,14 @@
 
 import {BaseElement} from "../element.js"
 
+export function attributes<A extends Attributes.Spec>(
+		element: BaseElement,
+		spec: A,
+	) {
+	Attributes.on_change(element, () => element.requestUpdate())
+	return Attributes.proxy(element, spec)
+}
+
 export namespace Attributes {
 	type HardValue = (
 		| typeof String
@@ -88,11 +96,6 @@ export namespace Attributes {
 		const observer = new MutationObserver(handle_change)
 		observer.observe(element, {attributes: true})
 		return () => observer.disconnect()
-	}
-
-	export function base<A extends Spec>(element: BaseElement, spec: A) {
-		on_change(element, () => element.requestUpdate())
-		return proxy(element, spec)
 	}
 }
 

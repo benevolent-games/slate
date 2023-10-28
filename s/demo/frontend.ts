@@ -1,15 +1,13 @@
 
+import {CSSResultGroup} from "lit"
 import {Context} from "../shiny/context.js"
 import {prepare_frontend} from "../shiny/frontend.js"
 
-export class DemoContext extends Context {}
-export const demoContext = new DemoContext()
+export class DemoContext extends Context {
+	constructor(public theme: CSSResultGroup) {
+		super()
+	}
+}
 
-export const {
-	oxygen,
-	carbon,
-	quartz,
-	obsidian,
-	component,
-} = prepare_frontend(demoContext)
+export const slate = prepare_frontend<DemoContext>()
 

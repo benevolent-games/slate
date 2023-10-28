@@ -3,7 +3,9 @@ import {CSSResultGroup} from "lit"
 
 import {mixin} from "./mixin.js"
 import {ob} from "../../tools/ob.js"
+import {Pipe} from "../../tools/pipe.js"
 import {Flat} from "../../flatstate/flat.js"
+import {Context} from "../../shiny/context.js"
 import {BaseElementClasses} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
 
@@ -26,9 +28,21 @@ export namespace apply {
 	)
 
 	export const signals = (
-		(tower: SignalTower) => (
+		(signals: SignalTower) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob.map(elements, (Element: any) => mixin.signals(tower)(Element))
+				ob.map(elements, (Element: any) => mixin.signals(signals)(Element))
+			)
+		)
+	)
+
+	export const context = (
+		(context: Context) => (
+			<E extends BaseElementClasses>(elements: E) => (
+				Pipe.with(elements)
+					.to(css(context.theme))
+					.to(flat(context.flat))
+					.to(signals(context.signals))
+					.done() as E
 			)
 		)
 	)

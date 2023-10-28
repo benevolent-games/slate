@@ -1,14 +1,15 @@
 
 import {AsyncDirective, DirectiveResult, directive} from "lit/async-directive.js"
 
-import {Context} from "./context.js"
-import {QuartzRenderer} from "./parts/types.js"
-import {UseQuartz} from "./parts/use/tailored.js"
-import {debounce} from "../tools/debounce/debounce.js"
-import {setup_reactivity} from "./parts/setup_reactivity.js"
+import {Shell} from "../shell.js"
+import {Context} from "../context.js"
+import {QuartzRenderer} from "../parts/types.js"
+import {UseQuartz} from "../parts/use/tailored.js"
+import {debounce} from "../../tools/debounce/debounce.js"
+import {setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_quartz = (
-	<C extends Context>(context: C) =>
+	<C extends Context>(shell: Shell<C>) =>
 	<P extends any[]>(renderer: QuartzRenderer<C, P>) =>
 
 	directive(class extends AsyncDirective {
@@ -17,11 +18,11 @@ export const prepare_quartz = (
 			if (this.#props)
 				this.setValue(this.render(...this.#props!))
 		})
-		#use = new UseQuartz(this.#rerender, context)
+		#use = new UseQuartz(this.#rerender, shell.context)
 		#rend = UseQuartz.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(
-			context,
+			shell.context,
 			this.#rend,
 			this.#rerender,
 		)
