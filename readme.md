@@ -17,6 +17,17 @@
 
 <br/>
 
+### most devs misunderstand how to leverage web components.
+
+you're not supposed to make your whole app out of web components.  
+they're too cumbersome. they're html-native, not typescript-native, so they don't take typesafe props, juggling their registration is a pain..
+
+this is why **views** are important, and are a central feature of *slate* — views are almost the same as components (they can use shadow-dom), except that views are ergonomically handled via javascript, views accept props, views do not need to be registered to the dom, and views enjoy full typescript typings.
+
+you want to think of web components as the universal control surface that helps html authors interact with your components — let the web components be the tip of your iceberg, but below the surface, most of your internals can be made of easily-composable views.
+
+<br/>
+
 ## 👷 quick start
 
 1. install slate
@@ -80,11 +91,13 @@ export const MyOxygen = slate.oxygen(use => {
 })
 ```
 
-### using your components
+### deploying your components
 
 - register components to the dom
   ```ts
-  slate.register_to_dom({
+  import {register_to_dom} from "@benev/slate"
+
+  register_to_dom({
     MyCarbon,
     MyOxygen,
   })
@@ -123,7 +136,7 @@ export const MyObsidian = slate.obsidian({styles}, use => (start: number) => {
 ```
 
 - **`auto_exportparts` is enabled by default.**
-  - auto exportparts is an obsidian feature that makes it bearable to use the shadow dom extensively.
+  - auto exportparts is an experimental obsidian feature that makes it bearable to use the shadow dom extensively.
   - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
   - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
@@ -141,13 +154,14 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
 })
 ```
 
-### using your views
+### deploying your views
 
 - **use a quartz view**
   ```ts
   html`<div>${MyQuartz(123)}</div>`
   ```
   - quartz views are beautifully simple
+  - they just take props as arguments
   - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
 - **use an obsidian view**
   ```ts
@@ -173,44 +187,14 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
 
 <br/>
 
-## 🪝 `use` hooks
+## 🪝 `use` hooks — for views and cmponents
 
-### universal hooks for all views and components
-
+### core hooks
 - **use.state**  
   works like react useState hook
   ```ts
   const [count, setCount] = use.state(0)
   const increment = () => setCount(count + 1)
-  ```
-- **use.signal**  
-  create a reactive container for a value *(inspired by [preact signals](https://preactjs.com/blog/introducing-signals/))*
-  ```ts
-  const count = use.signal(0)
-  const increment = () => count.value++
-  ```
-  you can directly inject the whole signal into html
-  ```ts
-  html`<span>${count}</span>`
-  ```
-- **use.computed**
-  create a signal that is derived from other signals
-  ```ts
-  const count = use.signal(2)
-  const tripled = use.computed(() => count.value * 3)
-  console.log(tripled.value) //> 6
-  ```
-- **use.op**  
-  create an OpSignal in a loading/error/ready state, and it can hold a result value
-  ```ts
-  const count = use.op()
-  count.run(async() => fetchCount("/count"))
-  ```
-- **use.flatstate**  
-  create a reactive object *(inspired by [mobx](https://mobx.js.org/) and [snapstate](https://github.com/chase-moskal/snapstate))*
-  ```ts
-  const state = use.flatstate({count: 0})
-  const increment = () => state.count++
   ```
 - **use.setup**  
   perform setup/cleanup on dom connected/disconnected
@@ -239,19 +223,54 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
     ]
   })
   ```
+
+### signal hooks
+- **use.signal**  
+  create a reactive container for a value *(inspired by [preact signals](https://preactjs.com/blog/introducing-signals/))*
+  ```ts
+  const count = use.signal(0)
+  const increment = () => count.value++
+  ```
+  you can directly inject the whole signal into html
+  ```ts
+  html`<span>${count}</span>`
+  ```
+- **use.computed**
+  create a signal that is derived from other signals
+  ```ts
+  const count = use.signal(2)
+  const tripled = use.computed(() => count.value * 3)
+  console.log(tripled.value) //> 6
+  ```
+- **use.op**  
+  create an OpSignal in a loading/error/ready state, and it can hold a result value
+  ```ts
+  const count = use.op()
+  count.run(async() => fetchCount("/count"))
+  ```
+
+### flatstate hooks
+- **use.flatstate**  
+  create a reactive object *(inspired by [mobx](https://mobx.js.org/) and [snapstate](https://github.com/chase-moskal/snapstate))*
+  ```ts
+  const state = use.flatstate({count: 0})
+  const increment = () => state.count++
+  ```
+
+### useful accessors
+
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
   // wait for all flatstate reactions to complete
   await use.context.flat.wait
 
-  // wait for all signal tower reactons to complete
-  await use.context.tower.wait
+  // wait for all signal reactons to complete
+  await use.context.signals.wait
+
+  // access your own custom data you put on the context
+  use.context.my_own_custom_data
   ```
-  by default, context has `theme`, `tower`, and `flat`, but you specify your own context in `prepare_frontend`, so you can put any app-level state in there that you might want
-
-### special `use` access
-
 - **use.element** ~ *carbon, oxygen, obsidian*  
   access the underlying html element
   ```ts
@@ -289,41 +308,109 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
 
 ## 🔮 advanced stuff
 
-### gold and silver elements
+### plain elements: gold and silver
+
+gold and silver are "plain" elements, which are alternatives to LitElement.
+
+they're used as primitives underlying our carbon and oxygen components.
+
+consider these imports for the following examples:
 
 ```ts
-export const MyGold = class extends GoldElement {
+import {GoldElement, SilverElement, attributes} from "@benev/slate"
+```
+
+### gold element — *shadow-dom element*
+
+```ts
+export class MyGold extends GoldElement {
   static styles = css`span {color: blue}`
 
-  #state = slate.shell.context.flat.state({
+  #attrs = attributes(this as GoldElement, {
+    label: String
+  })
+
+  #state = slate.context.flat.state({
     count: 0,
   })
 
   render() {
     return html`
       <span>${this.#state.count}</span>
-      <button @click=${() => this.#state.count++}>gold</button>
+      <button @click=${() => this.#state.count++}>
+        ${this.#attrs.label}
+      </button>
     `
   }
 }
 ```
-- non-hooks class-based LitElement-alternative components
-- `GoldElement` is a shadow-dom component base class
-- `SilverElement` is a light-dom component base class
-- these are used as primitives underlying carbon/oxygen components
-- they do not have context, theme, or any state management reactivity applied
-  - you can apply those with the mixins found by importing `mixins`
-  - you can use `Attributes.base(this as BaseElement, {label: String})` to create attribute accessors
-  - you can wrap your GoldElement/SilverElement in `component` from `prepare_frontend` to mixin the theme and state management reactivity
 
-### `prepare_frontend` vs `deferred_frontend`
+### silver element — *light-dom element*
 
-- `prepare_frontend` "bakes" your app context into the component and view functions at import-time, "before" your components and views are defined. this makes your developer experience simple and pleasant for most cases.
-- however, if you want to accept the context object *later* for some reason, this can create a bit of an awkward chicken-vs-egg timing situation.
-- `deferred_frontend` is an alternative designed to solve this problem by deferring the passing of context to each individual component and view.
-- deferred makes your experience more cumbersome, because you have to pass the context into every view before you can use them. deferred_frontend gives you a `provide` function which makes it easy to pass context to a group of views for that purpose.
-- you might be better of using `prepare_frontend` and modifying your `context` at runtime, but before you register_to_dom your components
-  - eg, you can set `context.theme` at runtime before register_to_dom
+```ts
+export class MySilver extends SilverElement {
+
+  #attrs = attributes(this as SilverElement, {
+    label: String
+  })
+
+  #state = slate.context.flat.state({
+    count: 0,
+  })
+
+  render() {
+    return html`
+      <span>${this.#state.count}</span>
+      <button @click=${() => this.#state.count++}>
+        ${this.#attrs.label}
+      </button>
+    `
+  }
+}
+```
+
+### deploying plain elements
+
+if you want plain elements to have reactivity or have the context's css theme applied, you'll want to run them through `slate.components` before you register them:
+
+```ts
+register_to_dom({
+  ...slate.components({
+    MyGold,
+    MySilver,
+  }),
+})
+```
+
+## 🔮 deferred context
+
+you can extend the context with anything you'd like to make easily available:
+
+```ts
+export const slate = prepare_frontend(new class extends Context {
+  my_cool_thing = {my_awesome_data: 123}
+})
+```
+
+but since your component modules have to import `slate`, you might not want to be instancing your context at runtime — so you can defer the creation of your context until later:
+
+```ts
+export class MyContext extends Context {
+  my_cool_thing = {my_awesome_data: 123}
+}
+
+export slate = prepare_frontend<MyContext>()
+
+//
+// ... later, in a different module ...
+//
+
+// assign your deferred context at runtime
+slate.context = new MyContext()
+
+// just be sure it's before you register your components
+register_to_dom(myComponents)
+```
 
 <br/>
 <br/>
