@@ -19,7 +19,7 @@
 		"test": "cynic node x/tests.test.js"
 	},
 	"dependencies": {
-		"lit": "^3.0.0"
+		"lit": "^3.0.1"
 	},
 	"devDependencies": {
 		"@benev/turtle": "^0.5.1",
@@ -31,7 +31,7 @@
 		"http-server": "^14.1.1",
 		"importly": "^0.2.1",
 		"npm-run-all": "^4.1.5",
-		"rollup": "^4.1.4",
+		"rollup": "^4.1.5",
 		"terser": "^5.22.0",
 		"typescript": "^5.2.2"
 	},
