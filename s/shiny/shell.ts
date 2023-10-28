@@ -12,7 +12,7 @@ export class Shell<C extends Context> {
 		if (this.#context)
 			return this.#context
 		else
-			throw new Error("context was not set. please use setContext(context).")
+			throw new Error("slate.context was not set, but it's necessary")
 	}
 
 	set context(context: C) {
