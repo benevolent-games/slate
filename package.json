@@ -22,7 +22,7 @@
 		"lit": "^3.0.0"
 	},
 	"devDependencies": {
-		"@benev/turtle": "^0.5.0",
+		"@benev/turtle": "^0.5.1",
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"chokidar": "^3.5.3",
 		"chokidar-cli": "^3.0.0",
