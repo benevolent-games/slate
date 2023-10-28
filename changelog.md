@@ -11,9 +11,8 @@
     - `slate.context = new Context()`
     - this made `deferred_frontend` obsolete, so we deleted it
   - prepare_frontend's component helper has changed
-    - now accessed via `slate.component`
-    - usage is the same, but context is deferred to before registration and must be done manually
-    - you must use the new `slate.components` helper to apply the current context to a group of plain components, at runtime, prior to registration
+    - plain components, like gold and silver, no longer need any helper
+    - now you must use the new `slate.components` helper to apply the current context to a group of plain components, at runtime, prior to registration (if you want the components to be reactive and use the css theme)
 
 ### v0.0.0-dev.6
 
