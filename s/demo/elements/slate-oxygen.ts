@@ -1,8 +1,8 @@
 
-import {oxygen} from "../frontend.js"
+import {slate} from "../frontend.js"
 import {html} from "../../shiny/html.js"
 
-export const SlateOxygen = oxygen(use => {
+export const SlateOxygen = slate.oxygen(use => {
 	const count = use.signal(256)
 	const decrease = () => count.value -= 8
 

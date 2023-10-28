@@ -9,12 +9,5 @@ export class DemoContext extends Context {
 	}
 }
 
-export const {
-	shell,
-	set_context,
-	oxygen,
-	carbon,
-	quartz,
-	obsidian,
-} = prepare_frontend<DemoContext>()
+export const slate = prepare_frontend<DemoContext>()
 

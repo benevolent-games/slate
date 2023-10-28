@@ -1,8 +1,8 @@
 
-import {quartz} from "../frontend.js"
+import {slate} from "../frontend.js"
 import {html} from "../../shiny/html.js"
 
-export const QuartzTripler = quartz(use => (start: number) => {
+export const QuartzTripler = slate.quartz(use => (start: number) => {
 
 	// react hooks state
 	const [alpha, setAlpha] = use.state(start)
