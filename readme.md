@@ -176,10 +176,7 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
         ${MyObsidian([123], {
           content: html`<p>slotted content</p>`,
           auto_exportparts: true,
-          attrs: {
-            part: "cool",
-            "data-whatever": true,
-          },
+          attrs: {part: "cool", "data-whatever": true},
         })}
       </div>
     `
@@ -187,7 +184,7 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
 
 <br/>
 
-## 🪝 `use` hooks — for views and cmponents
+## 🪝 `use` hooks — for views and components
 
 ### core hooks
 - **use.state**  
@@ -306,13 +303,11 @@ export const MyQuartz = slate.quartz(use => (start: number) => {
 
 <br/>
 
-## 🔮 advanced stuff
+## 🥇 plain elements — gold and silver
 
-### plain elements: gold and silver
-
-gold and silver are "plain" elements, which are alternatives to LitElement.
-
-they're used as primitives underlying our carbon and oxygen components.
+gold and silver are "plain" elements, which are alternatives to LitElement.  
+they're used as primitives underlying our carbon and oxygen components.  
+for most cases you probably want to stick with carbon/oxygen, and only use gold/silver when you're doing some funky sorcery, or you yearn to go back to a simpler time, without hooks.
 
 consider these imports for the following examples:
 
@@ -382,6 +377,8 @@ register_to_dom({
 })
 ```
 
+<br/>
+
 ## 🔮 deferred context
 
 you can extend the context with anything you'd like to make easily available:
@@ -392,7 +389,7 @@ export const slate = prepare_frontend(new class extends Context {
 })
 ```
 
-but since your component modules have to import `slate`, you might not want to be instancing your context at runtime — so you can defer the creation of your context until later:
+but since your component modules have to import `slate`, you might not want to be instancing your context at import-time — so you can defer the creation of your context until later at run-time:
 
 ```ts
 export class MyContext extends Context {
@@ -408,7 +405,7 @@ export slate = prepare_frontend<MyContext>()
 // assign your deferred context at runtime
 slate.context = new MyContext()
 
-// just be sure it's before you register your components
+// just be sure to set context before you register your components
 register_to_dom(myComponents)
 ```
 
