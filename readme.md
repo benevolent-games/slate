@@ -20,11 +20,11 @@
 ### most devs misunderstand how to leverage web components.
 
 you're not supposed to make your whole app out of web components.  
-they're too cumbersome. they're html-native, not typescript-native, so they don't take typesafe props, juggling their registration is a pain..
+they're too cumbersome — web components are html-native, not typescript-native — so they don't take typesafe props, they're referred to by html tag names with poor ide support, and juggling their dom registrations is a pain.
 
-this is why **views** are important, and are a central feature of *slate* — views are almost the same as components (they can use shadow-dom), except that views are ergonomically handled via javascript, views accept props, views do not need to be registered to the dom, and views enjoy full typescript typings.
+this is why **views** are important, and are a central feature of *slate* — views are almost the same as components (they can use shadow-dom), except that views are ergonomically handled via javascript, they accept props, they don't need registration (they're simply imported) — and views enjoy full typescript typings.
 
-you want to think of web components as the universal control surface that helps html authors interact with your components — let the web components be the tip of your iceberg, but below the surface, most of your internals can be made of easily-composable views.
+you want to think of web components as the tip of your iceberg — they are the entrypoints to your ui — they are the universal control surfaces to help html authors interact with your systems — but below the surface, most of your internals can be made of easily-composable views.
 
 <br/>
 
