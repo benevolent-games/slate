@@ -3,12 +3,10 @@ import {html, css} from "lit"
 import {slate} from "../frontend.js"
 import {GoldElement} from "../../element/gold.js"
 
-export const SlateGold = slate.component(context =>
-		class extends GoldElement {
-
+export class SlateGold extends GoldElement {
 	static styles = css`span {color: orange}`
 
-	#state = context.flat.state({
+	#state = slate.context.flat.state({
 		count: 0,
 	})
 
@@ -18,5 +16,5 @@ export const SlateGold = slate.component(context =>
 			<button @click=${() => this.#state.count++}>gold</button>
 		`
 	}
-})
+}
 

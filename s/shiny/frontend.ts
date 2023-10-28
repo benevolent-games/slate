@@ -1,14 +1,12 @@
 
 import {Shell} from "./shell.js"
 import {Context} from "./context.js"
-import {Pojo} from "../tools/pojo.js"
 import {apply} from "../base/helpers/apply.js"
 import {prepare_carbon} from "./units/carbon.js"
 import {prepare_oxygen} from "./units/oxygen.js"
 import {prepare_quartz} from "./units/quartz.js"
-import {BaseElementClass} from "../base/element.js"
-import {requirement} from "../tools/requirement.js"
 import {prepare_obsidian} from "./units/obsidian.js"
+import {BaseElementClasses} from "../base/element.js"
 
 export function prepare_frontend<C extends Context>(context?: C) {
 
@@ -35,16 +33,8 @@ export function prepare_frontend<C extends Context>(context?: C) {
 		/** shadow-dom lit view */
 		obsidian: prepare_obsidian(shell),
 
-		component: <E extends BaseElementClass>(
-			prep: (context: C) => E,
-		) => prep,
-
-		components: <E extends Pojo<(context: C) => BaseElementClass>>(
-				elements: E,
-			) => (
-			apply.context(shell.context)(
-				requirement.provide(shell.context)(elements)
-			)
+		components: <E extends BaseElementClasses>(elements: E) => (
+			apply.context(shell.context)(elements)
 		),
 	}
 }
