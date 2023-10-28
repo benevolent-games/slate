@@ -703,4 +703,19 @@ you get a better dev-experience if you use ops via signals, but here is the docu
     .to(apply.signals(signals))
     .to(register_to_dom)
   ```
+- call `.done()` when you want to return the result
+
+<br/>
+
+## 🧐 more useful utils
+
+no time to document these fully, but they're there
+
+- `debounce` — is a pretty good debouncer
+- `deep_equal` — compare json
+- `deep_freeze` — make stuff immutable
+- `explode_promise` — get a promise flipped inside-out
+- `generate_id` — generate a crypto-random hexadecimal id string
+- `pub` — easy pub/sub tool
+- `requirement` — pass required data to a group of things
 
