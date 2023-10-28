@@ -27,8 +27,8 @@
     ```ts
     import {prepare_frontend, Context} from "@benev/slate"
 
-    export const {carbon, oxygen, obsidian, quartz} = (
-      prepare_frontend(new class extends Context {
+    export const slate = prepare_frontend(
+      new class extends Context {
         theme = css`
           * {
             margin: 0;
@@ -36,7 +36,7 @@
             box-sizing: border-box;
           }
         `
-      })
+      }
     )
     ```
 1. import html and css template functions
@@ -55,7 +55,7 @@ you can create custom html elements that work in plain html or any web framework
 ```ts
 const styles = css`span {color: yellow}`
 
-export const MyCarbon = carbon({styles}, use => {
+export const MyCarbon = slate.carbon({styles}, use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -69,7 +69,7 @@ export const MyCarbon = carbon({styles}, use => {
 ### oxygen — *light-dom component*
 
 ```ts
-export const MyOxygen = oxygen(use => {
+export const MyOxygen = slate.oxygen(use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -84,9 +84,7 @@ export const MyOxygen = oxygen(use => {
 
 - register components to the dom
   ```ts
-  import {register_to_dom} from "@benev/slate"
-
-  register_to_dom({
+  slate.register_to_dom({
     MyCarbon,
     MyOxygen,
   })
@@ -113,7 +111,7 @@ they accept js parameters called `props`, and are fully typescript-typed.
 ```ts
 const styles = css`span {color: yellow}`
 
-export const MyObsidian = obsidian({styles}, use => (start: number) => {
+export const MyObsidian = slate.obsidian({styles}, use => (start: number) => {
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -132,7 +130,7 @@ export const MyObsidian = obsidian({styles}, use => (start: number) => {
 ### quartz — *light-dom view*
 
 ```ts
-export const MyQuartz = quartz(use => (start: number) => {
+export const MyQuartz = slate.quartz(use => (start: number) => {
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -294,10 +292,10 @@ export const MyQuartz = quartz(use => (start: number) => {
 ### gold and silver elements
 
 ```ts
-export const MyGold = component(context => class extends GoldElement {
+export const MyGold = class extends GoldElement {
   static styles = css`span {color: blue}`
 
-  #state = context.flat.state({
+  #state = slate.shell.context.flat.state({
     count: 0,
   })
 
@@ -307,7 +305,7 @@ export const MyGold = component(context => class extends GoldElement {
       <button @click=${() => this.#state.count++}>gold</button>
     `
   }
-})
+}
 ```
 - non-hooks class-based LitElement-alternative components
 - `GoldElement` is a shadow-dom component base class
