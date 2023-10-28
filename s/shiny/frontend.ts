@@ -9,10 +9,11 @@ import {prepare_obsidian} from "./units/obsidian.js"
 import {BaseElementClasses} from "../base/element.js"
 
 export function prepare_frontend<C extends Context>(context?: C) {
-
 	const shell = new Shell<C>(context)
 
 	return {
+		shell,
+
 		get context() {
 			return shell.context
 		},
