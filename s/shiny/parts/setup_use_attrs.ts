@@ -1,6 +1,6 @@
 
 import {BaseElement} from "../../base/element.js"
-import {Attributes} from "../../base/addons/attributes.js"
+import {Attributes, attributes} from "../../base/addons/attributes.js"
 
 export type SetupAttrs = (
 	<A extends Attributes.Spec>(spec: A) => Attributes.SoftenSpec<A>
@@ -13,7 +13,7 @@ export function setup_use_attrs(element: BaseElement) {
 			Attributes.SoftenSpec<A> {
 
 		if (!attrs)
-			attrs = Attributes.base(element, spec)
+			attrs = attributes(element, spec)
 		return attrs
 	}
 }
