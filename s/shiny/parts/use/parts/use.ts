@@ -11,6 +11,8 @@ type InitEnd<R> = [R, Setdown]
 type InitStart<R> = () => InitEnd<R>
 
 export class Use<C extends Context = Context> {
+	static initiator = <I extends InitStart<any>>(init: I) => init
+
 	static wrap<F extends (...args: any[]) => any>(use: Use, fun: F) {
 		return ((...args: any[]) => {
 			use.#counter.value = 0
