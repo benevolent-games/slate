@@ -2,20 +2,13 @@
 import {Context} from "../../../context.js"
 import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
+import {InitFunction, Setdown, Setup} from "./types.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
 
-type Setdown = () => void
-type Setup = () => Setdown
-
-type InitEnd<R> = [R, Setdown]
-type InitStart<R> = () => InitEnd<R>
-
 export class Use<C extends Context = Context> {
-	static initiator = <I extends InitStart<any>>(init: I) => init
-
 	static wrap<F extends (...args: any[]) => any>(use: Use, fun: F) {
 		return ((...args: any[]) => {
-			use.#counter.value = 0
+			use.#counter.reset()
 			return fun(...args)
 		}) as F
 	}
@@ -50,12 +43,12 @@ export class Use<C extends Context = Context> {
 
 	#context: C
 	#rerender: () => void
-	#counter = {value: 0}
+	#counter = new Counter()
 
 	#setups = new Map<number, Setup>()
 	#setdowns = new Set<Setdown>()
 
-	#initStarts = new Map<number, InitStart<any>>()
+	#initStarts = new Map<number, InitFunction<any>>()
 	#initResults = new Map<number, any>()
 	#initDowns = new Set<Setdown>()
 
@@ -78,15 +71,15 @@ export class Use<C extends Context = Context> {
 	}
 
 	setup(up: Setup) {
-		const count = this.#counter.value
+		const count = this.#counter.pull()
 		if (!this.#setups.has(count)) {
 			this.#setups.set(count, up)
 			this.#setdowns.add(up())
 		}
 	}
 
-	init<R>(start: InitStart<R>): R {
-		const count = this.#counter.value
+	init<R>(start: InitFunction<R>): R {
+		const count = this.#counter.pull()
 		if (!this.#initStarts.has(count)) {
 			this.#initStarts.set(count, start)
 			const [result, down] = start()
@@ -98,12 +91,12 @@ export class Use<C extends Context = Context> {
 	}
 
 	prepare<T>(prep: () => T): T {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#preparations).grab(count, prep)
 	}
 
 	state<T>(init: T | (() => T)) {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		const value: T = maptool(this.#states).grab(count, () => (
 			(typeof init === "function")
 				? (init as () => T)()
@@ -118,7 +111,7 @@ export class Use<C extends Context = Context> {
 	}
 
 	flatstate<S extends Record<string, any>>(init: S | (() => S)): S {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#flatstates).grab(count, () => (
 			this.#context.flat.state(
 				(typeof init === "function")
@@ -129,7 +122,7 @@ export class Use<C extends Context = Context> {
 	}
 
 	signal<T>(init: T | (() => T)) {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(count, () => (
 			this.#context.signals.signal(
 				(typeof init === "function")
@@ -140,14 +133,14 @@ export class Use<C extends Context = Context> {
 	}
 
 	computed<T>(update: () => T) {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(count, () => (
 			this.#context.signals.computed(update)
 		)) as Signal<T>
 	}
 
 	op<T>() {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(
 			count,
 			() => this.#context.signals.op(),
@@ -157,7 +150,7 @@ export class Use<C extends Context = Context> {
 	#watches = new Map<number, any>()
 
 	watch<T>(collector: () => T): T {
-		const count = this.#counter.value++
+		const count = this.#counter.pull()
 		return maptool(this.#watches).grab(
 			count,
 			() => this.#context.watch.track(collector, data => {
@@ -165,6 +158,16 @@ export class Use<C extends Context = Context> {
 				this.#rerender()
 			}),
 		)
+	}
+}
+
+class Counter {
+	#value = 0
+	pull() {
+		return this.#value++
+	}
+	reset() {
+		this.#value = 0
 	}
 }
 
