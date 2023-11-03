@@ -21,6 +21,15 @@ export class Signal<V> {
 		return () => void this.#listeners.delete(listener)
 	}
 
+	once(listener: SignalListener<V>) {
+		const actual_listener: SignalListener<V> = v => {
+			listener(v)
+			this.#listeners.delete(actual_listener)
+		}
+		this.#listeners.add(actual_listener)
+		return () => void this.#listeners.delete(actual_listener)
+	}
+
 	clear() {
 		return this.#listeners.clear()
 	}
