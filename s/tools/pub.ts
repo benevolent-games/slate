@@ -3,6 +3,7 @@ export type Listener<X> = (x: X) => void
 
 export type Pub<X> = {
 	(listener: Listener<X>): () => void
+	once(listener: Listener<X>): () => void
 	publish(x: X): void
 	clear(): void
 }
@@ -21,6 +22,15 @@ export function pub<X>(): Pub<X> {
 	}
 
 	subscribe.clear = () => listeners.clear()
+
+	subscribe.once = (listener: Listener<X>) => {
+		const actual_listener = (x: X) => {
+			listener(x)
+			listeners.delete(actual_listener)
+		}
+		listeners.add(actual_listener)
+		return () => void listeners.delete(actual_listener)
+	}
 
 	return subscribe
 }
