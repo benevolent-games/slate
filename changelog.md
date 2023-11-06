@@ -1,4 +1,13 @@
 
+### v0.0.0-dev.21
+
+-  renamed `prepare_frontend` to `setup`
+- added synonyms
+  - `carbon` => `shadow_component`
+  - `oxygen` => `light_component`
+  - `obsidian` => `shadow_view`
+  - `quartz` => `light_view`
+
 ### v0.0.0-dev.16
 
 -  significant rework
