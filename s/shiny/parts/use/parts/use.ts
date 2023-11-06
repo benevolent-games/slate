@@ -1,8 +1,8 @@
 
 import {Context} from "../../../context.js"
+import {InitFn, SetupFn, Setdown} from "./types.js"
 import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
-import {InitFunction, Setdown, Setup} from "./types.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
 
 export class Use<C extends Context = Context> {
@@ -45,10 +45,10 @@ export class Use<C extends Context = Context> {
 	#rerender: () => void
 	#counter = new Counter()
 
-	#setups = new Map<number, Setup>()
+	#setups = new Map<number, SetupFn>()
 	#setdowns = new Set<Setdown>()
 
-	#initStarts = new Map<number, InitFunction<any>>()
+	#initStarts = new Map<number, InitFn<any>>()
 	#initResults = new Map<number, any>()
 	#initDowns = new Set<Setdown>()
 
@@ -70,19 +70,19 @@ export class Use<C extends Context = Context> {
 		this.#rerender()
 	}
 
-	setup(up: Setup) {
+	setup(func: SetupFn) {
 		const count = this.#counter.pull()
 		if (!this.#setups.has(count)) {
-			this.#setups.set(count, up)
-			this.#setdowns.add(up())
+			this.#setups.set(count, func)
+			this.#setdowns.add(func())
 		}
 	}
 
-	init<R>(start: InitFunction<R>): R {
+	init<R>(func: InitFn<R>): R {
 		const count = this.#counter.pull()
 		if (!this.#initStarts.has(count)) {
-			this.#initStarts.set(count, start)
-			const [result, down] = start()
+			this.#initStarts.set(count, func)
+			const [result, down] = func()
 			this.#initResults.set(count, result)
 			this.#initDowns.add(down)
 			return result

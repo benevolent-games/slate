@@ -1,7 +1,7 @@
 
 export type Setdown = () => void
-export type Setup = () => Setdown
+export type SetupFn = () => Setdown
 
 export type InitResult<R> = [R, Setdown]
-export type InitFunction<R> = () => InitResult<R>
+export type InitFn<R> = () => InitResult<R>
 

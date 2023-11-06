@@ -14,7 +14,7 @@ export * from "./op/op.js"
 export * from "./op/prep_render_op.js"
 
 export * from "./shiny/parts/use/tailored.js"
-export * from "./shiny/parts/use/parts/initiator.js"
+export * from "./shiny/parts/use/parts/helpers.js"
 export * from "./shiny/parts/use/parts/types.js"
 export * from "./shiny/parts/use/parts/use.js"
 export * from "./shiny/parts/types.js"
