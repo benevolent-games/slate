@@ -1,7 +1,7 @@
 
 import {CSSResultGroup} from "lit"
+import {setup} from "../shiny/frontend.js"
 import {Context} from "../shiny/context.js"
-import {prepare_frontend} from "../shiny/frontend.js"
 
 export class DemoContext extends Context {
 	constructor(public theme: CSSResultGroup) {
@@ -9,5 +9,5 @@ export class DemoContext extends Context {
 	}
 }
 
-export const slate = prepare_frontend<DemoContext>()
+export const slate = setup<DemoContext>()
 

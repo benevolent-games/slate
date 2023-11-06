@@ -36,9 +36,9 @@ you want to think of web components as the tip of your iceberg — they are the 
     ```
 1. prepare your app's frontend and context
     ```ts
-    import {prepare_frontend, Context} from "@benev/slate"
+    import {setup, Context} from "@benev/slate"
 
-    export const slate = prepare_frontend(
+    export const slate = setup(
       new class extends Context {
         theme = css`
           * {
@@ -61,12 +61,12 @@ you want to think of web components as the tip of your iceberg — they are the 
 
 you can create custom html elements that work in plain html or any web framework.
 
-### carbon — *shadow-dom component*
+### `slate.shadow_component` — *"carbon"*
 
 ```ts
 const styles = css`span {color: yellow}`
 
-export const MyCarbon = slate.carbon({styles}, use => {
+export const MyCarbon = slate.shadow_component({styles}, use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -77,10 +77,10 @@ export const MyCarbon = slate.carbon({styles}, use => {
 })
 ```
 
-### oxygen — *light-dom component*
+### `slate.light_component` — *"oxygen"*
 
 ```ts
-export const MyOxygen = slate.oxygen(use => {
+export const MyOxygen = slate.light_component(use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -119,12 +119,12 @@ instead, they are used via javascript.
 you import them, and inject them into your lit-html templates.  
 they accept js parameters called `props`, and are fully typescript-typed.  
 
-### obsidian — *shadow-dom view*
+### `slate.shadow_view` — *"obsidian"*
 
 ```ts
 const styles = css`span {color: yellow}`
 
-export const MyObsidian = slate.obsidian({styles}, use => (start: number) => {
+export const MyObsidian = slate.shadow_view({styles}, use => (start: number) => {
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -140,10 +140,10 @@ export const MyObsidian = slate.obsidian({styles}, use => (start: number) => {
   - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
   - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
-### quartz — *light-dom view*
+### `slate.light_view` — *"quartz"*
 
 ```ts
-export const MyQuartz = slate.quartz(use => (start: number) => {
+export const MyQuartz = slate.light_view(use => (start: number) => {
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -384,7 +384,7 @@ register_to_dom({
 you can extend the context with anything you'd like to make easily available:
 
 ```ts
-export const slate = prepare_frontend(new class extends Context {
+export const slate = setup(new class extends Context {
   my_cool_thing = {my_awesome_data: 123}
 })
 ```
@@ -396,7 +396,7 @@ export class MyContext extends Context {
   my_cool_thing = {my_awesome_data: 123}
 }
 
-export slate = prepare_frontend<MyContext>()
+export slate = setup<MyContext>()
 
 //
 // ... later, in a different module ...

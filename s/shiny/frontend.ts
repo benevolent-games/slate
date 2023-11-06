@@ -8,9 +8,9 @@ import {prepare_quartz} from "./units/quartz.js"
 import {prepare_obsidian} from "./units/obsidian.js"
 import {BaseElementClasses} from "../base/element.js"
 
-export type SlateFor<C extends Context> = ReturnType<typeof prepare_frontend<C>>
+export type SlateFor<C extends Context> = ReturnType<typeof setup<C>>
 
-export function prepare_frontend<C extends Context>(context?: C) {
+export function setup<C extends Context>(context?: C) {
 	const shell = new Shell<C>(context)
 
 	const oxygen = prepare_oxygen(shell)
@@ -41,10 +41,10 @@ export function prepare_frontend<C extends Context>(context?: C) {
 		/** shadow-dom view */
 		obsidian,
 
-		lightComponent: oxygen,
-		shadowComponent: carbon,
-		lightView: quartz,
-		shadowView: obsidian,
+		light_component: oxygen,
+		shadow_component: carbon,
+		light_view: quartz,
+		shadow_view: obsidian,
 
 		components: <E extends BaseElementClasses>(elements: E) => (
 			apply.context(shell.context)(elements)
