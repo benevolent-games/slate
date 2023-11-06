@@ -8,7 +8,7 @@ import {prepare_quartz} from "./units/quartz.js"
 import {prepare_obsidian} from "./units/obsidian.js"
 import {BaseElementClasses} from "../base/element.js"
 
-export type Slate<C extends Context> = ReturnType<typeof prepare_frontend<C>>
+export type SlateFor<C extends Context> = ReturnType<typeof prepare_frontend<C>>
 
 export function prepare_frontend<C extends Context>(context?: C) {
 	const shell = new Shell<C>(context)
