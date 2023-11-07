@@ -8,14 +8,21 @@ export default <Suite>{
 		let memory = 0
 
 		type State = {test: {count: number}}
-		const group = ZipAction.group<State>()
+		const blueprint = ZipAction.blueprint<State>()
 
 		const tree = new StateTree<State>(
 			{test: {count: 0}},
 			() => { memory = tree.state.test.count },
 		)
 
-		const counting_specs = group({
+		const subgroup = blueprint({
+			double: state => () => {
+				state.test.count *= 2
+			},
+		})
+
+		const counting_specs = blueprint({
+			...subgroup,
 			wrapper: {
 				add: state => (n: number) => {
 					state.test.count += n
@@ -35,6 +42,10 @@ export default <Suite>{
 		counting.wrapper.add(2)
 		expect(tree.state.test.count).equals(3)
 		expect(memory).equals(3)
+
+		counting.double()
+		expect(tree.state.test.count).equals(6)
+		expect(memory).equals(6)
 
 		counting.wrapper.reset()
 		expect(tree.state.test.count).equals(0)

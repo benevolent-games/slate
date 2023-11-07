@@ -3,23 +3,23 @@ import {ob} from "../../tools/ob.js"
 import {StateTree} from "../state_tree.js"
 
 export namespace ZipAction {
+	export type Blueprint<S> = {[key: string]: Blueprint<S> | Fn<S, any>}
 	export type SetState<S> = (state: S) => void
-	export type Group<S> = {[key: string]: Group<S> | Spec<S, any>}
-	export type Spec<S, P extends any[]> = (
+	export type Fn<S, P extends any[]> = (
 		(state: S, setState: (newState: S) => void) =>
 			(...params: P) => void
 	)
 
-	export type Callable<G extends Group<any>> = {
-		[P in keyof G]: G[P] extends Group<any>
-			? Callable<G[P]>
-			: G[P] extends Spec<any, any>
-				? ReturnType<G[P]>
+	export type Callable<B extends Blueprint<any>> = {
+		[P in keyof B]: B[P] extends Blueprint<any>
+			? Callable<B[P]>
+			: B[P] extends Fn<any, any>
+				? ReturnType<B[P]>
 				: never
 	}
 
-	export function actualize<S, G extends Group<S>>(tree: StateTree<S>, group: G) {
-		return ob.map(group, value => {
+	export function actualize<S, B extends Blueprint<S>>(tree: StateTree<S>, blueprint: B) {
+		return ob.map(blueprint, value => {
 			if (typeof value === "function") {
 				return (...params: any[]) => {
 					tree.transmute(state => {
@@ -32,11 +32,11 @@ export namespace ZipAction {
 			else {
 				return (actualize as any)(tree, value)
 			}
-		}) as Callable<G>
+		}) as Callable<B>
 	}
 
-	export function group<S>() {
-		return <G extends Group<S>>(group: G) => group
+	export function blueprint<S>() {
+		return <B extends Blueprint<S>>(blueprint: B) => blueprint
 	}
 }
 
