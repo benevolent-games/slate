@@ -1,12 +1,12 @@
 
 import {html, css} from "lit"
-import {slate} from "../frontend.js"
+import {flat} from "../../shiny/state.js"
 import {GoldElement} from "../../element/gold.js"
 
 export class SlateGold extends GoldElement {
 	static styles = css`span {color: orange}`
 
-	#state = slate.context.flat.state({
+	#state = flat.state({
 		count: 0,
 	})
 

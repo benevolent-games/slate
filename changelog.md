@@ -1,4 +1,19 @@
 
+-  `flat`, `signals`, and `watch` removed from `Context`
+  ```ts
+  // now we do this
+  import {flat, signals, watch} from "@benev/slate"
+  ```
+-  `setup` replaced with `Slate` class
+  ```ts
+  // old
+  const slate = setup(context)
+
+  // new
+  const slate = new Slate(context)
+  ```
+  - slate.shell has been `deleted` -- now Slate extends Shell (slate is a shell now)
+
 ### v0.0.0-dev.21
 
 -  renamed `prepare_frontend` to `setup`

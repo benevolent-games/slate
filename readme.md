@@ -36,10 +36,12 @@ you want to think of web components as the tip of your iceberg — they are the 
     ```
 1. prepare your app's frontend and context
     ```ts
-    import {setup, Context} from "@benev/slate"
+    import {Slate, Context} from "@benev/slate"
 
-    export const slate = setup(
+    export const slate = new Slate(
       new class extends Context {
+
+        // this theme is applied to all your components and views
         theme = css`
           * {
             margin: 0;
@@ -47,6 +49,9 @@ you want to think of web components as the tip of your iceberg — they are the 
             box-sizing: border-box;
           }
         `
+
+        // add anything app-level you'd like to make widely available
+        my_cool_thing = {my_awesome_data: 123}
       }
     )
     ```
@@ -259,14 +264,8 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
-  // wait for all flatstate reactions to complete
-  await use.context.flat.wait
-
-  // wait for all signal reactons to complete
-  await use.context.signals.wait
-
-  // access your own custom data you put on the context
-  use.context.my_own_custom_data
+  // access your own things on the context
+  use.context.my_cool_thing
   ```
 - **use.element** ~ *carbon, oxygen, obsidian*  
   access the underlying html element
@@ -312,7 +311,7 @@ for most cases you probably want to stick with carbon/oxygen, and only use gold/
 consider these imports for the following examples:
 
 ```ts
-import {GoldElement, SilverElement, attributes} from "@benev/slate"
+import {GoldElement, SilverElement, attributes, flat} from "@benev/slate"
 ```
 
 ### gold element — *shadow-dom element*
@@ -325,7 +324,7 @@ export class MyGold extends GoldElement {
     label: String
   })
 
-  #state = slate.context.flat.state({
+  #state = flat.state({
     count: 0,
   })
 
@@ -349,7 +348,7 @@ export class MySilver extends SilverElement {
     label: String
   })
 
-  #state = slate.context.flat.state({
+  #state = flat.state({
     count: 0,
   })
 
@@ -384,28 +383,34 @@ register_to_dom({
 you can extend the context with anything you'd like to make easily available:
 
 ```ts
-export const slate = setup(new class extends Context {
-  my_cool_thing = {my_awesome_data: 123}
-})
+export const slate = new Slate(
+  new class extends Context {
+    my_cool_thing = {my_awesome_data: 123}
+  }
+)
 ```
 
-but since your component modules have to import `slate`, you might not want to be instancing your context at import-time — so you can defer the creation of your context until later at run-time:
+but since your components are importing `slate`, this context is being created *at import-time.*
+
+you may instead prefer to *defer* the creation of your context until later, at *run-time:*
 
 ```ts
+// define your context class
 export class MyContext extends Context {
   my_cool_thing = {my_awesome_data: 123}
 }
 
-export slate = setup<MyContext>()
+// create slate *without yet* instancing the context
+export slate = new Slate<MyContext>()
 
 //
-// ... later, in a different module ...
+// ... later, maybe in your main.ts ...
 //
 
-// assign your deferred context at runtime
+// instance and assign your context, now, at runtime
 slate.context = new MyContext()
 
-// just be sure to set context before you register your components
+// just be sure to assign context *before* you register your components
 register_to_dom(myComponents)
 ```
 
@@ -426,17 +431,10 @@ signals are a simple form of state management.
 
 this implementation is inspired by [preact signals](https://preactjs.com/blog/introducing-signals/).
 
-- **signal tower**
-  ```ts
-  import {SignalTower} from "@benev/slate"
-
-  const signals = new SignalTower()
-  ```
-  - signal towers are completely separated from one another
-  - you probably only want one in your app (unless you're running isolated tests)
-  - you could export your single signal tower from a module, and then import it all over your app
 - **signals** — they hold values
   ```ts
+  import {signals} from "@benev/slate"
+
   const count = signals.signal(0)
   const greeting = signals.signal("hello")
 
@@ -491,6 +489,14 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   await signals.wait
   console.log(tripled.value) //> 30 (there we go)
   ```
+- **signal tower**
+  ```ts
+  import {SignalTower} from "@benev/slate"
+
+  const signals = new SignalTower()
+  ```
+  - slate comes with a default tower called `signals`, but you can create your own
+  - signal towers are completely separated from one another
 
 <br/>
 
@@ -502,16 +508,10 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
 
 ### flatstate basics
 
-- create a flatstate tracking context
-  ```ts
-  import {Flat} from "@benev/slate"
-
-  const flat = new Flat()
-    // what happens in this flat, stays in this flat.
-    // you probably only want one for your whole app.
-  ```
 - make a flat state object
   ```ts
+  import {flat} from "@benev/slate"
+
   const state = flat.state({count: 0})
   ```
 - setup a reaction
@@ -525,6 +525,15 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   - flatstate records which state properties your reaction reads
   - flatstate calls your reaction whenever those specific properties change
   - your reaction can listen to more than one state object
+- create a new flatstate tracking context
+  ```ts
+  import {Flat} from "@benev/slate"
+
+  const flat = new Flat()
+    // what happens in this flat, stays in this flat.
+    // you should probably just use the
+    // default `flat` that comes with slate.
+  ```
 
 ### flatstate details
 

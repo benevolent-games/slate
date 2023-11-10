@@ -1,6 +1,7 @@
 
 import {TemplateResult} from "lit"
 import {Context} from "../context.js"
+import {flat, signals} from "../state.js"
 
 export function setup_reactivity<P extends any[]>(
 		context: Context,
@@ -17,7 +18,7 @@ export function setup_reactivity<P extends any[]>(
 
 		let result: TemplateResult | void = undefined
 
-		stop_signals = context.signals.track(
+		stop_signals = signals.track(
 			() => { result = render(...props) },
 			rerender,
 		)
@@ -31,7 +32,7 @@ export function setup_reactivity<P extends any[]>(
 
 		let result: TemplateResult | void = undefined
 
-		stop_flat = context.flat.manual({
+		stop_flat = flat.manual({
 			debounce: true,
 			discover: false,
 			collector: () => { result = render_and_track_signals(...props) },

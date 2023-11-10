@@ -1,6 +1,8 @@
 
 import {CSSResultGroup} from "lit"
 
+import * as state from "../../shiny/state.js"
+
 import {mixin} from "./mixin.js"
 import {ob} from "../../tools/ob.js"
 import {Pipe} from "../../tools/pipe.js"
@@ -40,8 +42,8 @@ export namespace apply {
 			<E extends BaseElementClasses>(elements: E) => (
 				Pipe.with(elements)
 					.to(css(context.theme))
-					.to(flat(context.flat))
-					.to(signals(context.signals))
+					.to(flat(state.flat))
+					.to(signals(state.signals))
 					.done() as E
 			)
 		)

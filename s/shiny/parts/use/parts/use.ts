@@ -3,6 +3,7 @@ import {Context} from "../../../context.js"
 import {InitFn, SetupFn, Setdown} from "./types.js"
 import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
+import {flat, signals, watch} from "../../../state.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
 
 export class Use<C extends Context = Context> {
@@ -113,7 +114,7 @@ export class Use<C extends Context = Context> {
 	flatstate<S extends Record<string, any>>(init: S | (() => S)): S {
 		const count = this.#counter.pull()
 		return maptool(this.#flatstates).grab(count, () => (
-			this.#context.flat.state(
+			flat.state(
 				(typeof init === "function")
 					? (init as () => S)()
 					: init
@@ -124,7 +125,7 @@ export class Use<C extends Context = Context> {
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.signals.signal(
+			signals.signal(
 				(typeof init === "function")
 					? (init as () => T)()
 					: init
@@ -135,7 +136,7 @@ export class Use<C extends Context = Context> {
 	computed<T>(update: () => T) {
 		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(count, () => (
-			this.#context.signals.computed(update)
+			signals.computed(update)
 		)) as Signal<T>
 	}
 
@@ -143,7 +144,7 @@ export class Use<C extends Context = Context> {
 		const count = this.#counter.pull()
 		return maptool(this.#signals).grab(
 			count,
-			() => this.#context.signals.op(),
+			() => signals.op(),
 		) as OpSignal<T>
 	}
 
@@ -153,7 +154,7 @@ export class Use<C extends Context = Context> {
 		const count = this.#counter.pull()
 		return maptool(this.#watches).grab(
 			count,
-			() => this.#context.watch.track(collector, data => {
+			() => watch.track(collector, data => {
 				this.#watches.set(count, data)
 				this.#rerender()
 			}),
