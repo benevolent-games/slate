@@ -17,15 +17,15 @@ export class Slate<C extends Context> extends Shell<C> {
 		this.shadow_view = this.obsidian = prepare_obsidian(this)
 	}
 
-	oxygen: ReturnType<typeof prepare_oxygen>
-	carbon: ReturnType<typeof prepare_carbon>
-	quartz: ReturnType<typeof prepare_quartz>
-	obsidian: ReturnType<typeof prepare_obsidian>
+	oxygen: ReturnType<typeof prepare_oxygen<C>>
+	carbon: ReturnType<typeof prepare_carbon<C>>
+	quartz: ReturnType<typeof prepare_quartz<C>>
+	obsidian: ReturnType<typeof prepare_obsidian<C>>
 
-	light_component: ReturnType<typeof prepare_oxygen>
-	shadow_component: ReturnType<typeof prepare_carbon>
-	light_view: ReturnType<typeof prepare_quartz>
-	shadow_view: ReturnType<typeof prepare_obsidian>
+	light_component: ReturnType<typeof prepare_oxygen<C>>
+	shadow_component: ReturnType<typeof prepare_carbon<C>>
+	light_view: ReturnType<typeof prepare_quartz<C>>
+	shadow_view: ReturnType<typeof prepare_obsidian<C>>
 
 	components<E extends BaseElementClasses>(elements: E) {
 		return apply.context(this.context)(elements)
