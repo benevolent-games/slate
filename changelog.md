@@ -1,10 +1,12 @@
 
--  `flat`, `signals`, and `watch` removed from `Context`
+### v0.0.0-dev.25
+
+- !! `flat`, `signals`, and `watch` removed from `Context`
   ```ts
   // now we do this
   import {flat, signals, watch} from "@benev/slate"
   ```
--  `setup` replaced with `Slate` class
+- !! `setup` replaced with `Slate` class
   ```ts
   // old
   const slate = setup(context)
@@ -16,7 +18,7 @@
 
 ### v0.0.0-dev.21
 
--  renamed `prepare_frontend` to `setup`
+- !! renamed `prepare_frontend` to `setup`
 - added synonyms
   - `carbon` => `shadow_component`
   - `oxygen` => `light_component`
@@ -25,7 +27,7 @@
 
 ### v0.0.0-dev.16
 
--  significant rework
+- !! significant rework
   - introduce experimental new `context.watch` WatchTower and StateTree systems
   - rename `context.tower` to `context.signals`
   - `prepare_frontend` usage changes
@@ -41,7 +43,7 @@
 
 ### v0.0.0-dev.6
 
--  massive rework
+- !! massive rework
   - deleted shale and clay views
   - added obsidian/quartz views
   - added carbon/oxygen elements
