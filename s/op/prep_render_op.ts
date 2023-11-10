@@ -1,6 +1,6 @@
 
 import {Op} from "./op.js"
-import {TemplateResult} from "lit"
+import type {TemplateResult} from "lit"
 
 export function prep_render_op({loading, error}: {
 		loading: () => TemplateResult
