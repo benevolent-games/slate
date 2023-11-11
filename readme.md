@@ -433,10 +433,10 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
 
 - **signals** — they hold values
   ```ts
-  import {signals} from "@benev/slate"
+  import {signal, signals} from "@benev/slate"
 
-  const count = signals.signal(0)
-  const greeting = signals.signal("hello")
+  const count = signal(0)
+  const greeting = signal("hello")
 
   count.value++
   greeting.value = "bonjour"
