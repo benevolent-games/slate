@@ -43,7 +43,11 @@ export namespace ZipAction {
 		return <B extends Blueprint<S>>(blueprint: B) => blueprint
 	}
 
-	export const prepFn = <S, H>(helpers: (state: S, setState: ZipAction.SetState<S>) => H) => <P extends any[]>(
+	export type Helpers<S, H> = (state: S, setState: ZipAction.SetState<S>) => H
+
+	export const prepFn = <S, H>(
+			helpers: Helpers<S, H>
+		) => <P extends any[]>(
 			fun: (helpers: H) => (...params: P) => void
 		): ZipAction.Fn<S, P> => (
 		(state, setState) => (...params) => {
@@ -53,11 +57,18 @@ export namespace ZipAction {
 	)
 
 	export const prepBlueprint = <S, H>(
-			helpers: (state: S) => H
+			helpers: Helpers<S, H>
 		) => <B extends Blueprint<S>>(
 			makeBp: (action: <P extends any[]>(f: (helpers: H) => (...params: P) => void) => Fn<S, P>) => B
 		) => (
 		makeBp(prepFn<S, H>(helpers))
 	)
+
+	export function prep<S, H>(helpers: Helpers<S, H>) {
+		return {
+			action: prepFn(helpers),
+			blueprint: prepBlueprint(helpers),
+		}
+	}
 }
 
