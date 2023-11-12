@@ -27,7 +27,7 @@
 		"chokidar": "^3.5.3",
 		"chokidar-cli": "^3.0.0",
 		"cynic": "^0.2.1",
-		"es-module-shims": "^1.8.1",
+		"es-module-shims": "^1.8.2",
 		"http-server": "^14.1.1",
 		"importly": "^0.2.3",
 		"npm-run-all": "^4.1.5",
