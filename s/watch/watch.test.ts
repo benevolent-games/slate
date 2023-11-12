@@ -1,6 +1,6 @@
 
 import {Suite, expect} from "cynic"
-import {WatchTower} from "./watch_tower.js"
+import {WatchTower} from "./tower.js"
 
 function setup() {
 	const watch = new WatchTower()
