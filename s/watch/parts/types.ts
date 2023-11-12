@@ -1,10 +1,6 @@
 
 import {Slice} from "./slice.js"
 
-export interface WatchBox<V> {
-	readonly value: V
-}
-
 export interface SliceAccessors<S, X> {
 	getter: (state: S) => X
 	setter: (state: S, x: X) => S

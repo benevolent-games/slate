@@ -1,6 +1,7 @@
 
+import {Signal} from "../pure.js"
+import {signal} from "../shiny/state.js"
 import {StateTree} from "./state_tree.js"
-import {WatchBox} from "./parts/types.js"
 import {deepEqual} from "../tools/deep_equal/deep_equal.js"
 
 export class WatchTower {
@@ -15,14 +16,10 @@ export class WatchTower {
 			listener()
 	}
 
-	computed<V>(fun: () => V): WatchBox<V> {
-		let data = fun()
-		this.#computeds.add(() => { data = fun() })
-		return {
-			get value() {
-				return data
-			}
-		}
+	computed<V>(fun: () => V): Signal<V> {
+		const box = signal(fun())
+		this.#computeds.add(() => { box.value = fun() })
+		return box
 	}
 
 	track<T>(collector: () => T, responder: (data: T) => void) {
