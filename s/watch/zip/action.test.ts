@@ -9,17 +9,18 @@ export default <Suite>{
 
 		type State = {test: {count: number}}
 		const blueprint = ZipAction.blueprint<State>()
+		const testActions = ZipAction.prepBlueprint((state: State) => state.test)
 
 		const tree = new StateTree<State>(
 			{test: {count: 0}},
 			() => { memory = tree.state.test.count },
 		)
 
-		const subgroup = blueprint({
-			double: state => () => {
-				state.test.count *= 2
-			},
-		})
+		const subgroup = testActions(action => ({
+			double: action(test => () => {
+				test.count *= 2
+			}),
+		}))
 
 		const counting_specs = blueprint({
 			...subgroup,

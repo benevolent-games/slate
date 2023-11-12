@@ -1,9 +1,11 @@
 
 import {Suite, expect} from "cynic"
 import {WatchTower} from "./tower.js"
+import {SignalTower} from "../signals/tower.js"
 
 function setup() {
-	const watch = new WatchTower()
+	const signals = new SignalTower()
+	const watch = new WatchTower(signals)
 	const tree = watch.stateTree({
 		count: 0,
 		group: {

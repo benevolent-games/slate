@@ -5,7 +5,7 @@ import {WatchTower} from "../watch/tower.js"
 
 export const flat = new Flat()
 export const signals = new SignalTower()
-export const watch = new WatchTower()
+export const watch = new WatchTower(signals)
 
 export const flatstate = flat.state.bind(flat)
 export const signal = signals.signal.bind(signals)

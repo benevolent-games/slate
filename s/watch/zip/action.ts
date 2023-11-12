@@ -35,8 +35,29 @@ export namespace ZipAction {
 		}) as Callable<B>
 	}
 
+	export function fn<S>() {
+		return <F extends Fn<S, any[]>>(fn: F) => fn
+	}
+
 	export function blueprint<S>() {
 		return <B extends Blueprint<S>>(blueprint: B) => blueprint
 	}
+
+	export const prepFn = <S, H>(helpers: (state: S, setState: ZipAction.SetState<S>) => H) => <P extends any[]>(
+			fun: (helpers: H) => (...params: P) => void
+		): ZipAction.Fn<S, P> => (
+		(state, setState) => (...params) => {
+			fun(helpers(state, setState))(...params)
+			return state
+		}
+	)
+
+	export const prepBlueprint = <S, H>(
+			helpers: (state: S) => H
+		) => <B extends Blueprint<S>>(
+			makeBp: (action: <P extends any[]>(f: (helpers: H) => (...params: P) => void) => Fn<S, P>) => B
+		) => (
+		makeBp(prepFn<S, H>(helpers))
+	)
 }
 

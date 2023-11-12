@@ -1,13 +1,18 @@
 
-import {Signal} from "../pure.js"
-import {signal} from "../shiny/state.js"
 import {StateTree} from "./state_tree.js"
+import {Signal} from "../signals/signal.js"
+import {SignalTower} from "../signals/tower.js"
 import {deepEqual} from "../tools/deep_equal/deep_equal.js"
 
 export class WatchTower {
+	#signals: SignalTower
 	#computeds = new Set<() => void>()
 	#listeners = new Set<() => void>()
 	#memory = new Map<() => any, any>()
+
+	constructor(signals: SignalTower) {
+		this.#signals = signals
+	}
 
 	dispatch() {
 		for (const computed of this.#computeds)
@@ -17,7 +22,7 @@ export class WatchTower {
 	}
 
 	computed<V>(fun: () => V): Signal<V> {
-		const box = signal(fun())
+		const box = this.#signals.signal(fun())
 		this.#computeds.add(() => { box.value = fun() })
 		return box
 	}
