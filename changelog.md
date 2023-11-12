@@ -1,4 +1,11 @@
 
+### v0.0.0-dev.27
+
+- !! replace WatchBox with Signal
+- !! WatchTower now requires SignalTower as a param
+- add exports 'flatstate' and 'signal'
+- add ZipAction.prep, ZipAction.prepAction, ZipAction.prepBlueprint
+
 ### v0.0.0-dev.25
 
 - !! `flat`, `signals`, and `watch` removed from `Context`
