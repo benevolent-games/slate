@@ -9,8 +9,17 @@ export const initFn = <I extends InitFn<any>>(fn: I) => fn
 export const setupFn = (fn: SetupFn) => fn
 
 /** a class intended to be used with use.init via initiate() function */
-export abstract class Initiator {
-	abstract deinit(): void
+export class Initiator {
+	#cleanups: (() => void)[] = []
+
+	cleanup(fn: () => void) {
+		this.#cleanups.push(fn)
+	}
+
+	deinit() {
+		for (const cleanup of this.#cleanups)
+			cleanup()
+	}
 }
 
 /** wrap an initiator instance in an InitResult array */
