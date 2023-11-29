@@ -13,7 +13,7 @@ export const prepare_carbon = (
 	(settings: ShadowSettings, renderer: CarbonRenderer<C>) => (
 
 	class extends GoldElement {
-		static name = settings.name
+		static label = settings.name
 		static get styles() {
 			return [
 				shell.context.theme,
