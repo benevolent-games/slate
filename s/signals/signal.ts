@@ -3,13 +3,15 @@ import {SignalListener} from "./parts/listener.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {SignalCircularError} from "./parts/circular_error.js"
 
+export const accessed = Symbol()
+
 export class Signal<V> {
 	#value: V
 	#lock = false
 	#wait: Promise<V>
 	#listeners = new Set<SignalListener<V>>()
 
-	accessed = false
+	;[accessed] = false
 
 	constructor(v: V) {
 		this.#value = v
@@ -55,7 +57,7 @@ export class Signal<V> {
 	}
 
 	get value() {
-		this.accessed = true
+		this[accessed] = true
 		return this.#value
 	}
 

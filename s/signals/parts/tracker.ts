@@ -1,5 +1,5 @@
 
-import {Signal} from "../signal.js"
+import {Signal, accessed} from "../signal.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 
 export class SignalTracker<P> {
@@ -32,12 +32,12 @@ export class SignalTracker<P> {
 
 	#reset_all_signals_accessed_indicator() {
 		for (const signal of this.#all_signals)
-			signal.accessed = false
+			signal[accessed] = false
 	}
 
 	get #signals_that_should_be_tracked() {
 		return [...this.#all_signals].filter(signal => (
-			signal.accessed &&
+			signal[accessed] &&
 			!this.#relevant_signals.has(signal)
 		))
 	}
