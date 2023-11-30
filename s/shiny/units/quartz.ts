@@ -22,7 +22,6 @@ export const prepare_quartz = (
 		#rend = UseQuartz.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(
-			shell.context,
 			this.#rend,
 			this.#rerender,
 		)

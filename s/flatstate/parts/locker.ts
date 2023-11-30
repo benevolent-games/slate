@@ -1,13 +1,12 @@
 
-import {Fun} from "./types.js"
-
 export class Locker {
 	#locked = false
 
-	lock(fun: Fun) {
+	lock<R>(fn: () => R) {
 		this.#locked = true
-		fun()
+		const result = fn()
 		this.#locked = false
+		return result
 	}
 
 	get locked() {

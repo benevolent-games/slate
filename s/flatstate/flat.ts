@@ -1,6 +1,6 @@
 
+import {Lean} from "./parts/types.js"
 import {Locker} from "./parts/locker.js"
-import {Reaction} from "./parts/types.js"
 import {Tracker} from "./parts/tracker.js"
 import {Stopper} from "./parts/stopper.js"
 import {Recorder} from "./parts/recorder.js"
@@ -36,51 +36,97 @@ export class Flat {
 		return new Proxy<S>(state, this.#proxy_handlers)
 	}
 
-	manual(reaction: Reaction) {
+	track<P>(
+			collector: () => P,
+			responder?: (payload: P) => void,
+		) {
+
 		const symbol = Symbol()
-		const recorded = this.#recorder.record(
-			() => this.#locker.lock(reaction.collector)
+
+		const {recording} = this.#recorder.record(
+			() => this.#locker.lock(collector)
 		)
+
 		this.#stopper.add(
 			symbol,
-			save_reaction(symbol, recorded, this.#tracker, reaction),
+			save_reaction(
+				symbol,
+				recording,
+				this.#tracker,
+				{collector, responder},
+			),
 		)
+
 		return () => this.#stopper.stop(symbol)
 	}
 
-	auto<D>({debounce, discover, collector, responder}: {
-			debounce: boolean
-			discover: boolean
-			collector: () => D
-			responder?: (data: D) => void
-		}) {
-		return this.manual({
-			debounce,
-			discover,
-			collector,
-			responder: responder
-				? () => responder(collector())
-				: collector,
-		})
+	lean(responder: () => void): Lean {
+		const symbol = Symbol()
+		return {
+			stop: () => this.#stopper.stop(symbol),
+			collect: collector => {
+				const {payload, recording} = this.#recorder.record(
+					() => this.#locker.lock(collector)
+				)
+				this.#stopper.add(
+					symbol,
+					save_reaction(
+						symbol,
+						recording,
+						this.#tracker,
+						{lean: true, responder},
+					),
+				)
+				return payload
+			},
+		}
 	}
 
-	reaction<D>(collector: () => D, responder?: (data: D) => void) {
-		return this.auto({
-			debounce: true,
-			discover: false,
-			collector,
-			responder,
-		})
-	}
+	// manual(reaction: Reaction) {
+	// 	const symbol = Symbol()
+	// 	const recorded = this.#recorder.record(
+	// 		() => this.#locker.lock(reaction.collector)
+	// 	)
+	// 	this.#stopper.add(
+	// 		symbol,
+	// 		save_reaction(symbol, recorded, this.#tracker, reaction),
+	// 	)
+	// 	return () => this.#stopper.stop(symbol)
+	// }
 
-	deepReaction<D>(collector: () => D, responder?: (data: D) => void) {
-		return this.auto({
-			debounce: true,
-			discover: true,
-			collector,
-			responder,
-		})
-	}
+	// auto<D>({debounce, discover, collector, responder}: {
+	// 		debounce: boolean
+	// 		discover: boolean
+	// 		collector: () => D
+	// 		responder?: (data: D) => void
+	// 	}) {
+	// 	return this.manual({
+	// 		debounce,
+	// 		discover,
+	// 		collector,
+	// 		responder: responder
+	// 			? () => responder(collector())
+	// 			: collector,
+	// 	})
+	// }
+
+	// reaction<D>(collector: () => D, responder?: (data: D) => void) {
+	// 	return this.auto({
+	// 		debounce: true,
+	// 		discover: false,
+	// 		collector,
+	// 		responder,
+	// 	})
+	// }
+
+	// deepReaction<D>(collector: () => D, responder?: (data: D) => void) {
+	// 	return this.auto({
+	// 		debounce: true,
+	// 		discover: true,
+	// 		collector,
+	// 		responder,
+	// 	})
+	// }
 
 	clear() {
 		this.#tracker.clear()

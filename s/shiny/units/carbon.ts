@@ -31,7 +31,6 @@ export const prepare_carbon = (
 		#rend = UseCarbon.wrap(this.#use, () => renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<[]>(
-			shell.context,
 			this.#rend,
 			() => void this.requestUpdate(),
 		)

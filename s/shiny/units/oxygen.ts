@@ -20,7 +20,6 @@ export const prepare_oxygen = (
 		#rend = UseOxygen.wrap(this.#use, () => renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<[]>(
-			shell.context,
 			this.#rend,
 			() => void this.requestUpdate(),
 		)

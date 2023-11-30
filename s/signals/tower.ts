@@ -3,7 +3,8 @@ import {Op} from "../op/op.js"
 import {ob} from "../tools/ob.js"
 import {Signal} from "./signal.js"
 import {OpSignal} from "./op_signal.js"
-import {SignalTracker} from "./parts/tracker.js"
+import {LeanTrack, NormalTrack, SignalTracker} from "./parts/tracker.js"
+import { Collector, Lean } from "../flatstate/parts/types.js"
 
 export class SignalTower {
 
@@ -36,14 +37,31 @@ export class SignalTower {
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 
-	track<P>(reader: () => P, actor?: (payload: P) => void) {
-		const tracker = new SignalTracker<P>({
-			actor,
+	track<P>(collector: () => P, responder?: (payload: P) => void) {
+		const tracker = new SignalTracker({
 			waiters: this.#waiters,
 			all_signals: this.#signals,
 		})
-		tracker.observe(reader)
+		const track: NormalTrack<P> = {collector, responder}
+		const {recording} = tracker.observe(track.collector)
+		tracker.add_listeners(track, recording)
 		return () => tracker.shutdown()
+	}
+
+	lean(responder: () => void): Lean {
+		const tracker = new SignalTracker({
+			waiters: this.#waiters,
+			all_signals: this.#signals,
+		})
+		const track: LeanTrack = {lean: true, responder}
+		return {
+			stop: () => tracker.shutdown(),
+			collect: collector => {
+				const {payload, recording} = tracker.observe(collector)
+				tracker.add_listeners(track, recording)
+				return payload
+			},
+		}
 	}
 
 	get wait(): Promise<void> {

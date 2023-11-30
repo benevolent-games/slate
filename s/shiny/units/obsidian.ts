@@ -51,7 +51,6 @@ export const prepare_obsidian = (
 		#rend = UseObsidian.wrap(this.#use, renderer(this.#use))
 
 		#render_with_reactivity = setup_reactivity<P>(
-			shell.context,
 			this.#rend,
 			this.#rerender,
 		)

@@ -16,18 +16,15 @@ export function proxy_handlers(
 		scheduler: Scheduler,
 	): ProxyHandler<any> {
 
-	function respond_and_run_discovery([symbol, reaction]: [symbol, Reaction]) {
-		locker.lock(reaction.responder)
-
-		if (reaction.discover) {
-			stopper.stop(symbol)
-			const recorded = recorder.record(
-				() => locker.lock(reaction.collector)
-			)
-			stopper.add(
-				symbol,
-				save_reaction(symbol, recorded, tracker, reaction),
-			)
+	function actuate([symbol, reaction]: [symbol, Reaction<any>]) {
+		if ("lean" in reaction) {
+			reaction.responder()
+		}
+		else {
+			const {payload, recording} = recorder.record(reaction.collector)
+			stopper.add(symbol, save_reaction(symbol, recording, tracker, reaction))
+			if (reaction.responder)
+				reaction.responder(payload)
 		}
 	}
 
@@ -46,12 +43,8 @@ export function proxy_handlers(
 			const reactions = [...tracker.grab_keymap(state).grab_symbolmap(key)]
 
 			for (const entry of reactions) {
-				const [symbol, reaction] = entry
-
-				if (reaction.debounce)
-					scheduler.add(symbol, () => respond_and_run_discovery(entry))
-				else
-					respond_and_run_discovery(entry)
+				const [symbol] = entry
+				scheduler.add(symbol, () => locker.lock(() => actuate(entry)))
 			}
 
 			return true

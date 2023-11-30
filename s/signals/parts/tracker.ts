@@ -1,32 +1,47 @@
 
 import {Signal, accessed} from "../signal.js"
+import {Collector} from "../../flatstate/parts/types.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 
-export class SignalTracker<P> {
+export type LeanTrack = {
+	lean: true
+	responder: () => void
+}
+
+export type NormalTrack<P> = {
+	collector: () => P
+	responder: ((payload: P) => void) | void
+}
+
+export type Track<P> = LeanTrack | NormalTrack<P>
+
+export class SignalTracker {
 	#active = true
 	#all_signals: Set<Signal<any>>
 	#waiters: Set<Promise<void>>
-	#actor: ((payload: P) => void) | void
 	#relevant_signals = new Set<Signal<any>>()
 	#stoppers = new Set<() => void>()
 
 	constructor({
-			all_signals, waiters, actor,
+			all_signals, waiters,
 		}: {
 			all_signals: Set<Signal<any>>
 			waiters: Set<Promise<void>>
-			actor: ((payload: P) => void) | void
 		}) {
 		this.#all_signals = all_signals
 		this.#waiters = waiters
-		this.#actor = actor
 	}
 
-	#actuate = debounce(0, (reader: () => P) => {
+	#actuate = debounce(0, (track: Track<any>) => {
 		if (this.#active) {
-			const payload = this.observe(reader)
-			if (this.#actor)
-				this.#actor(payload)
+			if ("lean" in track)
+				track.responder()
+			else {
+				const {payload, recording} = this.observe(track.collector)
+				this.add_listeners(track, recording)
+				if (track.responder)
+					track.responder(payload)
+			}
 		}
 	})
 
@@ -42,19 +57,24 @@ export class SignalTracker<P> {
 		))
 	}
 
-	observe(reader: () => P) {
+	observe<P>(collector: Collector<P>) {
 		this.#reset_all_signals_accessed_indicator()
-		const payload = reader()
-		const signals = this.#signals_that_should_be_tracked
-		for (const signal of signals) {
+		const payload = collector()
+		return {
+			payload,
+			recording: this.#signals_that_should_be_tracked,
+		}
+	}
+
+	add_listeners<P>(track: Track<P>, recording: Signal<any>[]) {
+		for (const signal of recording) {
 			this.#relevant_signals.add(signal)
 			this.#stoppers.add(
 				signal.subscribe(
-					() => this.#waiters.add(this.#actuate(reader))
+					() => this.#waiters.add(this.#actuate(track))
 				)
 			)
 		}
-		return payload
 	}
 
 	shutdown() {

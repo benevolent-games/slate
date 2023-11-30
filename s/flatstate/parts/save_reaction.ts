@@ -1,15 +1,15 @@
 
 import {Tracker} from "./tracker.js"
-import {Fun, Reaction, Recording} from "./types.js"
+import {Fn, Reaction, Recording} from "./types.js"
 
 export function save_reaction(
 		symbol: symbol,
 		recording: Recording,
 		tracker: Tracker,
-		reaction: Reaction,
+		reaction: Reaction<any>,
 	) {
 
-	const stoppers: Fun[] = []
+	const stoppers: Fn[] = []
 
 	for (const [state, keyset] of recording) {
 		const {grab_symbolmap} = tracker.grab_keymap(state)

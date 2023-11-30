@@ -1,9 +1,10 @@
 
-import {CSSResultGroup, TemplateResult} from "lit"
+import {CSSResultGroup} from "lit"
 
 import {Flat} from "../../flatstate/flat.js"
 import {BaseElementClass} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
+import {Lean} from "../../flatstate/parts/types.js"
 
 export namespace mixin {
 
@@ -33,75 +34,51 @@ export namespace mixin {
 		}
 	}
 
-	export function signals(tower: SignalTower) {
+	export function signals(signals: SignalTower) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
-				#untracks: (() => void)[] = []
+				#lean: Lean | null = null
+
+				render() {
+					this.#lean!.collect(() => super.render())
+				}
 
 				connectedCallback() {
 					super.connectedCallback()
-
-					this.#untracks.push(tower.track(
-						() => this.render(),
-						() => this.requestUpdate(),
-					))
+					this.#lean = signals.lean(() => this.requestUpdate())
 				}
 
 				disconnectedCallback() {
 					super.disconnectedCallback()
-
-					for (const untrack of this.#untracks)
-						untrack()
-
-					this.#untracks = []
+					if (this.#lean) {
+						this.#lean.stop()
+						this.#lean = null
+					}
 				}
 			}
 		}
 	}
 
-	/*
-
-	this flatstate mixin uses a bizarre strategy for optimizaton purposes.
-
-	+ on every render, we stop/reassign a new manual reaction.
-	+ discover is false, because we essentially emulate it
-		by assigning a new reaction every render,
-		using the current render as a new collector.
-	+ debounce is false, because lit's requestUpdate does that.
-
-	*/
 	export function flat(flat: Flat) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
-				#stop: void | (() => void) = undefined
+				#lean: Lean | null = null
 
 				render() {
-					if (this.#stop)
-						this.#stop()
+					return this.#lean!.collect(() => super.render())
+				}
 
-					let result: void | TemplateResult = undefined
-
-					this.#stop = flat.manual({
-						debounce: false,
-						discover: false,
-						collector: () => {
-							result = super.render()
-						},
-						responder: () => {
-							this.requestUpdate()
-						},
-					})
-
-					return result
+				connectedCallback() {
+					super.connectedCallback()
+					this.#lean = flat.lean(() => this.requestUpdate())
 				}
 
 				disconnectedCallback() {
 					super.disconnectedCallback()
-
-					if (this.#stop)
-						this.#stop()
-
-					this.#stop = undefined
+					if (this.#lean) {
+						this.#lean.stop()
+						this.#lean = null
+					}
 				}
 			}
 		}
