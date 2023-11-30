@@ -40,7 +40,7 @@ export namespace mixin {
 				#lean: Lean | null = null
 
 				render() {
-					return this.#lean!.collect(() => super.render())
+					return this.#lean?.collect(() => super.render())
 				}
 
 				connectedCallback() {

@@ -27,7 +27,7 @@ export const prepare_quartz = (
 
 		render(...props: P) {
 			this.#props = props
-			return this.#reactivity!.render(...props)
+			return this.#reactivity?.render(...props)
 		}
 
 		reconnected() {

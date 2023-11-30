@@ -33,7 +33,7 @@ export const prepare_carbon = (
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			return this.#reactivity!.render()
+			return this.#reactivity?.render()
 		}
 
 		connectedCallback() {

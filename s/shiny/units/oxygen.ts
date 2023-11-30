@@ -22,7 +22,7 @@ export const prepare_oxygen = (
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			return this.#reactivity!.render()
+			return this.#reactivity?.render()
 		}
 
 		connectedCallback() {

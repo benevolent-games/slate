@@ -65,7 +65,7 @@ export const prepare_obsidian = (
 			this.#root.auto_exportparts = (
 				input.meta.auto_exportparts ?? settings.auto_exportparts ?? true
 			)
-			return this.#reactivity!.render(...input.props)
+			return this.#reactivity?.render(...input.props)
 		}
 
 		reconnected() {
