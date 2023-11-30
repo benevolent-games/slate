@@ -3,7 +3,7 @@ import {Op} from "../op/op.js"
 import {ob} from "../tools/ob.js"
 import {Signal} from "./signal.js"
 import {OpSignal} from "./op_signal.js"
-import {debounce} from "../tools/debounce/debounce.js"
+import {SignalTracker} from "./parts/tracker.js"
 
 export class SignalTower {
 
@@ -36,28 +36,14 @@ export class SignalTower {
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 
-	track(reader: () => any, actor: () => any = reader) {
-		const actuate = debounce(0, actor)
-		const accessed: Signal<any>[] = []
-
-		for (const signal of this.#signals)
-			signal.accessed = false
-
-		reader()
-
-		for (const signal of this.#signals)
-			if (signal.accessed)
-				accessed.push(signal)
-
-		const unsubscribe_functions = accessed.map(signal => {
-			return signal.subscribe(() => {
-				const promise = actuate()
-				this.#waiters.add(promise)
-			})
+	track<P>(reader: () => P, actor?: (payload: P) => void) {
+		const tracker = new SignalTracker<P>({
+			actor,
+			waiters: this.#waiters,
+			all_signals: this.#signals,
 		})
-
-		return () => unsubscribe_functions
-			.forEach(unsub => unsub())
+		tracker.observe(reader)
+		return () => tracker.shutdown()
 	}
 
 	get wait(): Promise<void> {
