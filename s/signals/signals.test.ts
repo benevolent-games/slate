@@ -118,6 +118,23 @@ export default <Suite>{
 			await tower.wait
 			expect(calls).equals(1)
 		},
+		"tower track passes payload": async() => {
+			const tower = new SignalTower()
+			const count = tower.signal(1)
+			let reaction = 0
+			tower.track(
+				() => count.value * 2,
+				doubled => reaction = doubled,
+			)
+
+			count.value = 5
+			await tower.wait
+			expect(reaction).equals(10)
+
+			count.value = 10
+			await tower.wait
+			expect(reaction).equals(20)
+		},
 		"tower track with single argument syntax": async() => {
 			const tower = new SignalTower()
 			const count = tower.signal(0)
