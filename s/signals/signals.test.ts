@@ -59,6 +59,52 @@ export default <Suite>{
 		},
 	},
 	"signal tower": {
+		"tower can track multiple signals": async() => {
+			const tower = new SignalTower()
+			const alpha = tower.signal(0)
+			const bravo = tower.signal(0)
+			let calls = 0
+			tower.track(
+				() => {
+					void alpha.value
+					void bravo.value
+				},
+				() => calls++,
+			)
+			expect(calls).equals(0)
+			alpha.value++
+			await tower.wait
+			expect(calls).equals(1)
+			bravo.value++
+			await tower.wait
+			expect(calls).equals(2)
+		},
+		"tower can track signals progressively": async() => {
+			const tower = new SignalTower()
+			const alpha = tower.signal(0)
+			const bravo = tower.signal(0)
+			let calls = 0
+			tower.track(
+				() => {
+					if (alpha.value > 0)
+						void bravo.value
+				},
+				() => calls++,
+			)
+			expect(calls).equals(0)
+
+			bravo.value++
+			await tower.wait
+			expect(calls).equals(0)
+
+			alpha.value++
+			await tower.wait
+			expect(calls).equals(1)
+
+			bravo.value++
+			await tower.wait
+			expect(calls).equals(2)
+		},
 		"tower can wait for ongoing publishing": async() => {
 			const tower = new SignalTower()
 			const count = tower.signal(0)
