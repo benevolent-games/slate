@@ -6,7 +6,7 @@ import {Context} from "../context.js"
 import {QuartzRenderer} from "../parts/types.js"
 import {UseQuartz} from "../parts/use/tailored.js"
 import {debounce} from "../../tools/debounce/debounce.js"
-import {setup_reactivity} from "../parts/setup_reactivity.js"
+import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_quartz = (
 	<C extends Context>(shell: Shell<C>) =>
@@ -20,23 +20,30 @@ export const prepare_quartz = (
 		})
 		#use = new UseQuartz(this.#rerender, shell.context)
 		#rend = UseQuartz.wrap(this.#use, renderer(this.#use))
-
-		#render_with_reactivity = setup_reactivity<P>(
+		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,
 			this.#rerender,
 		)
 
 		render(...props: P) {
 			this.#props = props
-			return this.#render_with_reactivity(...props)
+			return this.#reactivity!.render(...props)
 		}
 
 		reconnected() {
 			UseQuartz.reconnect(this.#use)
+			this.#reactivity = setup_reactivity<P>(
+				this.#rend,
+				this.#rerender,
+			)
 		}
 
 		disconnected() {
 			UseQuartz.disconnect(this.#use)
+			if (this.#reactivity) {
+				this.#reactivity.stop()
+				this.#reactivity = undefined
+			}
 		}
 	}) as (...props: P) => DirectiveResult<any>
 )
