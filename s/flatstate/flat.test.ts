@@ -30,6 +30,35 @@ export default <Suite>{
 		expect(calls).equals(1)
 	},
 
+	async "lean tracking"() {
+		const flat = new Flat()
+		const state = flat.state({count: 0})
+		let collector_calls = 0
+		let responder_calls = 0
+		const lean = flat.lean(() => responder_calls++)
+		const collector = () => {
+			void state.count
+			collector_calls++
+		}
+		expect(collector_calls).equals(0)
+		expect(responder_calls).equals(0)
+
+		lean.collect(collector)
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(0)
+
+		state.count++
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(1)
+
+		state.count++
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(2)
+	},
+
 	async "react to changes from two states"() {
 		const flat = new Flat()
 		const stateA = flat.state({alpha: 0})
