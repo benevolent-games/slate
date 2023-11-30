@@ -36,7 +36,7 @@ export class Flat {
 		return new Proxy<S>(state, this.#proxy_handlers)
 	}
 
-	track<P>(
+	reaction<P>(
 			collector: () => P,
 			responder?: (payload: P) => void,
 		) {
@@ -81,52 +81,6 @@ export class Flat {
 			},
 		}
 	}
-
-	// manual(reaction: Reaction) {
-	// 	const symbol = Symbol()
-	// 	const recorded = this.#recorder.record(
-	// 		() => this.#locker.lock(reaction.collector)
-	// 	)
-	// 	this.#stopper.add(
-	// 		symbol,
-	// 		save_reaction(symbol, recorded, this.#tracker, reaction),
-	// 	)
-	// 	return () => this.#stopper.stop(symbol)
-	// }
-
-	// auto<D>({debounce, discover, collector, responder}: {
-	// 		debounce: boolean
-	// 		discover: boolean
-	// 		collector: () => D
-	// 		responder?: (data: D) => void
-	// 	}) {
-	// 	return this.manual({
-	// 		debounce,
-	// 		discover,
-	// 		collector,
-	// 		responder: responder
-	// 			? () => responder(collector())
-	// 			: collector,
-	// 	})
-	// }
-
-	// reaction<D>(collector: () => D, responder?: (data: D) => void) {
-	// 	return this.auto({
-	// 		debounce: true,
-	// 		discover: false,
-	// 		collector,
-	// 		responder,
-	// 	})
-	// }
-
-	// deepReaction<D>(collector: () => D, responder?: (data: D) => void) {
-	// 	return this.auto({
-	// 		debounce: true,
-	// 		discover: true,
-	// 		collector,
-	// 		responder,
-	// 	})
-	// }
 
 	clear() {
 		this.#tracker.clear()

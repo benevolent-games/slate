@@ -16,7 +16,7 @@ export default <Suite>{
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let calls = 0
-		flat.track(
+		flat.reaction(
 			() => void state.count,
 			() => calls++,
 		)
@@ -64,7 +64,7 @@ export default <Suite>{
 		const stateA = flat.state({alpha: 0})
 		const stateB = flat.state({bravo: 0})
 		let calls = 0
-		flat.track(
+		flat.reaction(
 			() => {
 				void stateA.alpha
 				void stateB.bravo
@@ -86,7 +86,7 @@ export default <Suite>{
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let calls = 0
-		flat.track(() => {
+		flat.reaction(() => {
 			void state.count
 			calls++
 		})
@@ -102,7 +102,7 @@ export default <Suite>{
 		const state = flat.state({count: 0, greeting: "hello"})
 		let a: number = -1
 		let b: string = ""
-		flat.track(
+		flat.reaction(
 			() => ({
 				count: state.count,
 				greeting: state.greeting,
@@ -126,7 +126,7 @@ export default <Suite>{
 		const state = flat.state({count: 0})
 		let collect = 0
 		let respond = 0
-		flat.track(
+		flat.reaction(
 			() => {
 				void state.count
 				collect++
@@ -148,7 +148,7 @@ export default <Suite>{
 		await expect(async() => {
 			const flat = new Flat()
 			const state = flat.state({count: 0})
-			flat.track(
+			flat.reaction(
 				() => {
 					state.count = 123
 					return {count: state.count}
@@ -161,7 +161,7 @@ export default <Suite>{
 		await expect(async() => {
 			const flat = new Flat()
 			const state = flat.state({count: 0})
-			flat.track(
+			flat.reaction(
 				() => ({count: state.count}),
 				() => { state.count = 123 },
 			)
@@ -172,7 +172,7 @@ export default <Suite>{
 		await expect(async() => {
 			const flat = new Flat()
 			const state = flat.state({count: 0})
-			flat.track(() => state.count = 123)
+			flat.reaction(() => state.count = 123)
 			await flat.wait
 		}).throws()
 	},
@@ -209,7 +209,7 @@ export default <Suite>{
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let called = false
-		const stop = flat.track(() => {
+		const stop = flat.reaction(() => {
 			void state.count
 			called = true
 		})
@@ -233,15 +233,15 @@ export default <Suite>{
 		let a = 0
 		let b = 0
 		let c = 0
-		flat.track(
+		flat.reaction(
 			() => void state.count,
 			() => a++,
 		)
-		flat.track(
+		flat.reaction(
 			() => void state.count,
 			() => b++,
 		)
-		flat.track(
+		flat.reaction(
 			() => { void state2.count; void state2.count },
 			() => c++,
 		)
@@ -263,7 +263,7 @@ export default <Suite>{
 			inner: undefined as (undefined | {count: number})
 		})
 		let last_count: undefined | number
-		flat.track(() => {
+		flat.reaction(() => {
 			last_count = outer.inner?.count
 		})
 		expect(last_count).equals(undefined)
@@ -291,11 +291,11 @@ export default <Suite>{
 			B2: false,
 		}
 
-		flatA.track(() => { void stateA1.count; reactions.A1 = true })
-		flatA.track(() => { void stateA2.count; reactions.A2 = true })
+		flatA.reaction(() => { void stateA1.count; reactions.A1 = true })
+		flatA.reaction(() => { void stateA2.count; reactions.A2 = true })
 
-		flatB.track(() => { void stateB1.count; reactions.B1 = true })
-		flatB.track(() => { void stateB2.count; reactions.B2 = true })
+		flatB.reaction(() => { void stateB1.count; reactions.B1 = true })
+		flatB.reaction(() => { void stateB2.count; reactions.B2 = true })
 
 		reactions.A1 = false
 		reactions.A2 = false
@@ -322,7 +322,7 @@ export default <Suite>{
 		const state = flat.state({count: 0})
 		const rstate = Flat.readonly(state)
 		let called = false
-		flat.track(() => {
+		flat.reaction(() => {
 			void rstate.count
 			called = true
 		})
@@ -345,7 +345,7 @@ export default <Suite>{
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let called = false
-		flat.track(() => { void state.count; called = true })
+		flat.reaction(() => { void state.count; called = true })
 
 		called = false
 		state.count++
@@ -367,11 +367,11 @@ export default <Suite>{
 		})
 		let outer_called = false
 		let inner_called = false
-		flat.track(() => {
+		flat.reaction(() => {
 			void outer.count
 			outer_called = true
 		})
-		flat.track(() => {
+		flat.reaction(() => {
 			void outer.inner.count
 			inner_called = true
 		})

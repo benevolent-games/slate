@@ -64,7 +64,7 @@ export default <Suite>{
 			const alpha = tower.signal(0)
 			const bravo = tower.signal(0)
 			let calls = 0
-			tower.track(
+			tower.reaction(
 				() => {
 					void alpha.value
 					void bravo.value
@@ -84,7 +84,7 @@ export default <Suite>{
 			const alpha = tower.signal(0)
 			const bravo = tower.signal(0)
 			let calls = 0
-			tower.track(
+			tower.reaction(
 				() => {
 					if (alpha.value > 0)
 						void bravo.value
@@ -109,7 +109,7 @@ export default <Suite>{
 			const tower = new SignalTower()
 			const count = tower.signal(0)
 			let calls = 0
-			tower.track(
+			tower.reaction(
 				() => void count.value,
 				() => calls++,
 			)
@@ -122,7 +122,7 @@ export default <Suite>{
 			const tower = new SignalTower()
 			const count = tower.signal(1)
 			let reaction = 0
-			tower.track(
+			tower.reaction(
 				() => count.value * 2,
 				doubled => reaction = doubled,
 			)
@@ -139,7 +139,7 @@ export default <Suite>{
 			const tower = new SignalTower()
 			const count = tower.signal(0)
 			let calls = 0
-			tower.track(() => {
+			tower.reaction(() => {
 				void count.value
 				calls++
 			})
@@ -154,11 +154,11 @@ export default <Suite>{
 			const doubled = tower.computed(() => count.value * 2)
 			let count_calls = 0
 			let doubled_calls = 0
-			tower.track(() => {
+			tower.reaction(() => {
 				void count.value
 				count_calls++
 			})
-			tower.track(() => {
+			tower.reaction(() => {
 				void doubled.value
 				doubled_calls++
 			})

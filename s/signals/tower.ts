@@ -21,7 +21,7 @@ export class SignalTower {
 
 	computed<V>(fun: () => V) {
 		const signal = this.signal<V>(fun())
-		this.track(() => { signal.value = fun() })
+		this.reaction(() => { signal.value = fun() })
 		return signal
 	}
 
@@ -37,7 +37,7 @@ export class SignalTower {
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 
-	track<P>(collector: () => P, responder?: (payload: P) => void) {
+	reaction<P>(collector: () => P, responder?: (payload: P) => void) {
 		const tracker = new SignalTracker({
 			waiters: this.#waiters,
 			all_signals: this.#signals,
