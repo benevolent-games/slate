@@ -1,7 +1,6 @@
 
 import {Flat} from "../../flatstate/flat.js"
 import {SignalTower} from "../../signals/tower.js"
-import {debounce} from "../../tools/debounce/debounce.js"
 import {Collector, Responder} from "../../flatstate/parts/types.js"
 
 export class Reactor {
@@ -20,22 +19,24 @@ export class Reactor {
 
 	reaction<P>(
 			collector: Collector<P>,
-			responder: Responder<P>,
+			responder?: Responder<P>,
 		) {
 
-		const r = debounce(0, responder)
+		const actuate = responder
+			? () => responder(runCollector())
+			: () => runCollector()
 
-		const stop_f = this.flat.reaction(collector, payload => {
-			this.#wait = r(payload)
-		})
+		const lean1 = this.flat.lean(actuate)
+		const lean2 = this.signals.lean(actuate)
 
-		const stop_r = this.signals.reaction(collector, payload => {
-			this.#wait = r(payload)
-		})
+		function runCollector() {
+			return lean1.collect(() => lean2.collect(collector))
+		}
 
+		runCollector()
 		return () => {
-			stop_f()
-			stop_r()
+			lean1.stop()
+			lean2.stop()
 		}
 	}
 }
