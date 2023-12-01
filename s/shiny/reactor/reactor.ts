@@ -1,7 +1,7 @@
 
 import {Flat} from "../../flatstate/flat.js"
 import {SignalTower} from "../../signals/tower.js"
-import {Collector, Responder} from "../../flatstate/parts/types.js"
+import {Collector, Lean, Responder} from "../../flatstate/parts/types.js"
 
 export class Reactor {
 	#wait: Promise<void> = Promise.resolve()
@@ -23,20 +23,27 @@ export class Reactor {
 		) {
 
 		const actuate = responder
-			? () => responder(runCollector())
-			: () => runCollector()
+			? () => responder(collect())
+			: () => collect()
 
-		const lean1 = this.flat.lean(actuate)
-		const lean2 = this.signals.lean(actuate)
+		const lean = this.lean(actuate)
+		const collect = () => lean.collect(collector)
 
-		function runCollector() {
-			return lean1.collect(() => lean2.collect(collector))
-		}
+		collect()
+		return lean.stop
+	}
 
-		runCollector()
-		return () => {
-			lean1.stop()
-			lean2.stop()
+	lean(actor: () => void): Lean {
+		const lean1 = this.flat.lean(actor)
+		const lean2 = this.signals.lean(actor)
+		return {
+			stop() {
+				lean1.stop()
+				lean2.stop()
+			},
+			collect(collector) {
+				return lean1.collect(() => lean2.collect(collector))
+			},
 		}
 	}
 }

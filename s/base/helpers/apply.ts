@@ -37,13 +37,20 @@ export namespace apply {
 		)
 	)
 
+	export const reactor = (
+		(r = state.reactor) => (
+			<E extends BaseElementClasses>(elements: E) => (
+				ob.map(elements, (Element: any) => mixin.reactor(r)(Element))
+			)
+		)
+	)
+
 	export const context = (
 		(context: Context) => (
 			<E extends BaseElementClasses>(elements: E) => (
 				Pipe.with(elements)
 					.to(css(context.theme))
-					.to(flat(state.flat))
-					.to(signals(state.signals))
+					.to(reactor())
 					.done() as E
 			)
 		)

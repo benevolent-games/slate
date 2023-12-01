@@ -1,6 +1,8 @@
 
 import {CSSResultGroup} from "lit"
 
+import * as state from "../../shiny/state.js"
+
 import {Flat} from "../../flatstate/flat.js"
 import {BaseElementClass} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
@@ -65,12 +67,37 @@ export namespace mixin {
 				#lean: Lean | null = null
 
 				render() {
-					return this.#lean!.collect(() => super.render())
+					return this.#lean?.collect(() => super.render())
 				}
 
 				connectedCallback() {
 					super.connectedCallback()
 					this.#lean = flat.lean(() => this.requestUpdate())
+				}
+
+				disconnectedCallback() {
+					super.disconnectedCallback()
+					if (this.#lean) {
+						this.#lean.stop()
+						this.#lean = null
+					}
+				}
+			}
+		}
+	}
+
+	export function reactor(r = state.reactor) {
+		return function<C extends BaseElementClass>(Base: C): C {
+			return class extends Base {
+				#lean: Lean | null = null
+
+				render() {
+					return this.#lean?.collect(() => super.render())
+				}
+
+				connectedCallback() {
+					super.connectedCallback()
+					this.#lean = r.lean(() => this.requestUpdate())
 				}
 
 				disconnectedCallback() {
