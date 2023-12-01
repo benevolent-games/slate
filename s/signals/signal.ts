@@ -1,9 +1,8 @@
 
 import {SignalListener} from "./parts/listener.js"
+import {accessed} from "./parts/accessed_symbol.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {SignalCircularError} from "./parts/circular_error.js"
-
-export const accessed = Symbol()
 
 export class Signal<V> {
 	#value: V

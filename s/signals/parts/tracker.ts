@@ -1,5 +1,6 @@
 
-import {Signal, accessed} from "../signal.js"
+import {Signal} from "../signal.js"
+import {accessed} from "./accessed_symbol.js"
 import {Collector} from "../../reactor/types.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 
