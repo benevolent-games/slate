@@ -260,7 +260,6 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
   ```
 
 ### useful accessors
-
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
@@ -318,7 +317,7 @@ import {GoldElement, SilverElement, attributes, flat} from "@benev/slate"
 
 ```ts
 export class MyGold extends GoldElement {
-  static styles = css`span {color: blue}`
+  static get styles() { return css`span {color: blue}` }
 
   #attrs = attributes(this as GoldElement, {
     label: String
@@ -380,7 +379,7 @@ register_to_dom({
 
 ## 🔮 deferred context
 
-you can extend the context with anything you'd like to make easily available:
+you can extend the context with anything you'd like to make easily available to your components and views:
 
 ```ts
 export const slate = new Slate(
@@ -390,7 +389,7 @@ export const slate = new Slate(
 )
 ```
 
-but since your components are importing `slate`, this context is being created *at import-time.*
+but since your components are importing `slate`, the above example creates the context *at import-time.*
 
 you may instead prefer to *defer* the creation of your context until later, at *run-time:*
 
@@ -404,7 +403,8 @@ export class MyContext extends Context {
 export slate = new Slate<MyContext>()
 
 //
-// ... later, maybe in your main.ts ...
+// ... later in another file,
+// maybe in your main.ts ...
 //
 
 // instance and assign your context, now, at runtime
@@ -584,6 +584,48 @@ flatstate is inspired by mobx and snapstate, but designed to be simpler. flatsta
   const elements2 = apply.flat(flat)(elements)
   ```
   - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, carbon, and oxygen
+
+<br/>
+
+## ☢️ reactor
+
+create reactions that listen to both signals and flatstates at the same time.
+
+signals and flat both share the same reaction syntax, but they are separate state management systems. `reactor` lets you combine both.
+
+- you can use one-function reaction syntax:
+  ```ts
+  import {reactor, flat, signals} from "@benev/slate"
+
+  const state = flat.state({count: 0})
+  const count = signals.signal(0)
+
+  // use the reactor to setup a reaction
+  reactor.reaction(() => console.log(`
+    flat count is ${state.count},
+    signal count is ${count.value}
+  `))
+  ```
+- two-function reaction syntax:
+  ```ts
+  reactor.reaction(
+    () => ({a: state.count, b: count.value}),
+    results => console.log(results),
+  )
+  ```
+- reactions can be stopped:
+  ```ts
+  const stop = reactor.reaction(
+    () => console.log(state.count)
+  )
+
+  // end this reaction
+  stop()
+  ```
+- wait for the debouncer:
+  ```ts
+  await reactor.wait
+  ```
 
 <br/>
 
