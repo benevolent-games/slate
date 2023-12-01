@@ -1,4 +1,30 @@
 
+### v0.0.0
+
+in this recent work, the `flat` and `signals` state management apis are converging.
+
+- ❗ removed synonyms `slate.carbon`, `slate.oxygen`, `slate.obsidian`, `slate.quartz`
+  - now you should use `slate.shadow_component`, `slate.light_component`, `slate.shadow_view`, `slate.shadow_component` respectively
+- ❗ `flat` breaking changes
+  - removed `.manual`, `.auto`, `.deepReaction`
+  - flat now implements `ReactorCore`
+    - `.reaction` always has debouncing and discovery enabled
+    - `.wait` to wait for the debouncer to fire responders
+    - `.lean` for advanced integrations
+- ❗ `signals` breaking changes
+  - removed `.track` (now you should use `.reaction` instead)
+  - signals now implements `ReactorCore`
+    - `.reaction` always has debouncing and discovery enabled
+    - `.wait` to wait for the debouncer to fire responders
+    - `.lean` for advanced integrations
+- 🍏 added new state management system called `reactor`
+  - implements `ReactorCore` (has `.reaction`, `.wait`, and `.lean`)
+  - reactor *combines* both flatstate and signals reactivity
+  - so you can make reactions that listen to both flatstates and signals
+  - see usage examples in the readme
+- note, there are no changes to `watch`
+  - `watch` is fundamentally different than flatstate and signals, and is not suitable to become a ReactorCore
+
 ### v0.0.0-dev.28
 
 - !! change Initiator signature, added `.cleanup` helpers
