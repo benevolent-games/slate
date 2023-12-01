@@ -1,11 +1,11 @@
 
 import {Signal, accessed} from "../signal.js"
-import {Collector} from "../../flatstate/parts/types.js"
+import {Collector} from "../../reactor/types.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 
 export type LeanTrack = {
 	lean: true
-	responder: () => void
+	actor: () => void
 }
 
 export type NormalTrack<P> = {
@@ -35,7 +35,7 @@ export class SignalTracker {
 	#actuate = debounce(0, (track: Track<any>) => {
 		if (this.#active) {
 			if ("lean" in track)
-				track.responder()
+				track.actor()
 			else {
 				const {payload, recording} = this.observe(track.collector)
 				this.add_listeners(track, recording)

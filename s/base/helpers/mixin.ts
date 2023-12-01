@@ -3,10 +3,10 @@ import {CSSResultGroup} from "lit"
 
 import * as state from "../../shiny/state.js"
 
+import {Lean} from "../../reactor/types.js"
 import {Flat} from "../../flatstate/flat.js"
 import {BaseElementClass} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
-import {Lean} from "../../flatstate/parts/types.js"
 
 export namespace mixin {
 

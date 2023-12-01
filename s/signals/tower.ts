@@ -3,10 +3,10 @@ import {Op} from "../op/op.js"
 import {ob} from "../tools/ob.js"
 import {Signal} from "./signal.js"
 import {OpSignal} from "./op_signal.js"
+import {Lean, ReactorCore} from "../reactor/types.js"
 import {LeanTrack, NormalTrack, SignalTracker} from "./parts/tracker.js"
-import { Collector, Lean } from "../flatstate/parts/types.js"
 
-export class SignalTower {
+export class SignalTower implements ReactorCore {
 
 	// TODO wrap all signals in WeakRef, to promote garbage collection?
 	#signals = new Set<Signal<any>>()
@@ -48,12 +48,12 @@ export class SignalTower {
 		return () => tracker.shutdown()
 	}
 
-	lean(responder: () => void): Lean {
+	lean(actor: () => void): Lean {
 		const tracker = new SignalTracker({
 			waiters: this.#waiters,
 			all_signals: this.#signals,
 		})
-		const track: LeanTrack = {lean: true, responder}
+		const track: LeanTrack = {lean: true, actor}
 		return {
 			stop: () => tracker.shutdown(),
 			collect: collector => {

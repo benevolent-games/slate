@@ -18,7 +18,7 @@ export function proxy_handlers(
 
 	function actuate([symbol, reaction]: [symbol, Reaction<any>]) {
 		if ("lean" in reaction) {
-			reaction.responder()
+			reaction.actor()
 		}
 		else {
 			const {payload, recording} = recorder.record(reaction.collector)

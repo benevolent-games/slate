@@ -1,7 +1,7 @@
 
 import {Flat} from "../flatstate/flat.js"
 import {WatchTower} from "../watch/tower.js"
-import {Reactor} from "./reactor/reactor.js"
+import {Reactor} from "../reactor/reactor.js"
 import {SignalTower} from "../signals/tower.js"
 
 export const flat = new Flat()

@@ -1,5 +1,4 @@
 
-import {Lean} from "./parts/types.js"
 import {Locker} from "./parts/locker.js"
 import {Tracker} from "./parts/tracker.js"
 import {Stopper} from "./parts/stopper.js"
@@ -7,10 +6,11 @@ import {Recorder} from "./parts/recorder.js"
 import {readonly} from "./parts/readonly.js"
 import {Scheduler} from "./parts/scheduler.js"
 import {collectivize} from "./parts/collectivize.js"
+import {Lean, ReactorCore} from "../reactor/types.js"
 import {save_reaction} from "./parts/save_reaction.js"
 import {proxy_handlers} from "./parts/proxy_handlers.js"
 
-export class Flat {
+export class Flat implements ReactorCore {
 	static readonly = readonly
 	static collectivize = collectivize
 
@@ -36,11 +36,7 @@ export class Flat {
 		return new Proxy<S>(state, this.#proxy_handlers)
 	}
 
-	reaction<P>(
-			collector: () => P,
-			responder?: (payload: P) => void,
-		) {
-
+	reaction<P>(collector: () => P, responder?: (payload: P) => void) {
 		const symbol = Symbol()
 
 		const {recording} = this.#recorder.record(
@@ -60,7 +56,7 @@ export class Flat {
 		return () => this.#stopper.stop(symbol)
 	}
 
-	lean(responder: () => void): Lean {
+	lean(actor: () => void): Lean {
 		const symbol = Symbol()
 		return {
 			stop: () => this.#stopper.stop(symbol),
@@ -74,7 +70,7 @@ export class Flat {
 						symbol,
 						recording,
 						this.#tracker,
-						{lean: true, responder},
+						{lean: true, actor},
 					),
 				)
 				return payload

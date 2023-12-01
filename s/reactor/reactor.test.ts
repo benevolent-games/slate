@@ -2,8 +2,8 @@
 import {Suite, expect} from "cynic"
 
 import {Reactor} from "./reactor.js"
-import {Flat} from "../../flatstate/flat.js"
-import {SignalTower} from "../../signals/tower.js"
+import {Flat} from "../flatstate/flat.js"
+import {SignalTower} from "../signals/tower.js"
 
 function setup() {
 	return new Reactor(

@@ -1,7 +1,8 @@
 
+import {Recording} from "./types.js"
 import {make_map, make_set} from "./makers.js"
 import {maptool} from "../../tools/maptool.js"
-import {Collector, Recording} from "./types.js"
+import {Collector} from "../../reactor/types.js"
 
 export class Recorder {
 	#recordings: Recording[] = []

@@ -1,9 +1,9 @@
 
-import {Flat} from "../../flatstate/flat.js"
-import {SignalTower} from "../../signals/tower.js"
-import {Collector, Lean, Responder} from "../../flatstate/parts/types.js"
+import {Flat} from "../flatstate/flat.js"
+import {SignalTower} from "../signals/tower.js"
+import {Collector, Lean, ReactorCore, Responder} from "./types.js"
 
-export class Reactor {
+export class Reactor implements ReactorCore {
 	#wait: Promise<void> = Promise.resolve()
 
 	constructor(
@@ -17,11 +17,7 @@ export class Reactor {
 			.then(() => this.#wait)
 	}
 
-	reaction<P>(
-			collector: Collector<P>,
-			responder?: Responder<P>,
-		) {
-
+	reaction<P>(collector: Collector<P>, responder?: Responder<P>) {
 		const actuate = responder
 			? () => responder(collect())
 			: () => collect()
