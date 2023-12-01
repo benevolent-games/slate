@@ -11,16 +11,11 @@ import {BaseElementClasses} from "../base/element.js"
 export class Slate<C extends Context> extends Shell<C> {
 	constructor(context?: C) {
 		super(context)
-		this.light_component = this.oxygen = prepare_oxygen(this)
-		this.shadow_component = this.carbon = prepare_carbon(this)
-		this.light_view = this.quartz = prepare_quartz(this)
-		this.shadow_view = this.obsidian = prepare_obsidian(this)
+		this.light_component = prepare_oxygen(this)
+		this.shadow_component = prepare_carbon(this)
+		this.light_view = prepare_quartz(this)
+		this.shadow_view = prepare_obsidian(this)
 	}
-
-	oxygen: ReturnType<typeof prepare_oxygen<C>>
-	carbon: ReturnType<typeof prepare_carbon<C>>
-	quartz: ReturnType<typeof prepare_quartz<C>>
-	obsidian: ReturnType<typeof prepare_obsidian<C>>
 
 	light_component: ReturnType<typeof prepare_oxygen<C>>
 	shadow_component: ReturnType<typeof prepare_carbon<C>>
