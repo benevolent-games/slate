@@ -1,6 +1,7 @@
 
 import {Suite, expect} from "cynic"
 import {Flat} from "./flat.js"
+import { nap } from "../tools/nap.js"
 
 export default <Suite>{
 
@@ -177,33 +178,33 @@ export default <Suite>{
 		}).throws()
 	},
 
-	// async "nested rendering doesn't cause circular issues"() {
-	// 	const flat = new Flat()
-	// 	const state = flat.state({outer: 0, inner: 0})
-	// 	let outerCalls = 0
-	// 	let innerCalls = 0
+	async "nested rendering doesn't cause circular issues"() {
+		const flat = new Flat()
+		const state = flat.state({outer: 0, inner: 0})
+		let outerCalls = 0
+		let innerCalls = 0
 
-	// 	flat.track(
-	// 		() => {
-	// 			void state.outer
-	// 			flat.track(
-	// 				() => void state.inner,
-	// 				() => innerCalls++,
-	// 			)
-	// 		},
-	// 		() => outerCalls++,
-	// 	)
+		flat.reaction(
+			() => {
+				void state.outer
+				flat.reaction(
+					() => void state.inner,
+					() => innerCalls++,
+				)
+			},
+			() => outerCalls++,
+		)
 
-	// 	state.outer++
-	// 	await flat.wait
-	// 	expect(outerCalls).equals(1)
-	// 	expect(innerCalls).equals(0)
+		state.outer++
+		await flat.wait
+		expect(outerCalls).equals(1)
+		expect(innerCalls).equals(0)
 
-	// 	state.inner++
-	// 	await flat.wait
-	// 	expect(outerCalls).equals(1)
-	// 	expect(innerCalls).equals(1)
-	// },
+		state.inner++
+		await flat.wait
+		expect(outerCalls).equals(1)
+		expect(innerCalls).equals(2)
+	},
 
 	async "stop a reaction"() {
 		const flat = new Flat()
