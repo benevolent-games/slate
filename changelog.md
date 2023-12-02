@@ -3,15 +3,15 @@
 
 in this recent work, the `flat` and `signals` state management apis are converging.
 
-- ❗ removed synonyms `slate.carbon`, `slate.oxygen`, `slate.obsidian`, `slate.quartz`
+- 🟥 removed synonyms `slate.carbon`, `slate.oxygen`, `slate.obsidian`, `slate.quartz`
   - now you should use `slate.shadow_component`, `slate.light_component`, `slate.shadow_view`, `slate.shadow_component` respectively
-- ❗ `flat` breaking changes
+- 🟥 `flat` breaking changes
   - removed `.manual`, `.auto`, `.deepReaction`
   - flat now implements `ReactorCore`
     - `.reaction` always has debouncing and discovery enabled
     - `.wait` to wait for the debouncer to fire responders
     - `.lean` for advanced integrations
-- ❗ `signals` breaking changes
+- 🟥 `signals` breaking changes
   - removed `.track` (now you should use `.reaction` instead)
   - signals now implements `ReactorCore`
     - `.reaction` always has debouncing and discovery enabled
@@ -33,23 +33,23 @@ in this recent work, the `flat` and `signals` state management apis are convergi
 
 ### v0.0.0-dev.28
 
-- ❗ change Initiator signature, added `.cleanup` helpers
+- 🟥 change Initiator signature, added `.cleanup` helpers
 
 ### v0.0.0-dev.27
 
-- ❗ replace WatchBox with Signal
-- ❗ WatchTower now requires SignalTower as a param
+- 🟥 replace WatchBox with Signal
+- 🟥 WatchTower now requires SignalTower as a param
 - 🍏 add exports 'flatstate' and 'signal'
 - 🍏 add ZipAction.prep, ZipAction.prepAction, ZipAction.prepBlueprint
 
 ### v0.0.0-dev.25
 
-- ❗ `flat`, `signals`, and `watch` removed from `Context`
+- 🟥 `flat`, `signals`, and `watch` removed from `Context`
   ```ts
   // now we do this
   import {flat, signals, watch} from "@benev/slate"
   ```
-- ❗ `setup` replaced with `Slate` class
+- 🟥 `setup` replaced with `Slate` class
   ```ts
   // old
   const slate = setup(context)
@@ -61,7 +61,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
 
 ### v0.0.0-dev.21
 
-- ❗ renamed `prepare_frontend` to `setup`
+- 🟥 renamed `prepare_frontend` to `setup`
 - 🍏 added synonyms
   - `carbon` => `shadow_component`
   - `oxygen` => `light_component`
@@ -70,7 +70,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
 
 ### v0.0.0-dev.16
 
-- ❗ significant rework
+- 🟥 significant rework
   - introduce experimental new `context.watch` WatchTower and StateTree systems
   - rename `context.tower` to `context.signals`
   - `prepare_frontend` usage changes
@@ -86,7 +86,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
 
 ### v0.0.0-dev.6
 
-- ❗ massive rework
+- 🟥 massive rework
   - deleted shale and clay views
   - added obsidian/quartz views
   - added carbon/oxygen elements
