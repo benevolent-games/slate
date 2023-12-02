@@ -1,5 +1,5 @@
 
-import {Fun} from "./types.js"
+import {Fn} from "./types.js"
 
 export class Stopper {
 	#map = new Map<symbol, () => void>
@@ -12,7 +12,7 @@ export class Stopper {
 		}
 	}
 
-	add(symbol: symbol, fun: Fun) {
+	add(symbol: symbol, fun: Fn) {
 		this.#map.set(symbol, fun)
 	}
 }

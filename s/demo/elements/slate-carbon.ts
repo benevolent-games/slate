@@ -6,7 +6,7 @@ const random = () => Math.ceil(Math.random() * 1000)
 
 const styles = css`button { color: green }`
 
-export const SlateCarbon = slate.carbon({styles}, use => {
+export const SlateCarbon = slate.shadow_component({styles}, use => {
 	const x = use.signal(random)
 	const randomize = () => x.value = random()
 

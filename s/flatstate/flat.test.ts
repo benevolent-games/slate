@@ -1,6 +1,7 @@
 
 import {Suite, expect} from "cynic"
 import {Flat} from "./flat.js"
+import { nap } from "../tools/nap.js"
 
 export default <Suite>{
 
@@ -15,28 +16,60 @@ export default <Suite>{
 	async "react to change"() {
 		const flat = new Flat()
 		const state = flat.state({count: 0})
-		const c = Flat.collectivize(state)
-		let calls = false
+		let calls = 0
 		flat.reaction(
-			c(({count}) => ({count})),
-			() => { calls = true },
+			() => void state.count,
+			() => calls++,
 		)
-		expect(calls).equals(false)
 		expect(state.count).equals(0)
+		expect(calls).equals(0)
 		state.count = 123
+		expect(state.count).equals(123)
+		expect(calls).equals(0)
 		await flat.wait
 		expect(state.count).equals(123)
-		expect(calls).equals(true)
+		expect(calls).equals(1)
+	},
+
+	async "lean tracking"() {
+		const flat = new Flat()
+		const state = flat.state({count: 0})
+		let collector_calls = 0
+		let responder_calls = 0
+		const lean = flat.lean(() => responder_calls++)
+		const collector = () => {
+			void state.count
+			collector_calls++
+		}
+		expect(collector_calls).equals(0)
+		expect(responder_calls).equals(0)
+
+		lean.collect(collector)
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(0)
+
+		state.count++
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(1)
+
+		state.count++
+		await flat.wait
+		expect(collector_calls).equals(1)
+		expect(responder_calls).equals(2)
 	},
 
 	async "react to changes from two states"() {
 		const flat = new Flat()
 		const stateA = flat.state({alpha: 0})
 		const stateB = flat.state({bravo: 0})
-		const c = Flat.collectivize(() => ({...stateA, ...stateB}))
 		let calls = 0
 		flat.reaction(
-			c(({alpha, bravo}) => ({alpha, bravo})),
+			() => {
+				void stateA.alpha
+				void stateB.bravo
+			},
 			() => calls++,
 		)
 		calls = 0
@@ -50,21 +83,19 @@ export default <Suite>{
 		expect(calls).equals(2)
 	},
 
-	async "reaction with only one function"() {
+	async "react with only one function"() {
 		const flat = new Flat()
 		const state = flat.state({count: 0})
-		let called = false
+		let calls = 0
 		flat.reaction(() => {
 			void state.count
-			called = true
+			calls++
 		})
-		expect(called).equals(true)
-		expect(state.count).equals(0)
-		called = false
+		expect(calls).equals(1)
 		state.count = 123
 		await flat.wait
 		expect(state.count).equals(123)
-		expect(called).equals(true)
+		expect(calls).equals(2)
 	},
 
 	async "reaction collector can pass data to responder"() {
@@ -73,7 +104,10 @@ export default <Suite>{
 		let a: number = -1
 		let b: string = ""
 		flat.reaction(
-			() => ({count: state.count, greeting: state.greeting}),
+			() => ({
+				count: state.count,
+				greeting: state.greeting,
+			}),
 			({count, greeting}) => {
 				a = count
 				b = greeting
@@ -88,49 +122,21 @@ export default <Suite>{
 		expect(b).equals("hello world")
 	},
 
-	async "manual can be efficient"() {
-		const flat = new Flat()
-		const state = flat.state({count: 0})
-		let collect = false
-		let respond = false
-		flat.manual({
-			debounce: true,
-			discover: false,
-			collector: () => {
-				void state.count
-				collect = true
-			},
-			responder: () => {
-				void state.count
-				respond = true
-			},
-		})
-		expect(collect).equals(true)
-		expect(respond).equals(false)
-		collect = false
-		respond = false
-		state.count++
-		await flat.wait
-		expect(collect).equals(false)
-		expect(respond).equals(true)
-	},
-
-	async "efficient discovery"() {
+	async "track is efficient"() {
 		const flat = new Flat()
 		const state = flat.state({count: 0})
 		let collect = 0
 		let respond = 0
-		flat.manual({
-			debounce: true,
-			discover: true,
-			collector: () => {
+		flat.reaction(
+			() => {
 				void state.count
 				collect++
 			},
-			responder: () => {
+			() => {
+				void state.count
 				respond++
 			},
-		})
+		)
 		expect(collect).equals(1)
 		expect(respond).equals(0)
 		state.count++
@@ -140,30 +146,26 @@ export default <Suite>{
 	},
 
 	async "circular loops are forbidden"() {
-		const settings = {debounce: true, discover: false}
-
 		await expect(async() => {
 			const flat = new Flat()
 			const state = flat.state({count: 0})
-			flat.manual({
-				...settings,
-				collector: () => {
+			flat.reaction(
+				() => {
 					state.count = 123
 					return {count: state.count}
 				},
-				responder: () => {},
-			})
+				() => {},
+			)
 			await flat.wait
 		}).throws()
 
 		await expect(async() => {
 			const flat = new Flat()
 			const state = flat.state({count: 0})
-			flat.manual({
-				...settings,
-				collector: () => ({count: state.count}),
-				responder: () => { state.count = 123 },
-			})
+			flat.reaction(
+				() => ({count: state.count}),
+				() => { state.count = 123 },
+			)
 			state.count++
 			await flat.wait
 		}).throws()
@@ -182,24 +184,15 @@ export default <Suite>{
 		let outerCalls = 0
 		let innerCalls = 0
 
-		const miniview = (collector: () => void, responder: () => void) => {
-			flat.manual({
-				debounce: true,
-				discover: false,
-				collector,
-				responder,
-			})
-		}
-
-		miniview(
+		flat.reaction(
 			() => {
 				void state.outer
-				miniview(
+				flat.reaction(
 					() => void state.inner,
 					() => innerCalls++,
 				)
 			},
-			() => outerCalls++
+			() => outerCalls++,
 		)
 
 		state.outer++
@@ -210,7 +203,7 @@ export default <Suite>{
 		state.inner++
 		await flat.wait
 		expect(outerCalls).equals(1)
-		expect(innerCalls).equals(1)
+		expect(innerCalls).equals(2)
 	},
 
 	async "stop a reaction"() {
@@ -241,24 +234,18 @@ export default <Suite>{
 		let a = 0
 		let b = 0
 		let c = 0
-		flat.manual({
-			debounce: true,
-			discover: false,
-			collector: () => void state.count,
-			responder: () => a++,
-		})
-		flat.manual({
-			debounce: true,
-			discover: false,
-			collector: () => void state.count,
-			responder: () => b++,
-		})
-		flat.manual({
-			debounce: true,
-			discover: false,
-			collector: () => { void state2.count; void state2.count },
-			responder: () => c++,
-		})
+		flat.reaction(
+			() => void state.count,
+			() => a++,
+		)
+		flat.reaction(
+			() => void state.count,
+			() => b++,
+		)
+		flat.reaction(
+			() => { void state2.count; void state2.count },
+			() => c++,
+		)
 		state.count++
 		state.count++
 		state.count++
@@ -277,7 +264,7 @@ export default <Suite>{
 			inner: undefined as (undefined | {count: number})
 		})
 		let last_count: undefined | number
-		flat.deepReaction(() => {
+		flat.reaction(() => {
 			last_count = outer.inner?.count
 		})
 		expect(last_count).equals(undefined)
@@ -405,23 +392,6 @@ export default <Suite>{
 		await flat.wait
 		expect(outer_called).equals(false)
 		expect(inner_called).equals(true)
-	},
-
-	async "discovery without debounce"() {
-		const flat = new Flat()
-		const state = flat.state({count: 0})
-		let calls = 0
-		flat.manual({
-			discover: true,
-			debounce: false,
-			collector: () => { void state.count },
-			responder: () => {
-				if (calls++ > 10)
-					throw new Error("loop")
-			},
-		})
-		state.count++
-		await flat.wait
 	},
 
 }

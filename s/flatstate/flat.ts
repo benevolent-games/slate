@@ -1,16 +1,16 @@
 
 import {Locker} from "./parts/locker.js"
-import {Reaction} from "./parts/types.js"
 import {Tracker} from "./parts/tracker.js"
 import {Stopper} from "./parts/stopper.js"
 import {Recorder} from "./parts/recorder.js"
 import {readonly} from "./parts/readonly.js"
 import {Scheduler} from "./parts/scheduler.js"
 import {collectivize} from "./parts/collectivize.js"
+import {Lean, ReactorCore} from "../reactor/types.js"
 import {save_reaction} from "./parts/save_reaction.js"
 import {proxy_handlers} from "./parts/proxy_handlers.js"
 
-export class Flat {
+export class Flat implements ReactorCore {
 	static readonly = readonly
 	static collectivize = collectivize
 
@@ -36,50 +36,46 @@ export class Flat {
 		return new Proxy<S>(state, this.#proxy_handlers)
 	}
 
-	manual(reaction: Reaction) {
+	reaction<P>(collector: () => P, responder?: (payload: P) => void) {
 		const symbol = Symbol()
-		const recorded = this.#recorder.record(
-			() => this.#locker.lock(reaction.collector)
+
+		const {recording} = this.#recorder.record(
+			() => this.#locker.lock(collector)
 		)
+
 		this.#stopper.add(
 			symbol,
-			save_reaction(symbol, recorded, this.#tracker, reaction),
+			save_reaction(
+				symbol,
+				recording,
+				this.#tracker,
+				{collector, responder},
+			),
 		)
+
 		return () => this.#stopper.stop(symbol)
 	}
 
-	auto<D>({debounce, discover, collector, responder}: {
-			debounce: boolean
-			discover: boolean
-			collector: () => D
-			responder?: (data: D) => void
-		}) {
-		return this.manual({
-			debounce,
-			discover,
-			collector,
-			responder: responder
-				? () => responder(collector())
-				: collector,
-		})
-	}
-
-	reaction<D>(collector: () => D, responder?: (data: D) => void) {
-		return this.auto({
-			debounce: true,
-			discover: false,
-			collector,
-			responder,
-		})
-	}
-
-	deepReaction<D>(collector: () => D, responder?: (data: D) => void) {
-		return this.auto({
-			debounce: true,
-			discover: true,
-			collector,
-			responder,
-		})
+	lean(actor: () => void): Lean {
+		const symbol = Symbol()
+		return {
+			stop: () => this.#stopper.stop(symbol),
+			collect: collector => {
+				const {payload, recording} = this.#recorder.record(
+					() => this.#locker.lock(collector)
+				)
+				this.#stopper.add(
+					symbol,
+					save_reaction(
+						symbol,
+						recording,
+						this.#tracker,
+						{lean: true, actor},
+					),
+				)
+				return payload
+			},
+		}
 	}
 
 	clear() {

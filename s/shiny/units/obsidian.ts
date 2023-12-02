@@ -8,7 +8,7 @@ import {make_view_root} from "../parts/root.js"
 import {UseObsidian} from "../parts/use/tailored.js"
 import {apply_details} from "../parts/apply_details.js"
 import {debounce} from "../../tools/debounce/debounce.js"
-import {setup_reactivity} from "../parts/setup_reactivity.js"
+import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 import {ObsidianInput, ShadowSettings, ObsidianRenderer} from "../parts/types.js"
 import {obsidian_custom_lit_directive} from "../parts/obsidian_custom_lit_directive.js"
 
@@ -50,8 +50,7 @@ export const prepare_obsidian = (
 
 		#rend = UseObsidian.wrap(this.#use, renderer(this.#use))
 
-		#render_with_reactivity = setup_reactivity<P>(
-			shell.context,
+		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,
 			this.#rerender,
 		)
@@ -66,15 +65,23 @@ export const prepare_obsidian = (
 			this.#root.auto_exportparts = (
 				input.meta.auto_exportparts ?? settings.auto_exportparts ?? true
 			)
-			return this.#render_with_reactivity(...input.props)
+			return this.#reactivity?.render(...input.props)
 		}
 
 		reconnected() {
 			UseObsidian.reconnect(this.#use)
+			this.#reactivity = setup_reactivity<P>(
+				this.#rend,
+				this.#rerender,
+			)
 		}
 
 		disconnected() {
 			UseObsidian.disconnect(this.#use)
+			if (this.#reactivity) {
+				this.#reactivity.stop()
+				this.#reactivity = undefined
+			}
 		}
 	})
 ))

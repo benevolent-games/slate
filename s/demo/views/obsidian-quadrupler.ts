@@ -6,7 +6,7 @@ import {html} from "../../shiny/html.js"
 const name = "quadrupler"
 const styles = css`span { color: yellow }`
 
-export const ObsidianQuadrupler = slate.obsidian({name, styles}, use =>
+export const ObsidianQuadrupler = slate.shadow_view({name, styles}, use =>
 		(start: number) => {
 
 	const count = use.signal(start)

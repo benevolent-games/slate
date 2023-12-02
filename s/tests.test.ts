@@ -7,6 +7,7 @@ import debounce from "./tools/debounce/debounce.test.js"
 import deepEqual from "./tools/deep_equal/deep_equal.test.js"
 import watch from "./watch/watch.test.js"
 import zipAction from "./watch/zip/action.test.js"
+import reactor from "./reactor/reactor.test.js"
 
 export default <Suite>{
 	clone,
@@ -16,5 +17,6 @@ export default <Suite>{
 	deepEqual,
 	watch,
 	zipAction,
+	reactor,
 }
 

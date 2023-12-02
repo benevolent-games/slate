@@ -4,7 +4,7 @@ import {Context} from "../context.js"
 import {OxygenRenderer} from "../parts/types.js"
 import {UseOxygen} from "../parts/use/tailored.js"
 import {SilverElement} from "../../element/silver.js"
-import {setup_reactivity} from "../parts/setup_reactivity.js"
+import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_oxygen = (
 	<C extends Context>(shell: Shell<C>) =>
@@ -19,23 +19,27 @@ export const prepare_oxygen = (
 
 		#rend = UseOxygen.wrap(this.#use, () => renderer(this.#use))
 
-		#render_with_reactivity = setup_reactivity<[]>(
-			shell.context,
-			this.#rend,
-			() => void this.requestUpdate(),
-		)
+		#reactivity?: Reactivity<[]>
 
 		render() {
-			return this.#render_with_reactivity()
+			return this.#reactivity?.render()
 		}
 
 		connectedCallback() {
 			super.connectedCallback()
+			this.#reactivity = setup_reactivity<[]>(
+				this.#rend,
+				() => void this.requestUpdate(),
+			)
 			UseOxygen.reconnect(this.#use)
 		}
 
 		disconnectedCallback() {
 			super.disconnectedCallback()
+			if (this.#reactivity) {
+				this.#reactivity.stop()
+				this.#reactivity = undefined
+			}
 			UseOxygen.disconnect(this.#use)
 		}
 	}

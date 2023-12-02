@@ -2,7 +2,7 @@
 import {slate} from "../frontend.js"
 import {html} from "../../shiny/html.js"
 
-export const QuartzTripler = slate.quartz(use => (start: number) => {
+export const QuartzTripler = slate.light_view(use => (start: number) => {
 
 	// react hooks state
 	const [alpha, setAlpha] = use.state(start)

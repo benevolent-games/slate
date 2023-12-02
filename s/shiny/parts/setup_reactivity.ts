@@ -1,47 +1,22 @@
 
 import {TemplateResult} from "lit"
-import {Context} from "../context.js"
-import {flat, signals} from "../state.js"
+import {reactor} from "../state.js"
+
+export type Reactivity<P extends any[]> = {
+	render: (...props: P) => (TemplateResult | void)
+	stop: () => void
+}
 
 export function setup_reactivity<P extends any[]>(
-		context: Context,
 		render: (...props: P) => (TemplateResult | void),
 		rerender: () => void,
-	): (...props: P) => (TemplateResult | void) {
+	): Reactivity<P> {
 
-	let stop_signals: (() => void) | undefined = undefined
-	let stop_flat: (() => void) | undefined = undefined
+	const lean = reactor.lean(rerender)
 
-	function render_and_track_signals(...props: P) {
-		if (stop_signals)
-			stop_signals()
-
-		let result: TemplateResult | void = undefined
-
-		stop_signals = signals.track(
-			() => { result = render(...props) },
-			rerender,
-		)
-
-		return result
+	return {
+		stop: lean.stop,
+		render: (...props) => lean.collect(() => render(...props)),
 	}
-
-	function render_and_track_flatstate(...props: P) {
-		if (stop_flat)
-			stop_flat()
-
-		let result: TemplateResult | void = undefined
-
-		stop_flat = flat.manual({
-			debounce: true,
-			discover: false,
-			collector: () => { result = render_and_track_signals(...props) },
-			responder: rerender,
-		})
-
-		return result
-	}
-
-	return render_and_track_flatstate
 }
 

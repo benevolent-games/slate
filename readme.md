@@ -260,7 +260,6 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
   ```
 
 ### useful accessors
-
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
@@ -318,7 +317,7 @@ import {GoldElement, SilverElement, attributes, flat} from "@benev/slate"
 
 ```ts
 export class MyGold extends GoldElement {
-  static styles = css`span {color: blue}`
+  static get styles() { return css`span {color: blue}` }
 
   #attrs = attributes(this as GoldElement, {
     label: String
@@ -380,7 +379,7 @@ register_to_dom({
 
 ## 🔮 deferred context
 
-you can extend the context with anything you'd like to make easily available:
+you can extend the context with anything you'd like to make easily available to your components and views:
 
 ```ts
 export const slate = new Slate(
@@ -390,7 +389,7 @@ export const slate = new Slate(
 )
 ```
 
-but since your components are importing `slate`, this context is being created *at import-time.*
+but since your components are importing `slate`, the above example creates the context *at import-time.*
 
 you may instead prefer to *defer* the creation of your context until later, at *run-time:*
 
@@ -404,7 +403,8 @@ export class MyContext extends Context {
 export slate = new Slate<MyContext>()
 
 //
-// ... later, maybe in your main.ts ...
+// ... later in another file,
+// maybe in your main.ts ...
 //
 
 // instance and assign your context, now, at runtime
@@ -444,9 +444,9 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   console.log(count.value) //> 1
   console.log(greeting.value) //> "bonjour"
   ```
-- **track** — react when signals change
+- **reaction** — react when signals change
   ```ts
-  signals.track(() => console.log("doubled", count.value * 2))
+  signals.reaction(() => console.log("doubled", count.value * 2))
   //> doubled 2
 
   count.value = 2
@@ -504,7 +504,7 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
 
 flatstate help you create state objects and react when properties change.
 
-flatstate is inspired by mobx and snapstate, but designed to be super simple: flatstate only works on *flat* state objects, only the direct properties of state objects are tracked for reactivity.
+flatstate is inspired by mobx and snapstate, but designed to be simpler. flatstate only works on *flat* state objects. only the *direct* properties of state objects are tracked for reactivity. this simplicity helps us avoid weird edge-cases or unexpected footguns.
 
 ### flatstate basics
 
@@ -514,32 +514,35 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
 
   const state = flat.state({count: 0})
   ```
-- setup a reaction
+- simple reaction
   ```ts
   flat.reaction(() => console.log(state.count))
-    //> 0
-
-  state.count++
-    //> 1
   ```
-  - flatstate records which state properties your reaction reads
-  - flatstate calls your reaction whenever those specific properties change
+  - flatstate immediately runs the function, and records which properties it reads
+  - then, anytime one of those recorded properties changes, it runs your function again
   - your reaction can listen to more than one state object
-- create a new flatstate tracking context
+- two-function reaction
   ```ts
-  import {Flat} from "@benev/slate"
+  flat.reaction(
 
-  const flat = new Flat()
-    // what happens in this flat, stays in this flat.
-    // you should probably just use the
-    // default `flat` that comes with slate.
+    // your "collector" function
+    () => ({count: state.count}),
+
+    // your "responder" function
+    ({count}) => console.log(count),
+  )
   ```
+  - now there's a separation between your "collector" and your "responder"
+  - the collector "passes" relevant data to the responder function
+  - flatstate calls the responder whenever that data changes
+- stop a reaction
+  ```ts
+  const stop = flat.reaction(() => console.log(state.count))
 
-### flatstate details
-
+  stop() // end this particular reaction
+  ```
 - reactions are debounced -- so you may have to wait to see state changes
   ```ts
-  const flat = new Flat()
   const state = flat.state({amount: 100})
 
   state.amount = 101
@@ -548,54 +551,9 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   await flat.wait
   console.log(state.amount) //> 101 (now it's ready)
   ```
-- you can stop a reaction
-  ```ts
-  const stop = flat.reaction(() => console.log(state.count))
-
-  stop() // end this particular reaction
-  ```
-- clear all reactions on a flatstate instance
-  ```ts
-  // clear all reactions on this flat instance
-  flat.clear()
-  ```
-
-### flatstate reactions
-
-- so first, there's a simple one-function reaction:
-  ```ts
-  flat.reaction(() => console.log(state.count))
-  ```
-  - flatstate immediately runs the function, and records which properties it reads
-  - then, anytime one of those properties changes, it runs your function again
-- you can also do a two-function reaction:
-  ```ts
-  flat.reaction(
-    () => ({count: state.count}),
-    ({count}) => console.log(count),
-  )
-  ```
-  - now there's a separation between your "collector" and your "responder"
-  - the collector "passes" relevant data to the responder function
-  - flatstate calls the responder whenever that data changes
-- there's also something called "deepReaction"
-  ```ts
-  flat.deepReaction(() => console.log(state.count))
-  ```
-  - it's the same as "reaction", but it has "discovery" enabled
-  - discovery means the collector is checked again for every responder call
-  - it's less efficient, but allows you to respond to deeply nested recursive structures
-- there's also `.auto` and `.manual` reactions
-  - these allow you to set options like `discovery` and `debounce` (you can turn off the debouncer)
-  - but that's bigbrain stuff that you'll have to read the sourcecode about
 
 ### flatstate advanced
 
-- multiple flatstate instances are totally isolated from each other
-  ```ts
-  const flat1 = new Flat()
-  const flat2 = new Flat()
-  ```
 - create readonly access to a state object
   ```ts
   const state = flat.state({count: 0})
@@ -608,6 +566,11 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   rstate.count = 2 // !! ReadonlyError !!
   ```
   - btw, you can use readonly on anything, not just flatstate
+- multiple flatstate instances are totally isolated from each other
+  ```ts
+  const flat1 = new Flat()
+  const flat2 = new Flat()
+  ```
 
 ### flatstate integration with frontend elements
 
@@ -621,6 +584,48 @@ flatstate is inspired by mobx and snapstate, but designed to be super simple: fl
   const elements2 = apply.flat(flat)(elements)
   ```
   - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, carbon, and oxygen
+
+<br/>
+
+## ☢️ reactor
+
+create reactions that listen to both signals and flatstates at the same time.
+
+signals and flat both share the same reaction syntax, but they are separate state management systems. `reactor` lets you combine both.
+
+- you can use one-function reaction syntax:
+  ```ts
+  import {reactor, flat, signals} from "@benev/slate"
+
+  const state = flat.state({count: 0})
+  const count = signals.signal(0)
+
+  // use the reactor to setup a reaction
+  reactor.reaction(() => console.log(`
+    flat count is ${state.count},
+    signal count is ${count.value}
+  `))
+  ```
+- two-function reaction syntax:
+  ```ts
+  reactor.reaction(
+    () => ({a: state.count, b: count.value}),
+    results => console.log(results),
+  )
+  ```
+- reactions can be stopped:
+  ```ts
+  const stop = reactor.reaction(
+    () => console.log(state.count)
+  )
+
+  // end this reaction
+  stop()
+  ```
+- wait for the debouncer:
+  ```ts
+  await reactor.wait
+  ```
 
 <br/>
 
