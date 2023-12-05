@@ -1,8 +1,8 @@
 
 import {StateTree} from "./state_tree.js"
+import {deep} from "../tools/deep/deep.js"
 import {Signal} from "../signals/signal.js"
 import {SignalTower} from "../signals/tower.js"
-import {deepEqual} from "../tools/deep_equal/deep_equal.js"
 
 export class WatchTower {
 	#signals: SignalTower
@@ -32,7 +32,7 @@ export class WatchTower {
 		const listener = () => {
 			const current = collector()
 			const previous = this.#memory.get(collector)
-			if (first || !deepEqual(current, previous)) {
+			if (first || !deep.equal(current, previous)) {
 				first = false
 				this.#memory.set(collector, current)
 				responder(current)

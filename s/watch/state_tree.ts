@@ -1,6 +1,6 @@
 
 import {Slice} from "./parts/slice.js"
-import {deepFreeze} from "../tools/deep_freeze.js"
+import {deep} from "../tools/deep/deep.js"
 import {SliceAccessors, Sliceable} from "./parts/types.js"
 
 export class StateTree<S> implements Sliceable<S> {
@@ -10,7 +10,7 @@ export class StateTree<S> implements Sliceable<S> {
 	#circularity_lock = false
 
 	#make_frozen_clone() {
-		return deepFreeze(structuredClone(this.#state))
+		return deep.freeze(structuredClone(this.#state))
 	}
 
 	constructor(state: S, onChange = () => {}) {
