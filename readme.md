@@ -726,9 +726,9 @@ you get a better dev-experience if you use ops via signals, but here is the docu
 no time to document these fully, but they're there
 
 - `debounce` — is a pretty good debouncer
-- `deep_equal` — compare json
-- `deep_freeze` — make stuff immutable
-- `explode_promise` — get a promise flipped inside-out
+- `deep` — utilities for data structures like 'equal' and 'freeze'
+- `is` — proper type guards
+- `explode_promise` — make an inside-out promise
 - `generate_id` — generate a crypto-random hexadecimal id string
 - `pub` — easy pub/sub tool
 - `requirement` — pass required data to a group of things
