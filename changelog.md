@@ -1,4 +1,26 @@
 
+# @benev/slate changelog
+
+### legend
+
+- 🟥 *breaking change*
+- 🔶 *maybe breaking change*
+- 🍏 *non-breaking addition, fix, or enhancement*
+
+<br/>
+
+### v0.1.0
+
+- 🟥 recapitulated `deepEqual` and `deepFreeze` into new `deep` tool
+  - `deepEqual` becomes `deep.equal`
+  - `deepFreeze` becomes `deep.freeze`
+  - both functions have been reworked to handle maps and sets
+- 🍏 add `is` tool
+  - proper typescript type guard support
+  - `is.object(x)`
+  - `is.array(x)`
+  - `is.defined(x)`
+
 ### v0.0.0
 
 in this recent work, the `flat` and `signals` state management apis are converging.
