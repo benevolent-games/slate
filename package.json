@@ -32,7 +32,7 @@
 		"importly": "^0.2.3",
 		"npm-run-all": "^4.1.5",
 		"rollup": "^4.6.1",
-		"terser": "^5.24.0",
+		"terser": "^5.25.0",
 		"typescript": "^5.3.2"
 	},
 	"keywords": [
