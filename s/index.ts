@@ -24,6 +24,12 @@ export * from "./shiny/html.js"
 export * from "./shiny/shell.js"
 export * from "./shiny/slate.js"
 
+export * from "./tools/shockdrop/utils/drag_has_files.js"
+export * from "./tools/shockdrop/utils/dragleave_has_exited_current_target.js"
+export * from "./tools/shockdrop/utils/dropped_files.js"
+export * from "./tools/shockdrop/drag_drop.js"
+export * from "./tools/shockdrop/drop.js"
+
 export {
 	CSSResultGroup,
 	CSSResult,
