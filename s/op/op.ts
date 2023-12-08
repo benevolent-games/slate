@@ -15,9 +15,9 @@ export namespace Op {
 	export const ready = <X>(payload: X): For<X> => ({mode: "ready", payload})
 
 	export const is = Object.freeze({
-		loading: (op: For<any>) => op.mode === "loading",
-		error: (op: For<any>) => op.mode === "error",
-		ready: (op: For<any>) => op.mode === "ready",
+		loading: (op: For<any>): op is Op.Loading => op.mode === "loading",
+		error: (op: For<any>): op is Op.Error => op.mode === "error",
+		ready: <X>(op: For<X>): op is Op.Ready<X> => op.mode === "ready",
 	})
 
 	export function payload<X>(op: For<X>) {
