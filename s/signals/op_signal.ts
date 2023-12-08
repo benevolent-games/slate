@@ -27,15 +27,15 @@ export class OpSignal<V> extends Signal<Op.For<V>> {
 		this.value = Op.ready(payload)
 	}
 
-	get loading() {
+	isLoading(): this is Signal<Op.Loading> {
 		return Op.is.loading(this.value)
 	}
 
-	get error() {
+	isError(): this is Signal<Op.Error> {
 		return Op.is.error(this.value)
 	}
 
-	get ready() {
+	isReady(): this is Signal<Op.Ready<V>> {
 		return Op.is.ready(this.value)
 	}
 
