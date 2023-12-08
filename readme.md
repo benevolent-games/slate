@@ -629,7 +629,7 @@ signals and flat both share the same reaction syntax, but they are separate stat
 
 <br/>
 
-## 💫 op
+## 💫 ops
 
 utility for ui loading/error/ready states.
 
@@ -650,41 +650,66 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   Op.ready(123)
     //= {mode: "ready", payload: 123}
   ```
-- you can run an async operation and keep things synchronized
+- check an op's status (proper typescript type guards)
+  ```ts
+  Op.is.loading(op)
+    //= false
+
+  Op.is.error(op)
+    //= false
+
+  Op.is.ready(op)
+    //= true
+  ```
+- grab an op's payload (undefined when not ready)
+  ```ts
+  const count = op.ready(123)
+  const loadingCount = op.loading()
+
+  Op.payload(count)
+    //= 123
+
+  Op.payload(loadingCount)
+    //= undefined
+  ```
+- run an async operation which updates an op
   ```ts
   let my_op = Op.loading()
 
-  await Op.run(op => my_op = op, async() => {
-    await nap(1000)
-    return 123
-  })
-  ```
-- you can create op signals that have op functionality built in
-  ```ts
-  const count = use.op()
+  await Op.run(
 
-  count.run(async() => {
+    // your setter designates which op to overwrite
+    op => my_op = op,
+
+    // your async function which returns the ready payload
+    async() => {
+      await nap(1000)
+      return 123
+    }
+  )
+  ```
+- **ops signals integration** — we recommend using ops via `signals.op()` or `use.op()`, the OpSignal these return has nicer ergonomics
+  ```ts
+  const count = signals.op()
+
+  // run an async operation
+  await count.run(async() => {
     await sleep(1000)
     return 123
   })
-  ```
-- functions to interrogate an op
-  ```ts
-    //        type for op in any mode
-    //                 v
-  function example(op: Op.Any<number>) {
 
-    // branching based on the op's mode
-    Op.select(op, {
-      loading: () => console.log("op is loading"),
-      error: reason => console.log("op is error", reason),
-      ready: payload => console.log("op is ready", payload)
-    })
+  // check the status of this OpSignal
+  count.loading //= false
+  count.error //= false
+  count.ready //= true
 
-    const payload = Op.payload(op)
-      // if the mode=ready, return the payload
-      // otherwise, return undefined
-  }
+  // grab the payload (undefined when not ready)
+  count.payload //= 123
+
+  // directly assign the op signal
+  count.setLoading()
+  count.setError("big fail")
+  count.setReady(123)
   ```
 
 <br/>
