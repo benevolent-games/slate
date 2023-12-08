@@ -2,27 +2,33 @@
 const JsError = Error
 
 export namespace Op {
-	export type Mode = "loading" | "error" | "ready"
-	export type Loading = {mode: "loading"}
-	export type Error = {mode: "error", reason: string}
-	export type Ready<X> = {mode: "ready", payload: X}
+	export type Status = "loading" | "error" | "ready"
+	export type Loading = {status: "loading"}
+	export type Error = {status: "error", reason: string}
+	export type Ready<X> = {status: "ready", payload: X}
 
 	export type For<X> = Loading | Error | Ready<X>
 	export type Setter<X> = (op: For<X>) => void
 
-	export const loading = <X>(): For<X> => ({mode: "loading"})
-	export const error = <X>(reason: string): For<X> => ({mode: "error", reason})
-	export const ready = <X>(payload: X): For<X> => ({mode: "ready", payload})
+	export const loading = <X>(): For<X> => ({status: "loading"})
+	export const error = <X>(reason: string): For<X> => ({status: "error", reason})
+	export const ready = <X>(payload: X): For<X> => ({status: "ready", payload})
 
 	export const is = Object.freeze({
-		loading: (op: For<any>): op is Op.Loading => op.mode === "loading",
-		error: (op: For<any>): op is Op.Error => op.mode === "error",
-		ready: <X>(op: For<X>): op is Op.Ready<X> => op.mode === "ready",
+		loading: (op: For<any>): op is Op.Loading => op.status === "loading",
+		error: (op: For<any>): op is Op.Error => op.status === "error",
+		ready: <X>(op: For<X>): op is Op.Ready<X> => op.status === "ready",
 	})
 
 	export function payload<X>(op: For<X>) {
-		return (op.mode === "ready")
+		return (op.status === "ready")
 			? op.payload
+			: undefined
+	}
+
+	export function reason<X>(op: For<X>) {
+		return (op.status === "error")
+			? op.reason
 			: undefined
 	}
 
@@ -33,7 +39,7 @@ export namespace Op {
 	}
 
 	export function select<X, R>(op: For<X>, choices: Choices<X, R>) {
-		switch (op.mode) {
+		switch (op.status) {
 
 			case "loading":
 				return choices.loading()
@@ -46,7 +52,7 @@ export namespace Op {
 
 			default:
 				console.error("op", op)
-				throw new JsError("invalid op mode")
+				throw new JsError("invalid op status")
 		}
 	}
 

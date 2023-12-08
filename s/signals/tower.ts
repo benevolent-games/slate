@@ -1,10 +1,9 @@
 
-import {Op} from "../op/op.js"
 import {ob} from "../tools/ob.js"
 import {Signal} from "./signal.js"
 import {OpSignal} from "./op_signal.js"
-import {Lean, ReactorCore} from "../reactor/types.js"
 import {LeanTrack, NormalTrack, SignalTracker} from "./parts/tracker.js"
+import {Collector, Lean, ReactorCore, Responder} from "../reactor/types.js"
 
 export class SignalTower implements ReactorCore {
 
@@ -25,7 +24,7 @@ export class SignalTower implements ReactorCore {
 		return signal
 	}
 
-	op<V>(): Signal<Op.For<V>> {
+	op<V>() {
 		const signal = new OpSignal<V>()
 		this.#signals.add(signal)
 		return signal
@@ -37,7 +36,7 @@ export class SignalTower implements ReactorCore {
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 
-	reaction<P>(collector: () => P, responder?: (payload: P) => void) {
+	reaction<P>(collector: Collector<P>, responder?: Responder<P>) {
 		const tracker = new SignalTracker({
 			waiters: this.#waiters,
 			all_signals: this.#signals,
