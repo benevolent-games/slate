@@ -1,4 +1,5 @@
 
+import {Op} from "../op/op.js"
 import {ob} from "../tools/ob.js"
 import {Signal} from "./signal.js"
 import {OpSignal} from "./op_signal.js"
@@ -24,8 +25,8 @@ export class SignalTower implements ReactorCore {
 		return signal
 	}
 
-	op<V>() {
-		const signal = new OpSignal<V>()
+	op<V>(op: Op.For<V> = Op.loading()) {
+		const signal = new OpSignal<V>(op)
 		this.#signals.add(signal)
 		return signal
 	}

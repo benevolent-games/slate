@@ -4,8 +4,8 @@ import {Signal} from "./signal.js"
 
 export class OpSignal<V> extends Signal<Op.For<V>> {
 
-	constructor() {
-		super(Op.loading())
+	constructor(op: Op.For<V>) {
+		super(op)
 	}
 
 	async run(operation: () => Promise<V>) {
