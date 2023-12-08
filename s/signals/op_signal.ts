@@ -40,7 +40,12 @@ export class OpSignal<V> extends Signal<Op.For<V>> {
 	}
 
 	get payload() {
-		return Op.payload(this.value)
+		return Op.payload(this.value) as (
+			this extends Signal<Op.Ready<V>> ? V
+			: this extends Signal<Op.Loading> ? undefined
+			: this extends Signal<Op.Error> ? undefined
+			: V | undefined
+		)
 	}
 
 	select<R>(choices: Op.Choices<V, R>) {
