@@ -699,9 +699,9 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   })
 
   // check the status of this OpSignal
-  count.loading //= false
-  count.error //= false
-  count.ready //= true
+  count.isLoading() //= false
+  count.isError() //= false
+  count.isReady() //= true
 
   // grab the payload (undefined when not ready)
   count.payload //= 123

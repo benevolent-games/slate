@@ -11,6 +11,19 @@
 
 ### v0.1.0
 
+ops
+- 🟥 rename op 'mode' to 'status'
+  - change `Op.Mode` to `Op.Status`
+  - change `op.mode` to `op.status` on your op objects
+- 🟥 rework OpSignal checkers, from getters to functions
+  - change `op.loading` to `op.isLoading()`
+  - change `op.error` to `op.isError()`
+  - change `op.ready` to `op.isReady()`
+  - this was necessary for the new form to be proper ts type guards
+- 🍏 fix checkers like `Op.is.loading` to have proper ts type guards
+- 🍏 fix signals.op return type to be OpSignal
+
+tools
 - 🟥 recapitulated `deepEqual` and `deepFreeze` into new `deep` tool
   - `deepEqual` becomes `deep.equal`
   - `deepFreeze` becomes `deep.freeze`
