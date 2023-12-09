@@ -2,8 +2,8 @@
 import {pub} from "../../tools/pub.js"
 import {register_to_dom} from "../../base/helpers/register_to_dom.js"
 
-export class ObsidianView extends HTMLElement {
-	static tag = "obsidian-view"
+export class SlateView extends HTMLElement {
+	static tag = "slate-view"
 
 	onConnected = pub<void>()
 	onDisconnected = pub<void>()
@@ -16,5 +16,5 @@ export class ObsidianView extends HTMLElement {
 	}
 }
 
-register_to_dom({ObsidianView})
+register_to_dom({SlateView})
 

@@ -25,6 +25,7 @@ export const prepare_obsidian = (
 		#root = make_view_root({
 			name: settings.name ?? "",
 			css: [shell.context.theme, settings.styles ?? css``],
+			afterRender: () => UseObsidian.afterRender(this.#use),
 			onDisconnected: () => this.disconnected(),
 			onConnected: () => {
 				if (!this.#first_connection)
@@ -56,9 +57,7 @@ export const prepare_obsidian = (
 		)
 
 		update(_: Part, props: [ObsidianInput<P>]) {
-			const result = this.#root.render_into_shadow(this.render(...props))
-			UseObsidian.afterRender(this.#use)
-			return result
+			return this.#root.render_into_shadow(this.render(...props))
 		}
 
 		render(input: ObsidianInput<P>) {

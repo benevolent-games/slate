@@ -33,6 +33,7 @@ export const prepare_carbon = (
 		#reactivity?: Reactivity<[]>
 
 		render() {
+			this.updateComplete.then(() => UseCarbon.afterRender(this.#use))
 			return this.#reactivity?.render()
 		}
 

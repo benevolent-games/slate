@@ -22,6 +22,7 @@ export const prepare_oxygen = (
 		#reactivity?: Reactivity<[]>
 
 		render() {
+			this.updateComplete.then(() => UseOxygen.afterRender(this.#use))
 			return this.#reactivity?.render()
 		}
 

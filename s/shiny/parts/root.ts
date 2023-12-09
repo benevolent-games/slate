@@ -1,18 +1,21 @@
 
 import {CSSResultGroup, TemplateResult, render} from "lit"
 
-import {ObsidianView} from "./obsidian-view.element.js"
+import {SlateView} from "./slate_view_element.js"
 import {auto_exportparts} from "./auto_exportparts/auto.js"
 import {apply_styles_to_shadow} from "../../base/utils/apply_styles_to_shadow.js"
 
-export function make_view_root({name, css, onConnected, onDisconnected}: {
+export function make_view_root({
+		name, css, afterRender, onConnected, onDisconnected,
+	}: {
 		name: string,
 		css: CSSResultGroup | undefined,
+		afterRender: () => void
 		onConnected: () => void
 		onDisconnected: () => void
 	}) {
 
-	const container = document.createElement(ObsidianView.tag) as ObsidianView
+	const container = document.createElement(SlateView.tag) as SlateView
 	container.setAttribute("view", name)
 
 	container.onConnected(onConnected)
@@ -37,6 +40,7 @@ export function make_view_root({name, css, onConnected, onDisconnected}: {
 			if (auto_exportparts_is_enabled)
 				auto_exportparts(container, shadow)
 
+			afterRender()
 			return container
 		},
 	}

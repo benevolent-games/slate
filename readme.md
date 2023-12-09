@@ -173,7 +173,7 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
   html`<div>${MyObsidian([123])}</div>`
   ```
   - obsidian views need their props wrapped in an array
-  - when rendered, obsidian views are wrapped in a `<obsidian-view>` component, which is where the shadow root is attached
+  - when rendered, obsidian views are wrapped in a `<slate-view>` component, which is where the shadow root is attached
   - obsidian views will accept a settings object
     ```ts
     html`
