@@ -42,6 +42,13 @@ export class Use<C extends Context = Context> {
 		}
 	}
 
+	static afterRender(use: Use) {
+		for (const [count, fn] of use.#afterFns) {
+			const result = fn()
+			use.#afterResults.set(count, result)
+		}
+	}
+
 	#context: C
 	#rerender: () => void
 	#counter = new Counter()
@@ -53,8 +60,12 @@ export class Use<C extends Context = Context> {
 	#initResults = new Map<number, any>()
 	#initDowns = new Set<Setdown>()
 
-	#states = new Map<number, any>()
 	#preparations = new Map<number, any>()
+
+	#afterFns = new Map<number, () => any>()
+	#afterResults = new Map<number, any>()
+
+	#states = new Map<number, any>()
 	#flatstates = new Map<number, Record<string, any>>()
 	#signals = new Map<number, any>()
 
@@ -94,6 +105,13 @@ export class Use<C extends Context = Context> {
 	prepare<T>(prep: () => T): T {
 		const count = this.#counter.pull()
 		return maptool(this.#preparations).grab(count, prep)
+	}
+
+	afterRender<T>(fn: () => T): T | undefined {
+		const count = this.#counter.pull()
+		if (!this.#afterFns.has(count))
+			this.#afterFns.set(count, fn)
+		return this.#afterResults.get(count)
 	}
 
 	state<T>(init: T | (() => T)) {

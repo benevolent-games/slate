@@ -56,7 +56,9 @@ export const prepare_obsidian = (
 		)
 
 		update(_: Part, props: [ObsidianInput<P>]) {
-			return this.#root.render_into_shadow(this.render(...props))
+			const result = this.#root.render_into_shadow(this.render(...props))
+			UseObsidian.afterRender(this.#use)
+			return result
 		}
 
 		render(input: ObsidianInput<P>) {
