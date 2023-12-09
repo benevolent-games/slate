@@ -2,8 +2,8 @@
 import {Part} from "lit"
 import {AsyncDirective} from "lit/async-directive.js"
 
-import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
+import {Shell} from "../parts/shell.js"
 import {make_view_root} from "../parts/root.js"
 import {UseShadowView} from "../parts/use/tailored.js"
 import {apply_details} from "../parts/apply_details.js"
@@ -13,7 +13,7 @@ import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 import {custom_lit_directive_for_shadow_view} from "../parts/custom_lit_directive_for_shadow_view.js"
 
 export const prepare_shadow_view = (
-	<C extends Context>(nexus: Nexus<C>) =>
+	<C extends Context>(shell: Shell<C>) =>
 	<P extends any[]>(renderer: ShadowViewRenderer<C, P>) => (
 
 	custom_lit_directive_for_shadow_view<P>(class extends AsyncDirective {
@@ -41,7 +41,7 @@ export const prepare_shadow_view = (
 			this.#root.container,
 			this.#root.shadow,
 			this.#rerender,
-			nexus.context,
+			shell.context,
 		)
 
 		#rend = UseShadowView.wrap(this.#use, renderer(this.#use))

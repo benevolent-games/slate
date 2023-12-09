@@ -1,20 +1,20 @@
 
-import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
+import {Shell} from "../parts/shell.js"
 import {SilverElement} from "../../element/silver.js"
 import {LightComponentRenderer} from "../parts/types.js"
 import {UseLightComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_light_component = (
-	<C extends Context>(nexus: Nexus<C>) =>
+	<C extends Context>(shell: Shell<C>) =>
 	(renderer: LightComponentRenderer<C>) => (
 
 	class extends SilverElement {
 		#use = new UseLightComponent(
 			this as SilverElement,
 			() => void this.requestUpdate(),
-			nexus.context,
+			shell.context,
 		)
 
 		#rend = UseLightComponent.wrap(this.#use, () => renderer(this.#use))

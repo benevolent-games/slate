@@ -2,8 +2,8 @@
 import {Part, TemplateResult, render} from "lit"
 import {AsyncDirective, DirectiveResult, directive} from "lit/async-directive.js"
 
-import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
+import {Shell} from "../parts/shell.js"
 import {LightViewRenderer} from "../parts/types.js"
 import {UseLightView} from "../parts/use/tailored.js"
 import {SlateView} from "../parts/slate_view_element.js"
@@ -11,7 +11,7 @@ import {debounce} from "../../tools/debounce/debounce.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_light_view = (
-	<C extends Context>(nexus: Nexus<C>) =>
+	<C extends Context>(shell: Shell<C>) =>
 	<P extends any[]>(renderer: LightViewRenderer<C, P>) =>
 
 	directive(class extends AsyncDirective {
@@ -26,7 +26,7 @@ export const prepare_light_view = (
 			if (this.#props)
 				this.setValue(this.#render_into_element(this.render(...this.#props!)))
 		})
-		#use = new UseLightView(this.#element, this.#rerender, nexus.context)
+		#use = new UseLightView(this.#element, this.#rerender, shell.context)
 		#rend = UseLightView.wrap(this.#use, renderer(this.#use))
 		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,

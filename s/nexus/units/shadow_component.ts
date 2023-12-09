@@ -1,13 +1,13 @@
 
-import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
+import {Shell} from "../parts/shell.js"
 import {GoldElement} from "../../element/gold.js"
 import {ShadowComponentRenderer} from "../parts/types.js"
 import {UseShadowComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_shadow_component = (
-	<C extends Context>(nexus: Nexus<C>) =>
+	<C extends Context>(shell: Shell<C>) =>
 	(renderer: ShadowComponentRenderer<C>) => (
 
 	class extends GoldElement {
@@ -15,7 +15,7 @@ export const prepare_shadow_component = (
 			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),
-			nexus.context,
+			shell.context,
 		)
 
 		#rend = UseShadowComponent.wrap(this.#use, () => renderer(this.#use))
