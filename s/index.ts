@@ -21,7 +21,6 @@ export * from "./shiny/units/light_component.js"
 export * from "./shiny/units/light_view.js"
 export * from "./shiny/context.js"
 export * from "./shiny/html.js"
-export * from "./shiny/shell.js"
 export * from "./shiny/slate.js"
 
 export * from "./tools/shockdrop/utils/drag_has_files.js"

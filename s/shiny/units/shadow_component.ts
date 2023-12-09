@@ -1,13 +1,13 @@
 
-import {Shell} from "../shell.js"
+import {Slate} from "../slate.js"
 import {Context} from "../context.js"
 import {GoldElement} from "../../element/gold.js"
-import {UseShadowComponent} from "../parts/use/tailored.js"
 import {ShadowComponentRenderer} from "../parts/types.js"
+import {UseShadowComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_shadow_component = (
-	<C extends Context>(shell: Shell<C>) =>
+	<C extends Context>(nexus: Slate<C>) =>
 	(renderer: ShadowComponentRenderer<C>) => (
 
 	class extends GoldElement {
@@ -15,7 +15,7 @@ export const prepare_shadow_component = (
 			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),
-			shell.context,
+			nexus.context,
 		)
 
 		#rend = UseShadowComponent.wrap(this.#use, () => renderer(this.#use))

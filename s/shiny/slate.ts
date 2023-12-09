@@ -1,20 +1,32 @@
 
-import {Shell} from "./shell.js"
 import {Context} from "./context.js"
 import {apply} from "../base/helpers/apply.js"
-import {prepare_light_component} from "./units/light_component.js"
-import {prepare_light_view} from "./units/light_view.js"
-import {prepare_shadow_component} from "./units/shadow_component.js"
-import {prepare_shadow_view} from "./units/shadow_view.js"
 import {BaseElementClasses} from "../base/element.js"
+import {prepare_light_view} from "./units/light_view.js"
+import {prepare_shadow_view} from "./units/shadow_view.js"
+import {prepare_light_component} from "./units/light_component.js"
+import {prepare_shadow_component} from "./units/shadow_component.js"
 
-export class Slate<C extends Context> extends Shell<C> {
+export class Slate<C extends Context> {
+	#context: C | undefined
+
 	constructor(context?: C) {
-		super(context)
+		this.#context = context
 		this.light_component = prepare_light_component(this)
 		this.shadow_component = prepare_shadow_component(this)
 		this.light_view = prepare_light_view(this)
 		this.shadow_view = prepare_shadow_view(this)
+	}
+
+	get context(): C {
+		if (this.#context)
+			return this.#context
+		else
+			throw new Error("slate.context was not set, but it's necessary")
+	}
+
+	set context(context: C) {
+		this.#context = context
 	}
 
 	light_component: ReturnType<typeof prepare_light_component<C>>
