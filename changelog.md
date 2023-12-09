@@ -11,6 +11,16 @@
 
 ### v0.1.0
 
+use
+- 🍏 add `use.afterRender(callback)` hook
+- 🍏 add `use.name(name)` hook *(for views only)*
+
+views
+- 🟥 `<obsidian-view>` renamed to `<slate-view>`
+- 🟥 light_view (quartz) contents are now wrapped in `<slate-view>`
+  - this is to provide an anchor point from which the view can query its own contents
+  - and to match shadow_view
+
 ops
 - 🟥 rename op 'mode' to 'status'
   - change `Op.Mode` to `Op.Status`
