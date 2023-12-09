@@ -5,10 +5,6 @@ import {html} from "../../shiny/html.js"
 export const QuartzTripler = slate.light_view(use => (start: number) => {
 	use.name("quartz-tripler")
 
-	use.afterRender(() => {
-		console.log("quartz", use.element)
-	})
-
 	// react hooks state
 	const [alpha, setAlpha] = use.state(start)
 	const increaseAlpha = () => setAlpha(alpha * 3)

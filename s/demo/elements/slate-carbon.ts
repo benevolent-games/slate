@@ -4,9 +4,9 @@ import {css, html} from "../../shiny/html.js"
 
 const random = () => Math.ceil(Math.random() * 1000)
 
-const styles = css`button { color: green }`
+export const SlateCarbon = slate.shadow_component(use => {
+	use.styles(css`button { color: green }`)
 
-export const SlateCarbon = slate.shadow_component({styles}, use => {
 	const x = use.signal(random)
 	const randomize = () => x.value = random()
 

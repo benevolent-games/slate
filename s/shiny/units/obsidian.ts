@@ -1,5 +1,5 @@
 
-import {Part, css} from "lit"
+import {Part} from "lit"
 import {AsyncDirective} from "lit/async-directive.js"
 
 import {Shell} from "../shell.js"
@@ -9,22 +9,17 @@ import {UseObsidian} from "../parts/use/tailored.js"
 import {apply_details} from "../parts/apply_details.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
-import {ObsidianInput, ShadowSettings, ObsidianRenderer} from "../parts/types.js"
+import {ObsidianInput, ObsidianRenderer} from "../parts/types.js"
 import {obsidian_custom_lit_directive} from "../parts/obsidian_custom_lit_directive.js"
 
 export const prepare_obsidian = (
 	<C extends Context>(shell: Shell<C>) =>
-	<P extends any[]>(
-		settings: ShadowSettings = {},
-		renderer: ObsidianRenderer<C, P>,
-	) => (
+	<P extends any[]>(renderer: ObsidianRenderer<C, P>) => (
 
 	obsidian_custom_lit_directive<P>(class extends AsyncDirective {
 		#input?: ObsidianInput<P>
 		#first_connection = true
 		#root = make_view_root({
-			name: settings.name ?? "",
-			css: [shell.context.theme, settings.styles ?? css``],
 			afterRender: () => UseObsidian.afterRender(this.#use),
 			onDisconnected: () => this.disconnected(),
 			onConnected: () => {
@@ -64,7 +59,7 @@ export const prepare_obsidian = (
 			apply_details(this.#root.container, input.meta, this.#input?.meta)
 			this.#input = input
 			this.#root.auto_exportparts = (
-				input.meta.auto_exportparts ?? settings.auto_exportparts ?? true
+				input.meta.auto_exportparts ?? true
 			)
 			return this.#reactivity?.render(...input.props)
 		}
