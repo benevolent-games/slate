@@ -10,7 +10,7 @@ import {apply_details} from "../parts/apply_details.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 import {ShadowViewInput, ShadowViewRenderer} from "../parts/types.js"
-import {custom_lit_directive_for_shadow_view} from "../parts/obsidian_custom_lit_directive.js"
+import {custom_lit_directive_for_shadow_view} from "../parts/custom_lit_directive_for_shadow_view.js"
 
 export const prepare_shadow_view = (
 	<C extends Context>(shell: Shell<C>) =>

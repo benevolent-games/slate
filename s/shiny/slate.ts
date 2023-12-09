@@ -2,10 +2,10 @@
 import {Shell} from "./shell.js"
 import {Context} from "./context.js"
 import {apply} from "../base/helpers/apply.js"
-import {prepare_shadow_component} from "./units/carbon.js"
-import {prepare_light_component} from "./units/oxygen.js"
-import {prepare_light_view} from "./units/quartz.js"
-import {prepare_shadow_view} from "./units/obsidian.js"
+import {prepare_light_component} from "./units/light_component.js"
+import {prepare_light_view} from "./units/light_view.js"
+import {prepare_shadow_component} from "./units/shadow_component.js"
+import {prepare_shadow_view} from "./units/shadow_view.js"
 import {BaseElementClasses} from "../base/element.js"
 
 export class Slate<C extends Context> extends Shell<C> {
