@@ -11,8 +11,17 @@
 
 ### v0.1.0
 
+nexus rewrite
+- 🟥 `Slate` renamed to `Nexus`
+- 🟥 silly names have been purged
+  - renamed `ObsidianRenderer` to `ShadowViewRenderer`
+  - renamed `CarbonRenderer` to `ShadowComponentRenderer`
+  - renamed `QuartzRenderer` to `LightViewRenderer`
+  - renamed `OxygenRenderer` to `LightComponentRenderer`
+  - tons of renames following the same pattern have occurred
+
 shadow views and components
-- 🟥 remove settings array, in favor of new hooks
+- 🟥 simpler syntax: remove settings array, in favor of new hooks
   - old way
     ```ts
     slate.shadow_view({name: "coolview", styles}, use => () => {

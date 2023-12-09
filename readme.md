@@ -30,15 +30,16 @@ you want to think of web components as the tip of your iceberg — they are the 
 
 ## 👷 quick start
 
-1. install slate
+1. **install slate**
     ```sh
     npm i @benev/slate
     ```
-1. prepare your app's frontend and context
+1. **create your app's `nexus`**  
+    you'll use the nexus to create components and views which have hard-wired access to your *context* object.
     ```ts
-    import {Slate, Context} from "@benev/slate"
+    import {Nexus, Context} from "@benev/slate"
 
-    export const slate = new Slate(
+    export const nexus = new Nexus(
       new class extends Context {
 
         // this theme is applied to all your components and views
@@ -50,14 +51,16 @@ you want to think of web components as the tip of your iceberg — they are the 
           }
         `
 
-        // add anything app-level you'd like to make widely available
+        // add app-level stuff you'd like to make widely available
         my_cool_thing = {my_awesome_data: 123}
       }
     )
     ```
-1. import html and css template functions
+1. **import templating functions**  
+    these are augmented versions of `lit`'s templating functions, which directly implement `signals`.  
+    they are fully compatible with lit.  
     ```ts
-    import {html, css} from "@benev/slate"
+    import {html, css, svg} from "@benev/slate"
     ```
 
 <br/>
@@ -66,12 +69,11 @@ you want to think of web components as the tip of your iceberg — they are the 
 
 you can create custom html elements that work in plain html or any web framework.
 
-### `slate.shadow_component` — *"carbon"*
+### `nexus.shadow_component`
 
 ```ts
-const styles = css`span {color: yellow}`
-
-export const MyCarbon = slate.shadow_component({styles}, use => {
+export const MyShadowComponent = nexus.shadow_component(use => {
+  use.styles(css`span {color: yellow}`)
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -82,10 +84,10 @@ export const MyCarbon = slate.shadow_component({styles}, use => {
 })
 ```
 
-### `slate.light_component` — *"oxygen"*
+### `nexus.light_component`
 
 ```ts
-export const MyOxygen = slate.light_component(use => {
+export const MyLightComponent = nexus.light_component(use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -103,15 +105,15 @@ export const MyOxygen = slate.light_component(use => {
   import {register_to_dom} from "@benev/slate"
 
   register_to_dom({
-    MyCarbon,
-    MyOxygen,
+    MyShadowComponent,
+    MyLightComponent,
   })
   ```
 - now use your components via html
   ```html
   <section>
-    <my-carbon></my-carbon>
-    <my-oxygen></my-oxygen>
+    <my-shadow-component></my-shadow-component>
+    <my-light-component></my-light-component>
   </section>
   ```
 
@@ -124,12 +126,12 @@ instead, they are used via javascript.
 you import them, and inject them into your lit-html templates.  
 they accept js parameters called `props`, and are fully typescript-typed.  
 
-### `slate.shadow_view` — *"obsidian"*
+### `nexus.shadow_view`
 
 ```ts
-const styles = css`span {color: yellow}`
-
-export const MyObsidian = slate.shadow_view({styles}, use => (start: number) => {
+export const MyShadowView = nexus.shadow_view(use => (start: number) => {
+  use.name("my-shadow-view")
+  use.styles(css`span {color: yellow}`)
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -141,14 +143,15 @@ export const MyObsidian = slate.shadow_view({styles}, use => (start: number) => 
 ```
 
 - **`auto_exportparts` is enabled by default.**
-  - auto exportparts is an experimental obsidian feature that makes it bearable to use the shadow dom extensively.
+  - auto exportparts is an experimental shadow_view feature that makes it bearable to use the shadow dom extensively.
   - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
   - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
-### `slate.light_view` — *"quartz"*
+### `nexus.light_view`
 
 ```ts
-export const MyQuartz = slate.light_view(use => (start: number) => {
+export const MyLightView = nexus.light_view(use => (start: number) => {
+  use.name("my-light-view")
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -161,24 +164,16 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
 
 ### deploying your views
 
-- **use a quartz view**
+- **using a shadow view**
   ```ts
-  html`<div>${MyQuartz(123)}</div>`
+  html`<div>${MyShadowView([123])}</div>`
   ```
-  - quartz views are beautifully simple
-  - they just take props as arguments
-  - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
-- **use an obsidian view**
-  ```ts
-  html`<div>${MyObsidian([123])}</div>`
-  ```
-  - obsidian views need their props wrapped in an array
-  - when rendered, obsidian views are wrapped in a `<slate-view>` component, which is where the shadow root is attached
-  - obsidian views will accept a settings object
+  - shadow views need their props wrapped in an array
+  - shadow views will accept a settings object
     ```ts
     html`
       <div>
-        ${MyObsidian([123], {
+        ${MyShadowView([123], {
           content: html`<p>slotted content</p>`,
           auto_exportparts: true,
           attrs: {part: "cool", "data-whatever": true},
@@ -186,17 +181,46 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
       </div>
     `
     ```
+- **using a light view**
+  ```ts
+  html`<div>${MyLightView(123)}</div>`
+  ```
+  - light views are beautifully simple
+  - they just take props as arguments
+  - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
+- note
+  - all views are rendered into a `<slate-view view="my-name">` component
 
 <br/>
 
 ## 🪝 `use` hooks — for views and components
 
+slate's hooks have the same rules as any other framework's hooks: the order that hooks are executed in matters, so you must not call hooks under an `if` statement or in any kind of `for` loop or anything like that.
+
 ### core hooks
+- **use.name** ~ *shadow_view, light_view*  
+  assign a stylesheet to the shadow root.  
+  only works on views, because having a name to differentiate views is handy (components have the names they were registered to the dom with).  
+  ```ts
+  use.name("my-cool-view")
+  ```
+- **use.styles** ~ *shadow_view, shadow_component*  
+  assign a stylesheet to the shadow root.  
+  only works on shadow views or components (light views/components are styled from above).  
+  ```ts
+  use.styles(css`span { color: yellow }`)
+  ```
 - **use.state**  
-  works like react useState hook
+  works like react useState hook.  
+  we actually recommend using signals instead (more on those later).
   ```ts
   const [count, setCount] = use.state(0)
   const increment = () => setCount(count + 1)
+  ```
+- **use.prepare**  
+  initialize a value once
+  ```ts
+  const random_number = use.prepare(() => Math.random())
   ```
 - **use.setup**  
   perform setup/cleanup on dom connected/disconnected
@@ -205,11 +229,6 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
     const interval = setInterval(increment, 1000)
     return () => clearInterval(interval)
   })
-  ```
-- **use.prepare**  
-  initialize a value once
-  ```ts
-  const random_number = use.prepare(() => Math.random())
   ```
 - **use.init**  
   perform a setup/cleanup, but also return a value
@@ -223,6 +242,16 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
       canvas, // value returned
       () => scene.cleanup(), // cleanup called on dom disconnect
     ]
+  })
+  ```
+- **use.afterRender**  
+  execute a function everytime a render finishes.  
+  you might want to do this if you need to query for elements you just rendered.  
+  ```ts
+  use.afterRender(() => {
+    const div = document.querySelector("div")
+    const rect = div.getBoundingClientRect()
+    report_rect(rect)
   })
   ```
 
@@ -259,24 +288,35 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
   const increment = () => state.count++
   ```
 
+### watch hooks
+- **use.watch**  
+  rerender when anything under part of a StateTree is changed.  
+  *todo: document how this works via `watch.stateTree({})`.*  
+  ```ts
+  use.watch(use.context.state.whatever)
+  ```
+
 ### useful accessors
+
+these are not hooks, just access to useful things you may need, so you're allowed to use them under if statements or whatever.
+
 - **use.context**  
   access to your app's context, for whatever reason
   ```ts
   // access your own things on the context
   use.context.my_cool_thing
   ```
-- **use.element** ~ *carbon, oxygen, obsidian*  
+- **use.element**
   access the underlying html element
   ```ts
   use.element.querySelector("p")
   ```
-- **use.shadow** ~ *carbon, obsidian*  
+- **use.shadow** ~ *shadow_view, shadow_component*  
   access to the shadow root
   ```ts
   use.shadow.querySelector("slot")
   ```
-- **use.attrs** ~ *carbon, oxygen*  
+- **use.attrs** ~ *shadow_component, light_component*  
   declare accessors for html attributes
   ```ts
   const attrs = use.attrs({
@@ -304,8 +344,8 @@ export const MyQuartz = slate.light_view(use => (start: number) => {
 ## 🥇 plain elements — gold and silver
 
 gold and silver are "plain" elements, which are alternatives to LitElement.  
-they're used as primitives underlying our carbon and oxygen components.  
-for most cases you probably want to stick with carbon/oxygen, and only use gold/silver when you're doing some funky sorcery, or you yearn to go back to a simpler time, without hooks.
+they're used as primitives underlying nexus components.  
+for most cases you probably want to stick with the nexus components, and only use gold/silver when you're doing some funky sorcery, or you yearn to go back to a simpler time without hooks.
 
 consider these imports for the following examples:
 
@@ -364,11 +404,11 @@ export class MySilver extends SilverElement {
 
 ### deploying plain elements
 
-if you want plain elements to have reactivity or have the context's css theme applied, you'll want to run them through `slate.components` before you register them:
+if you want plain elements to have reactivity or have the context's css theme applied, you'll want to run them through `nexus.components` before you register them:
 
 ```ts
 register_to_dom({
-  ...slate.components({
+  ...nexus.components({
     MyGold,
     MySilver,
   }),
@@ -382,14 +422,14 @@ register_to_dom({
 you can extend the context with anything you'd like to make easily available to your components and views:
 
 ```ts
-export const slate = new Slate(
+export const nexus = new Nexus(
   new class extends Context {
     my_cool_thing = {my_awesome_data: 123}
   }
 )
 ```
 
-but since your components are importing `slate`, the above example creates the context *at import-time.*
+but since your components are importing `nexus`, the above example creates the context *at import-time.*
 
 you may instead prefer to *defer* the creation of your context until later, at *run-time:*
 
@@ -399,8 +439,8 @@ export class MyContext extends Context {
   my_cool_thing = {my_awesome_data: 123}
 }
 
-// create slate *without yet* instancing the context
-export slate = new Slate<MyContext>()
+// create nexus *without yet* instancing the context
+export const nexus = new Nexus<MyContext>()
 
 //
 // ... later in another file,
@@ -408,7 +448,7 @@ export slate = new Slate<MyContext>()
 //
 
 // instance and assign your context, now, at runtime
-slate.context = new MyContext()
+nexus.context = new MyContext()
 
 // just be sure to assign context *before* you register your components
 register_to_dom(myComponents)
@@ -419,7 +459,7 @@ register_to_dom(myComponents)
 
 # 🛠️ standalone utilities
 
-if you're using slate's frontend components and views, you'll probably be using these utilities via the `use` hooks, which will provide a better developer experience.
+if you're using nexus components and views, you'll probably be using these utilities via the `use` hooks, which will provide a better developer experience.
 
 however, the following utilities are little libraries in their own right, and can be used in a standalone capacity.
 
@@ -583,7 +623,7 @@ flatstate is inspired by mobx and snapstate, but designed to be simpler. flatsta
 
   const elements2 = apply.flat(flat)(elements)
   ```
-  - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, carbon, and oxygen
+  - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, ShadowView, and LightView
 
 <br/>
 
