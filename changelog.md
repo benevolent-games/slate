@@ -11,15 +11,34 @@
 
 ### v0.1.0
 
-use
-- 🍏 add `use.afterRender(callback)` hook
-- 🍏 add `use.name(name)` hook *(for views only)*
+shadow views and components
+- 🟥 remove settings array, in favor of new hooks
+  - old way
+    ```ts
+    slate.shadow_view({name: "coolview", styles}, use => () => {
+      return html`hi`
+    })
+    ```
+  - new way
+    ```ts
+    slate.shadow_view(use => () => {
+      use.name("coolview")
+      use.styles(styles)
+
+      return html`hi`
+    })
+    ```
 
 views
 - 🟥 `<obsidian-view>` renamed to `<slate-view>`
 - 🟥 light_view (quartz) contents are now wrapped in `<slate-view>`
   - this is to provide an anchor point from which the view can query its own contents
-  - and to match shadow_view
+  - this also helps light_view behavior match shadow_view
+
+use
+- 🍏 add hook `use.afterRender(callback)` (all views and components)
+- 🍏 add hook `use.name(name)` (all views)
+- 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)
 
 ops
 - 🟥 rename op 'mode' to 'status'
