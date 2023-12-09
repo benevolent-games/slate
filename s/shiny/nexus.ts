@@ -7,7 +7,7 @@ import {prepare_shadow_view} from "./units/shadow_view.js"
 import {prepare_light_component} from "./units/light_component.js"
 import {prepare_shadow_component} from "./units/shadow_component.js"
 
-export class Slate<C extends Context> {
+export class Nexus<C extends Context> {
 	#context: C | undefined
 
 	constructor(context?: C) {

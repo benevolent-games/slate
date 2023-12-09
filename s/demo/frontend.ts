@@ -1,6 +1,6 @@
 
 import {CSSResultGroup} from "lit"
-import {Slate} from "../shiny/slate.js"
+import {Nexus} from "../shiny/nexus.js"
 import {Context} from "../shiny/context.js"
 
 export class DemoContext extends Context {
@@ -9,5 +9,5 @@ export class DemoContext extends Context {
 	}
 }
 
-export const slate = new Slate<DemoContext>()
+export const slate = new Nexus<DemoContext>()
 

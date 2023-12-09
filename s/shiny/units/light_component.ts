@@ -1,5 +1,5 @@
 
-import {Slate} from "../slate.js"
+import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
 import {SilverElement} from "../../element/silver.js"
 import {LightComponentRenderer} from "../parts/types.js"
@@ -7,7 +7,7 @@ import {UseLightComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_light_component = (
-	<C extends Context>(nexus: Slate<C>) =>
+	<C extends Context>(nexus: Nexus<C>) =>
 	(renderer: LightComponentRenderer<C>) => (
 
 	class extends SilverElement {

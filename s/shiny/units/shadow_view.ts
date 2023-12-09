@@ -2,7 +2,7 @@
 import {Part} from "lit"
 import {AsyncDirective} from "lit/async-directive.js"
 
-import {Slate} from "../slate.js"
+import {Nexus} from "../nexus.js"
 import {Context} from "../context.js"
 import {make_view_root} from "../parts/root.js"
 import {UseShadowView} from "../parts/use/tailored.js"
@@ -13,7 +13,7 @@ import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 import {custom_lit_directive_for_shadow_view} from "../parts/custom_lit_directive_for_shadow_view.js"
 
 export const prepare_shadow_view = (
-	<C extends Context>(nexus: Slate<C>) =>
+	<C extends Context>(nexus: Nexus<C>) =>
 	<P extends any[]>(renderer: ShadowViewRenderer<C, P>) => (
 
 	custom_lit_directive_for_shadow_view<P>(class extends AsyncDirective {
