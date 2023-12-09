@@ -22,7 +22,7 @@ export class Nexus<C extends Context> {
 		if (this.#context)
 			return this.#context
 		else
-			throw new Error("slate.context was not set, but it's necessary")
+			throw new Error("nexus.context was not set, but it's necessary")
 	}
 
 	set context(context: C) {

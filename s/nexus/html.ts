@@ -2,7 +2,7 @@
 import {Signal} from "../signals/signal.js"
 import {TemplateResult, html as lit_html} from "lit"
 
-export {svg, css} from "lit"
+export {css, svg} from "lit"
 
 export const html = (
 		strings: TemplateStringsArray,

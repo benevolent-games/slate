@@ -32,11 +32,11 @@ export * from "./tools/fancy_event_listener.js"
 export * from "./tools/el.js"
 
 export {
+	render,
 	CSSResultGroup,
 	CSSResult,
 	CSSResultOrNative,
 	CSSResultArray,
-	render,
 	TemplateResult,
 	SVGTemplateResult,
 	RenderOptions,
