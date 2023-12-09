@@ -1,12 +1,12 @@
 
 import {render} from "lit"
-import {ObsidianMeta} from "./types.js"
+import {ShadowViewMeta} from "./types.js"
 import {apply_attributes} from "./apply_attributes.js"
 
 export function apply_details(
 		element: HTMLElement,
-		freshMeta: ObsidianMeta = {},
-		oldMeta: ObsidianMeta = {},
+		freshMeta: ShadowViewMeta = {},
+		oldMeta: ShadowViewMeta = {},
 	) {
 
 	const {content, attrs: fresh = {}} = freshMeta

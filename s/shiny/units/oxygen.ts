@@ -1,14 +1,14 @@
 
 import {Shell} from "../shell.js"
 import {Context} from "../context.js"
-import {OxygenRenderer} from "../parts/types.js"
+import {LightComponentRenderer} from "../parts/types.js"
 import {UseOxygen} from "../parts/use/tailored.js"
 import {SilverElement} from "../../element/silver.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_oxygen = (
 	<C extends Context>(shell: Shell<C>) =>
-	(renderer: OxygenRenderer<C>) => (
+	(renderer: LightComponentRenderer<C>) => (
 
 	class extends SilverElement {
 		#use = new UseOxygen(

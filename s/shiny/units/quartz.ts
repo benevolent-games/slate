@@ -4,7 +4,7 @@ import {AsyncDirective, DirectiveResult, directive} from "lit/async-directive.js
 
 import {Shell} from "../shell.js"
 import {Context} from "../context.js"
-import {QuartzRenderer} from "../parts/types.js"
+import {LightViewRenderer} from "../parts/types.js"
 import {UseQuartz} from "../parts/use/tailored.js"
 import {SlateView} from "../parts/slate_view_element.js"
 import {debounce} from "../../tools/debounce/debounce.js"
@@ -12,7 +12,7 @@ import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_quartz = (
 	<C extends Context>(shell: Shell<C>) =>
-	<P extends any[]>(renderer: QuartzRenderer<C, P>) =>
+	<P extends any[]>(renderer: LightViewRenderer<C, P>) =>
 
 	directive(class extends AsyncDirective {
 		#props?: P

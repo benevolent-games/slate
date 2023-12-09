@@ -3,12 +3,12 @@ import {Shell} from "../shell.js"
 import {Context} from "../context.js"
 import {GoldElement} from "../../element/gold.js"
 import {UseCarbon} from "../parts/use/tailored.js"
-import {CarbonRenderer} from "../parts/types.js"
+import {ShadowComponentRenderer} from "../parts/types.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_carbon = (
 	<C extends Context>(shell: Shell<C>) =>
-	(renderer: CarbonRenderer<C>) => (
+	(renderer: ShadowComponentRenderer<C>) => (
 
 	class extends GoldElement {
 		#use = new UseCarbon(
