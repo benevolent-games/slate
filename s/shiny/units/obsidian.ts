@@ -5,22 +5,22 @@ import {AsyncDirective} from "lit/async-directive.js"
 import {Shell} from "../shell.js"
 import {Context} from "../context.js"
 import {make_view_root} from "../parts/root.js"
-import {UseObsidian} from "../parts/use/tailored.js"
+import {UseShadowView} from "../parts/use/tailored.js"
 import {apply_details} from "../parts/apply_details.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 import {ShadowViewInput, ShadowViewRenderer} from "../parts/types.js"
-import {obsidian_custom_lit_directive} from "../parts/obsidian_custom_lit_directive.js"
+import {custom_lit_directive_for_shadow_view} from "../parts/obsidian_custom_lit_directive.js"
 
-export const prepare_obsidian = (
+export const prepare_shadow_view = (
 	<C extends Context>(shell: Shell<C>) =>
 	<P extends any[]>(renderer: ShadowViewRenderer<C, P>) => (
 
-	obsidian_custom_lit_directive<P>(class extends AsyncDirective {
+	custom_lit_directive_for_shadow_view<P>(class extends AsyncDirective {
 		#input?: ShadowViewInput<P>
 		#first_connection = true
 		#root = make_view_root({
-			afterRender: () => UseObsidian.afterRender(this.#use),
+			afterRender: () => UseShadowView.afterRender(this.#use),
 			onDisconnected: () => this.disconnected(),
 			onConnected: () => {
 				if (!this.#first_connection)
@@ -37,14 +37,14 @@ export const prepare_obsidian = (
 				)
 		})
 
-		#use = new UseObsidian(
+		#use = new UseShadowView(
 			this.#root.container,
 			this.#root.shadow,
 			this.#rerender,
 			shell.context,
 		)
 
-		#rend = UseObsidian.wrap(this.#use, renderer(this.#use))
+		#rend = UseShadowView.wrap(this.#use, renderer(this.#use))
 
 		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,
@@ -65,7 +65,7 @@ export const prepare_obsidian = (
 		}
 
 		reconnected() {
-			UseObsidian.reconnect(this.#use)
+			UseShadowView.reconnect(this.#use)
 			this.#reactivity = setup_reactivity<P>(
 				this.#rend,
 				this.#rerender,
@@ -73,7 +73,7 @@ export const prepare_obsidian = (
 		}
 
 		disconnected() {
-			UseObsidian.disconnect(this.#use)
+			UseShadowView.disconnect(this.#use)
 			if (this.#reactivity) {
 				this.#reactivity.stop()
 				this.#reactivity = undefined

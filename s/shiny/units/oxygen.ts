@@ -2,27 +2,27 @@
 import {Shell} from "../shell.js"
 import {Context} from "../context.js"
 import {LightComponentRenderer} from "../parts/types.js"
-import {UseOxygen} from "../parts/use/tailored.js"
+import {UseLightComponent} from "../parts/use/tailored.js"
 import {SilverElement} from "../../element/silver.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
-export const prepare_oxygen = (
+export const prepare_light_component = (
 	<C extends Context>(shell: Shell<C>) =>
 	(renderer: LightComponentRenderer<C>) => (
 
 	class extends SilverElement {
-		#use = new UseOxygen(
+		#use = new UseLightComponent(
 			this as SilverElement,
 			() => void this.requestUpdate(),
 			shell.context,
 		)
 
-		#rend = UseOxygen.wrap(this.#use, () => renderer(this.#use))
+		#rend = UseLightComponent.wrap(this.#use, () => renderer(this.#use))
 
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			this.updateComplete.then(() => UseOxygen.afterRender(this.#use))
+			this.updateComplete.then(() => UseLightComponent.afterRender(this.#use))
 			return this.#reactivity?.render()
 		}
 
@@ -32,7 +32,7 @@ export const prepare_oxygen = (
 				this.#rend,
 				() => void this.requestUpdate(),
 			)
-			UseOxygen.reconnect(this.#use)
+			UseLightComponent.reconnect(this.#use)
 		}
 
 		disconnectedCallback() {
@@ -41,7 +41,7 @@ export const prepare_oxygen = (
 				this.#reactivity.stop()
 				this.#reactivity = undefined
 			}
-			UseOxygen.disconnect(this.#use)
+			UseLightComponent.disconnect(this.#use)
 		}
 	}
 ))

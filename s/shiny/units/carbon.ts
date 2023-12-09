@@ -2,34 +2,34 @@
 import {Shell} from "../shell.js"
 import {Context} from "../context.js"
 import {GoldElement} from "../../element/gold.js"
-import {UseCarbon} from "../parts/use/tailored.js"
+import {UseShadowComponent} from "../parts/use/tailored.js"
 import {ShadowComponentRenderer} from "../parts/types.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
-export const prepare_carbon = (
+export const prepare_shadow_component = (
 	<C extends Context>(shell: Shell<C>) =>
 	(renderer: ShadowComponentRenderer<C>) => (
 
 	class extends GoldElement {
-		#use = new UseCarbon(
+		#use = new UseShadowComponent(
 			this as GoldElement,
 			this.root,
 			() => void this.requestUpdate(),
 			shell.context,
 		)
 
-		#rend = UseCarbon.wrap(this.#use, () => renderer(this.#use))
+		#rend = UseShadowComponent.wrap(this.#use, () => renderer(this.#use))
 
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			this.updateComplete.then(() => UseCarbon.afterRender(this.#use))
+			this.updateComplete.then(() => UseShadowComponent.afterRender(this.#use))
 			return this.#reactivity?.render()
 		}
 
 		connectedCallback() {
 			super.connectedCallback()
-			UseCarbon.reconnect(this.#use)
+			UseShadowComponent.reconnect(this.#use)
 			this.#reactivity = setup_reactivity<[]>(
 				this.#rend,
 				() => void this.requestUpdate(),
@@ -38,7 +38,7 @@ export const prepare_carbon = (
 
 		disconnectedCallback() {
 			super.disconnectedCallback()
-			UseCarbon.disconnect(this.#use)
+			UseShadowComponent.disconnect(this.#use)
 			if (this.#reactivity) {
 				this.#reactivity.stop()
 				this.#reactivity = undefined

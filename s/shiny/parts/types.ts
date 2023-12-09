@@ -3,22 +3,22 @@ import {TemplateResult} from "lit"
 import {DirectiveResult} from "lit/async-directive.js"
 
 import {Context} from "../context.js"
-import {UseCarbon, UseObsidian, UseOxygen, UseQuartz} from "./use/tailored.js"
+import {UseShadowComponent, UseShadowView, UseLightComponent, UseLightView} from "./use/tailored.js"
 
 export type LightViewRenderer<C extends Context, P extends any[]> = (
-	(use: UseQuartz<C>) => (...props: P) => (TemplateResult | void)
+	(use: UseLightView<C>) => (...props: P) => (TemplateResult | void)
 )
 
 export type ShadowViewRenderer<C extends Context, P extends any[]> = (
-	(use: UseObsidian<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
+	(use: UseShadowView<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
 )
 
 export type LightComponentRenderer<C extends Context> = (
-	(use: UseOxygen<C>) => (TemplateResult | void)
+	(use: UseLightComponent<C>) => (TemplateResult | void)
 )
 
 export type ShadowComponentRenderer<C extends Context> = (
-	(use: UseCarbon<C>) => (TemplateResult | void)
+	(use: UseShadowComponent<C>) => (TemplateResult | void)
 )
 
 export type LightView<P extends any[]> = (
