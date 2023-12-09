@@ -1,7 +1,7 @@
 
 import {CSSResultGroup} from "lit"
 
-import * as state from "../../shiny/state.js"
+import * as state from "../../nexus/state.js"
 
 import {Lean} from "../../reactor/types.js"
 import {Flat} from "../../flatstate/flat.js"

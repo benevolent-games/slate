@@ -1,13 +1,13 @@
 
 import {CSSResultGroup} from "lit"
 
-import * as state from "../../shiny/state.js"
+import * as state from "../../nexus/state.js"
 
 import {mixin} from "./mixin.js"
 import {ob} from "../../tools/ob.js"
 import {Pipe} from "../../tools/pipe.js"
 import {Flat} from "../../flatstate/flat.js"
-import {Context} from "../../shiny/context.js"
+import {Context} from "../../nexus/context.js"
 import {BaseElementClasses} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
 

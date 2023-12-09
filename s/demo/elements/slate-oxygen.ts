@@ -1,6 +1,6 @@
 
 import {slate} from "../frontend.js"
-import {html} from "../../shiny/html.js"
+import {html} from "../../nexus/html.js"
 
 export const SlateOxygen = slate.light_component(use => {
 	const count = use.signal(256)

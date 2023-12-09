@@ -7,7 +7,7 @@ export * from "./op/prep_render_op.js"
 export * from "./reactor/reactor.js"
 export * from "./reactor/types.js"
 
-export * from "./shiny/state.js"
+export * from "./nexus/state.js"
 
 export * from "./signals/parts/circular_error.js"
 export * from "./signals/parts/listener.js"

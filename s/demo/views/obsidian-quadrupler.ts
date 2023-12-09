@@ -1,7 +1,7 @@
 
 import {css} from "lit"
 import {slate} from "../frontend.js"
-import {html} from "../../shiny/html.js"
+import {html} from "../../nexus/html.js"
 
 export const ObsidianQuadrupler = slate.shadow_view(use =>
 		(start: number) => {

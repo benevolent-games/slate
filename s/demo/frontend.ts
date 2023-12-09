@@ -1,7 +1,7 @@
 
 import {CSSResultGroup} from "lit"
-import {Nexus} from "../shiny/nexus.js"
-import {Context} from "../shiny/context.js"
+import {Nexus} from "../nexus/nexus.js"
+import {Context} from "../nexus/context.js"
 
 export class DemoContext extends Context {
 	constructor(public theme: CSSResultGroup) {

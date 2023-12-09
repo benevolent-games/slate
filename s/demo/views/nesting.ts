@@ -1,7 +1,7 @@
 
 import {css} from "lit"
 import {slate} from "../frontend.js"
-import {html} from "../../shiny/html.js"
+import {html} from "../../nexus/html.js"
 
 const styles = css`span { color: green }`
 

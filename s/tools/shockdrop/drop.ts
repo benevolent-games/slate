@@ -1,5 +1,5 @@
 
-import {signal} from "../../shiny/state.js"
+import {signal} from "../../nexus/state.js"
 import {dragleave_has_exited_current_target} from "./utils/dragleave_has_exited_current_target.js"
 
 export class ShockDrop {

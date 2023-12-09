@@ -1,6 +1,6 @@
 
 import {html, css} from "lit"
-import {flat} from "../../shiny/state.js"
+import {flat} from "../../nexus/state.js"
 import {GoldElement} from "../../element/gold.js"
 
 export class SlateGold extends GoldElement {

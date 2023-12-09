@@ -1,6 +1,6 @@
 
 import {slate} from "../frontend.js"
-import {css, html} from "../../shiny/html.js"
+import {css, html} from "../../nexus/html.js"
 
 const random = () => Math.ceil(Math.random() * 1000)
 
