@@ -9,7 +9,7 @@
 
 <br/>
 
-### v0.1.0
+## v0.1.0
 
 nexus rewrite
 - 🟥 `Slate` renamed to `Nexus`
@@ -76,7 +76,7 @@ tools
   - `is.array(x)`
   - `is.defined(x)`
 
-### v0.0.0
+## v0.0.0
 
 in this recent work, the `flat` and `signals` state management apis are converging.
 
@@ -108,18 +108,18 @@ in this recent work, the `flat` and `signals` state management apis are convergi
   - `watch` is fundamentally different than flatstate and signals, and is not suitable to become a ReactorCore
   - watch does not have any "automated" reactivity, it's always explicit, so it has `.track` instead of `.reaction`
 
-### v0.0.0-dev.28
+## v0.0.0-dev.28
 
 - 🟥 change Initiator signature, added `.cleanup` helpers
 
-### v0.0.0-dev.27
+## v0.0.0-dev.27
 
 - 🟥 replace WatchBox with Signal
 - 🟥 WatchTower now requires SignalTower as a param
 - 🍏 add exports 'flatstate' and 'signal'
 - 🍏 add ZipAction.prep, ZipAction.prepAction, ZipAction.prepBlueprint
 
-### v0.0.0-dev.25
+## v0.0.0-dev.25
 
 - 🟥 `flat`, `signals`, and `watch` removed from `Context`
   ```ts
@@ -136,7 +136,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
   ```
   - slate.shell has been `deleted` -- now Slate extends Shell (slate is a shell now)
 
-### v0.0.0-dev.21
+## v0.0.0-dev.21
 
 - 🟥 renamed `prepare_frontend` to `setup`
 - 🍏 added synonyms
@@ -145,7 +145,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
   - `obsidian` => `shadow_view`
   - `quartz` => `light_view`
 
-### v0.0.0-dev.16
+## v0.0.0-dev.16
 
 - 🟥 significant rework
   - introduce experimental new `context.watch` WatchTower and StateTree systems
@@ -161,7 +161,7 @@ in this recent work, the `flat` and `signals` state management apis are convergi
     - now you must use the new `slate.components` helper to apply the current context to a group of plain components, at runtime, prior to registration (if you want the components to be reactive and use the css theme)
   - change `Attributes.base` to `attributes`
 
-### v0.0.0-dev.6
+## v0.0.0-dev.6
 
 - 🟥 massive rework
   - deleted shale and clay views
@@ -171,5 +171,5 @@ in this recent work, the `flat` and `signals` state management apis are convergi
   - rework context
   - add signals
 
-### v0.0.0-dev.5
+## v0.0.0-dev.5
 
