@@ -23,7 +23,7 @@ export const prepare_light_view = (
 			return this.#element
 		}
 		#rerender = debounce(0, () => {
-			if (this.#props)
+			if (this.#props && this.isConnected)
 				this.setValue(this.#render_into_element(this.render(...this.#props!)))
 		})
 		#use = new UseLightView(this.#element, this.#rerender, shell.context)

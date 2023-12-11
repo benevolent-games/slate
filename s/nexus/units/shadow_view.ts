@@ -29,7 +29,7 @@ export const prepare_shadow_view = (
 			},
 		})
 		#rerender = debounce(0, () => {
-			if (this.#input)
+			if (this.#input && this.isConnected)
 				this.setValue(
 					this.#root.render_into_shadow(
 						this.render(this.#input!)

@@ -11,6 +11,7 @@ export class SlateView extends HTMLElement {
 	connectedCallback() {
 		this.onConnected.publish()
 	}
+
 	disconnectedCallback() {
 		this.onDisconnected.publish()
 	}
