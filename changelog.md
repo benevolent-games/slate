@@ -49,7 +49,9 @@ use
 - 🍏 add hook `use.name(name)` (all views)
 - 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)
 
-ops
+ops (and OpSignal)
+- 🟥 rename `Op.run` to `Op.load`
+  - also rename `OpSignal->run` to `OpSignal->load`
 - 🟥 rename op 'mode' to 'status'
   - change `Op.Mode` to `Op.Status`
   - change `op.mode` to `op.status` on your op objects

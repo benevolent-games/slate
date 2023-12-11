@@ -56,7 +56,7 @@ export namespace Op {
 		}
 	}
 
-	export async function run<X>(
+	export async function load<X>(
 			set_op: Setter<X>,
 			operation: () => Promise<X>,
 		) {

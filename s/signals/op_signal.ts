@@ -8,8 +8,8 @@ export class OpSignal<V> extends Signal<Op.For<V>> {
 		super(op)
 	}
 
-	async run(operation: () => Promise<V>) {
-		return Op.run(
+	async load(operation: () => Promise<V>) {
+		return Op.load(
 			op => this.value = op,
 			operation,
 		)
