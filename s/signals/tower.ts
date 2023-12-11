@@ -33,7 +33,7 @@ export class SignalTower implements ReactorCore {
 
 	many<S extends {[key: string]: any}>(states: S) {
 		return (
-			ob.map(states, state => this.signal(state))
+			ob(states).map(state => this.signal(state))
 		) as any as {[P in keyof S]: Signal<S[P]>}
 	}
 

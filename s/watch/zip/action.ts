@@ -19,7 +19,7 @@ export namespace ZipAction {
 	}
 
 	export function actualize<S, B extends Blueprint<S>>(tree: StateTree<S>, blueprint: B) {
-		return ob.map(blueprint, value => {
+		return ob(blueprint).map(value => {
 			if (typeof value === "function") {
 				return (...params: any[]) => {
 					tree.transmute(state => {

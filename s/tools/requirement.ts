@@ -27,7 +27,7 @@ export function requirement<R>() {
  */
 requirement.provide = <R>(r: R) => (
 	<G extends RequirementGroup<R, any>>(group: G) => (
-		ob.map(group, fun => fun(r)) as RequirementGroupProvided<G>
+		ob(group).map(fun => fun(r)) as RequirementGroupProvided<G>
 	)
 )
 

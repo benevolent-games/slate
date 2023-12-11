@@ -1,7 +1,7 @@
 
 import {Recording} from "./types.js"
-import {make_map, make_set} from "./makers.js"
 import {maptool} from "../../tools/maptool.js"
+import {make_map, make_set} from "./makers.js"
 import {Collector} from "../../reactor/types.js"
 
 export class Recorder {
@@ -18,7 +18,7 @@ export class Recorder {
 	record_that_key_was_accessed(state: {}, key: string) {
 		const recording = this.#recordings.at(-1)
 		if (recording) {
-			const keyset = maptool(recording).grab(state, make_set)
+			const keyset = maptool(recording).guarantee(state, make_set)
 			keyset.add(key)
 		}
 	}

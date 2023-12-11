@@ -73,6 +73,10 @@ ops (and OpSignal)
 - 🍏 fix signals.op return type to be OpSignal
 
 tools
+- 🟥 rename `maptool(map).grab(..)` to `maptool(map).guarantee(..)`
+- 🟥 rework `ob` tool syntax
+  - `ob.map(object, transform)` becomes `ob(object).map(transform)`
+  - `ob.filter(object, predicate)` becomes `ob(object).filter(predicate)`
 - 🟥 recapitulated `deepEqual` and `deepFreeze` into new `deep` tool
   - `deepEqual` becomes `deep.equal`
   - `deepFreeze` becomes `deep.freeze`

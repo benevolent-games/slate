@@ -7,12 +7,12 @@ export class Tracker {
 	#tracking: Tracking = new WeakMap()
 
 	grab_keymap(state: {}) {
-		const keymap = maptool(this.#tracking).grab(state, make_map)
+		const keymap = maptool(this.#tracking).guarantee(state, make_map)
 
 		return {
 			keymap,
 			grab_symbolmap(key: string) {
-				return maptool(keymap).grab(key, make_map)
+				return maptool(keymap).guarantee(key, make_map)
 			},
 		}
 	}

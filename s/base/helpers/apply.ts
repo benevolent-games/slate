@@ -16,7 +16,7 @@ export namespace apply {
 	export const css = (
 		(theme: CSSResultGroup) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob.map(elements, Element => mixin.css(theme)(Element))
+				ob(elements).map(Element => mixin.css(theme)(Element))
 			)
 		)
 	)
@@ -24,7 +24,7 @@ export namespace apply {
 	export const flat = (
 		(flat: Flat) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob.map(elements, (Element: any) => mixin.flat(flat)(Element))
+				ob(elements).map((Element: any) => mixin.flat(flat)(Element))
 			)
 		)
 	)
@@ -32,7 +32,7 @@ export namespace apply {
 	export const signals = (
 		(signals: SignalTower) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob.map(elements, (Element: any) => mixin.signals(signals)(Element))
+				ob(elements).map((Element: any) => mixin.signals(signals)(Element))
 			)
 		)
 	)
@@ -40,7 +40,7 @@ export namespace apply {
 	export const reactor = (
 		(r = state.reactor) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob.map(elements, (Element: any) => mixin.reactor(r)(Element))
+				ob(elements).map((Element: any) => mixin.reactor(r)(Element))
 			)
 		)
 	)

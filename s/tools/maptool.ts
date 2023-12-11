@@ -6,21 +6,25 @@ export type MapSubset<K, V> = {
 }
 
 export function maptool<K, V>(map: MapSubset<K, V>) {
-	return new MapTool<K, V>(map)
+	return {
+		guarantee: (key: K, make: () => V) => (
+			mapGuarantee(map, key, make)
+		),
+	}
 }
 
-export class MapTool<K, V> {
-	constructor(public readonly map: MapSubset<K, V>) {}
+function mapGuarantee<K, V>(
+		map: MapSubset<K, V>,
+		key: K,
+		make: () => V,
+	) {
 
-	grab(key: K, make: () => V) {
-		const {map} = this
-		if (map.has(key))
-			return map.get(key)!
-		else {
-			const value = make()
-			map.set(key, value)
-			return value
-		}
+	if (map.has(key))
+		return map.get(key)!
+	else {
+		const value = make()
+		map.set(key, value)
+		return value
 	}
 }
 

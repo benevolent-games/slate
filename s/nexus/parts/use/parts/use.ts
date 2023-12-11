@@ -101,7 +101,7 @@ export class Use<C extends Context = Context> {
 
 	once<T>(prep: () => T): T {
 		const count = this.#counter.pull()
-		return maptool(this.#onces).grab(count, prep)
+		return maptool(this.#onces).guarantee(count, prep)
 	}
 
 	#deferred = new Map<number, () => any>()
@@ -118,7 +118,7 @@ export class Use<C extends Context = Context> {
 
 	state<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
-		const value: T = maptool(this.#states).grab(count, () => (
+		const value: T = maptool(this.#states).guarantee(count, () => (
 			(typeof init === "function")
 				? (init as () => T)()
 				: init
@@ -135,7 +135,7 @@ export class Use<C extends Context = Context> {
 
 	flatstate<S extends Record<string, any>>(init: S | (() => S)): S {
 		const count = this.#counter.pull()
-		return maptool(this.#flatstates).grab(count, () => (
+		return maptool(this.#flatstates).guarantee(count, () => (
 			flat.state(
 				(typeof init === "function")
 					? (init as () => S)()
@@ -148,7 +148,7 @@ export class Use<C extends Context = Context> {
 
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
-		return maptool(this.#signals).grab(count, () => (
+		return maptool(this.#signals).guarantee(count, () => (
 			signals.signal(
 				(typeof init === "function")
 					? (init as () => T)()
@@ -159,14 +159,14 @@ export class Use<C extends Context = Context> {
 
 	computed<T>(update: () => T) {
 		const count = this.#counter.pull()
-		return maptool(this.#signals).grab(count, () => (
+		return maptool(this.#signals).guarantee(count, () => (
 			signals.computed(update)
 		)) as Signal<T>
 	}
 
 	op<T>() {
 		const count = this.#counter.pull()
-		return maptool(this.#signals).grab(
+		return maptool(this.#signals).guarantee(
 			count,
 			() => signals.op(),
 		) as OpSignal<T>
@@ -176,7 +176,7 @@ export class Use<C extends Context = Context> {
 
 	watch<T>(collector: () => T): T {
 		const count = this.#counter.pull()
-		return maptool(this.#watches).grab(
+		return maptool(this.#watches).guarantee(
 			count,
 			() => watch.track(collector, data => {
 				this.#watches.set(count, data)
