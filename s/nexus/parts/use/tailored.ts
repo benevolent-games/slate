@@ -13,7 +13,7 @@ export class UseLightView<C extends Context> extends Use<C> {
 	readonly element: SlateView
 
 	name(name: string) {
-		this.prepare(() => this.element.setAttribute("view", name))
+		this.once(() => this.element.setAttribute("view", name))
 	}
 
 	constructor(element: SlateView, rerender: () => void, context: C) {
@@ -28,7 +28,7 @@ export class UseShadowView<
 	> extends UseShadow<C, E> {
 
 	name(name: string) {
-		this.prepare(() => this.element.setAttribute("view", name))
+		this.once(() => this.element.setAttribute("view", name))
 	}
 }
 

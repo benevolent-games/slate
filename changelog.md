@@ -38,16 +38,18 @@ shadow views and components
     })
     ```
 
+use
+- 🟥 `use.setup` renamed to `use.mount`
+- 🟥 `use.prepare` renamed to `use.once`
+- 🍏 add hook `use.defer(callback)` (all views and components)
+- 🍏 add hook `use.name(name)` (all views)
+- 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)
+
 views
 - 🟥 `<obsidian-view>` renamed to `<slate-view>`
 - 🟥 light_view (quartz) contents are now wrapped in `<slate-view>`
   - this is to provide an anchor point from which the view can query its own contents
   - this also helps light_view behavior match shadow_view
-
-use
-- 🍏 add hook `use.afterRender(callback)` (all views and components)
-- 🍏 add hook `use.name(name)` (all views)
-- 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)
 
 ops (and OpSignal)
 - 🟥 rename `Op.run` to `Op.load`

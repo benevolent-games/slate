@@ -82,7 +82,7 @@ export class Use<C extends Context = Context> {
 		this.#rerender()
 	}
 
-	setup(func: SetupFn) {
+	mount(func: SetupFn) {
 		const count = this.#counter.pull()
 		if (!this.#setups.has(count)) {
 			this.#setups.set(count, func)
@@ -102,12 +102,12 @@ export class Use<C extends Context = Context> {
 		return this.#initResults.get(count)
 	}
 
-	prepare<T>(prep: () => T): T {
+	once<T>(prep: () => T): T {
 		const count = this.#counter.pull()
 		return maptool(this.#preparations).grab(count, prep)
 	}
 
-	afterRender<T>(fn: () => T): T | undefined {
+	defer<T>(fn: () => T): T | undefined {
 		const count = this.#counter.pull()
 		if (!this.#afterFns.has(count))
 			this.#afterFns.set(count, fn)

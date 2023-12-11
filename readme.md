@@ -217,15 +217,15 @@ slate's hooks have the same rules as any other framework's hooks: the order that
   const [count, setCount] = use.state(0)
   const increment = () => setCount(count + 1)
   ```
-- **use.prepare**  
+- **use.once**  
   initialize a value once
   ```ts
-  const random_number = use.prepare(() => Math.random())
+  const random_number = use.once(() => Math.random())
   ```
-- **use.setup**  
+- **use.mount**  
   perform setup/cleanup on dom connected/disconnected
   ```ts
-  use.setup(() => {
+  use.mount(() => {
     const interval = setInterval(increment, 1000)
     return () => clearInterval(interval)
   })
@@ -244,11 +244,11 @@ slate's hooks have the same rules as any other framework's hooks: the order that
     ]
   })
   ```
-- **use.afterRender**  
+- **use.defer**  
   execute a function everytime a render finishes.  
   you might want to do this if you need to query for elements you just rendered.  
   ```ts
-  use.afterRender(() => {
+  use.defer(() => {
     const div = document.querySelector("div")
     const rect = div.getBoundingClientRect()
     report_rect(rect)

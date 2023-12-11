@@ -14,7 +14,7 @@ export class UseShadow<C extends Context = Context, E extends HTMLElement = HTML
 	get shadow() { return this.#shadow }
 
 	styles(styles: CSSResultGroup | undefined) {
-		this.prepare(() => apply_styles_to_shadow(
+		this.once(() => apply_styles_to_shadow(
 			this.shadow,
 			[this.context.theme, styles ?? css``],
 		))
