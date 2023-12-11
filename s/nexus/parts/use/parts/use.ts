@@ -1,73 +1,61 @@
 
+import {usekey} from "./utils/usekey.js"
+import {Counter} from "./utils/counter.js"
 import {Context} from "../../../context.js"
-import {InitFn, SetupFn, Setdown} from "./types.js"
+import {Init, Mount, Unmount} from "./types.js"
 import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
 import {flat, signals, watch} from "../../../state.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
 
 export class Use<C extends Context = Context> {
-	static wrap<F extends (...args: any[]) => any>(use: Use, fun: F) {
-		return ((...args: any[]) => {
-			use.#counter.reset()
-			return fun(...args)
-		}) as F
-	}
+	[usekey] = {
+		wrap: <F extends (...args: any[]) => any>(fn: F) => {
+			return ((...args: any[]) => {
+				this.#counter.reset()
+				return fn(...args)
+			}) as F
+		},
 
-	static disconnect(use: Use) {
+		disconnect: () => {
 
-		// cleanup setups
-		for (const down of use.#setdowns)
-			down()
-		use.#setdowns.clear()
+			// cleanup mounts
+			for (const down of this.#unmounts)
+				down()
+			this.#unmounts.clear()
 
-		// cleanup inits
-		for (const down of use.#initDowns)
-			down()
-		use.#initDowns.clear()
-		use.#initResults.clear()
-	}
+			// cleanup inits
+			for (const down of this.#initDowns)
+				down()
+			this.#initDowns.clear()
+			this.#initResults.clear()
+		},
 
-	static reconnect(use: Use) {
+		reconnect: () => {
 
-		// call all setups
-		for (const up of use.#setups.values())
-			use.#setdowns.add(up())
+			// call all mounts
+			for (const up of this.#mounts.values())
+				this.#unmounts.add(up())
 
-		// call all inits
-		for (const [count, start] of use.#initStarts.entries()) {
-			const [result, down] = start()
-			use.#initResults.set(count, result)
-			use.#initDowns.add(down)
-		}
-	}
+			// call all inits
+			for (const [count, start] of this.#initStarts.entries()) {
+				const [result, down] = start()
+				this.#initResults.set(count, result)
+				this.#initDowns.add(down)
+			}
+		},
 
-	static afterRender(use: Use) {
-		for (const [count, fn] of use.#afterFns) {
-			const result = fn()
-			use.#afterResults.set(count, result)
-		}
+		afterRender: () => {
+			for (const [count, fn] of this.#deferred) {
+				const result = fn()
+				this.#deferredResults.set(count, result)
+			}
+		},
 	}
 
 	#context: C
 	#rerender: () => void
 	#counter = new Counter()
-
-	#setups = new Map<number, SetupFn>()
-	#setdowns = new Set<Setdown>()
-
-	#initStarts = new Map<number, InitFn<any>>()
-	#initResults = new Map<number, any>()
-	#initDowns = new Set<Setdown>()
-
-	#preparations = new Map<number, any>()
-
-	#afterFns = new Map<number, () => any>()
-	#afterResults = new Map<number, any>()
-
-	#states = new Map<number, any>()
-	#flatstates = new Map<number, Record<string, any>>()
-	#signals = new Map<number, any>()
 
 	constructor(rerender: () => void, context: C) {
 		this.#rerender = rerender
@@ -82,19 +70,26 @@ export class Use<C extends Context = Context> {
 		this.#rerender()
 	}
 
-	mount(func: SetupFn) {
+	#mounts = new Map<number, Mount>()
+	#unmounts = new Set<Unmount>()
+
+	mount(fn: Mount) {
 		const count = this.#counter.pull()
-		if (!this.#setups.has(count)) {
-			this.#setups.set(count, func)
-			this.#setdowns.add(func())
+		if (!this.#mounts.has(count)) {
+			this.#mounts.set(count, fn)
+			this.#unmounts.add(fn())
 		}
 	}
 
-	init<R>(func: InitFn<R>): R {
+	#initStarts = new Map<number, Init<any>>()
+	#initResults = new Map<number, any>()
+	#initDowns = new Set<Unmount>()
+
+	init<R>(fn: Init<R>): R {
 		const count = this.#counter.pull()
 		if (!this.#initStarts.has(count)) {
-			this.#initStarts.set(count, func)
-			const [result, down] = func()
+			this.#initStarts.set(count, fn)
+			const [result, down] = fn()
 			this.#initResults.set(count, result)
 			this.#initDowns.add(down)
 			return result
@@ -102,17 +97,24 @@ export class Use<C extends Context = Context> {
 		return this.#initResults.get(count)
 	}
 
+	#onces = new Map<number, any>()
+
 	once<T>(prep: () => T): T {
 		const count = this.#counter.pull()
-		return maptool(this.#preparations).grab(count, prep)
+		return maptool(this.#onces).grab(count, prep)
 	}
+
+	#deferred = new Map<number, () => any>()
+	#deferredResults = new Map<number, any>()
 
 	defer<T>(fn: () => T): T | undefined {
 		const count = this.#counter.pull()
-		if (!this.#afterFns.has(count))
-			this.#afterFns.set(count, fn)
-		return this.#afterResults.get(count)
+		if (!this.#deferred.has(count))
+			this.#deferred.set(count, fn)
+		return this.#deferredResults.get(count)
 	}
+
+	#states = new Map<number, any>()
 
 	state<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
@@ -129,6 +131,8 @@ export class Use<C extends Context = Context> {
 		return [value, setter, getter] as const
 	}
 
+	#flatstates = new Map<number, Record<string, any>>()
+
 	flatstate<S extends Record<string, any>>(init: S | (() => S)): S {
 		const count = this.#counter.pull()
 		return maptool(this.#flatstates).grab(count, () => (
@@ -139,6 +143,8 @@ export class Use<C extends Context = Context> {
 			)
 		)) as S
 	}
+
+	#signals = new Map<number, any>()
 
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
@@ -177,16 +183,6 @@ export class Use<C extends Context = Context> {
 				this.#rerender()
 			}),
 		)
-	}
-}
-
-class Counter {
-	#value = 0
-	pull() {
-		return this.#value++
-	}
-	reset() {
-		this.#value = 0
 	}
 }
 

@@ -41,6 +41,13 @@ shadow views and components
 use
 - 🟥 `use.setup` renamed to `use.mount`
 - 🟥 `use.prepare` renamed to `use.once`
+- 🟥 renamed various types and helpers
+  - types
+    - `SetupFn` to `Mount`
+    - `Setdown` to `Unmount`
+    - `InitFn` to `Init`
+  - helpers
+    - `setupFn` to `mountFn`
 - 🍏 add hook `use.defer(callback)` (all views and components)
 - 🍏 add hook `use.name(name)` (all views)
 - 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)

@@ -2,6 +2,7 @@
 import {Context} from "../context.js"
 import {Shell} from "../parts/shell.js"
 import {GoldElement} from "../../element/gold.js"
+import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {ShadowComponentRenderer} from "../parts/types.js"
 import {UseShadowComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
@@ -18,18 +19,18 @@ export const prepare_shadow_component = (
 			shell.context,
 		)
 
-		#rend = UseShadowComponent.wrap(this.#use, () => renderer(this.#use))
+		#rend = this.#use[usekey].wrap(() => renderer(this.#use))
 
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			this.updateComplete.then(() => UseShadowComponent.afterRender(this.#use))
+			this.updateComplete.then(() => this.#use[usekey].afterRender())
 			return this.#reactivity?.render()
 		}
 
 		connectedCallback() {
 			super.connectedCallback()
-			UseShadowComponent.reconnect(this.#use)
+			this.#use[usekey].reconnect()
 			this.#reactivity = setup_reactivity<[]>(
 				this.#rend,
 				() => void this.requestUpdate(),
@@ -38,7 +39,7 @@ export const prepare_shadow_component = (
 
 		disconnectedCallback() {
 			super.disconnectedCallback()
-			UseShadowComponent.disconnect(this.#use)
+			this.#use[usekey].disconnect()
 			if (this.#reactivity) {
 				this.#reactivity.stop()
 				this.#reactivity = undefined

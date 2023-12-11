@@ -8,6 +8,7 @@ import {LightViewRenderer} from "../parts/types.js"
 import {UseLightView} from "../parts/use/tailored.js"
 import {SlateView} from "../parts/slate_view_element.js"
 import {debounce} from "../../tools/debounce/debounce.js"
+import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_light_view = (
@@ -19,7 +20,7 @@ export const prepare_light_view = (
 		#element = document.createElement(SlateView.tag) as SlateView
 		#render_into_element(template: TemplateResult | void) {
 			render(template, this.#element)
-			UseLightView.afterRender(this.#use)
+			this.#use[usekey].afterRender()
 			return this.#element
 		}
 		#rerender = debounce(0, () => {
@@ -27,7 +28,7 @@ export const prepare_light_view = (
 				this.setValue(this.#render_into_element(this.render(...this.#props!)))
 		})
 		#use = new UseLightView(this.#element, this.#rerender, shell.context)
-		#rend = UseLightView.wrap(this.#use, renderer(this.#use))
+		#rend = this.#use[usekey].wrap(renderer(this.#use))
 		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,
 			this.#rerender,
@@ -43,7 +44,7 @@ export const prepare_light_view = (
 		}
 
 		reconnected() {
-			UseLightView.reconnect(this.#use)
+			this.#use[usekey].reconnect()
 			this.#reactivity = setup_reactivity<P>(
 				this.#rend,
 				this.#rerender,
@@ -51,7 +52,7 @@ export const prepare_light_view = (
 		}
 
 		disconnected() {
-			UseLightView.disconnect(this.#use)
+			this.#use[usekey].disconnect()
 			if (this.#reactivity) {
 				this.#reactivity.stop()
 				this.#reactivity = undefined

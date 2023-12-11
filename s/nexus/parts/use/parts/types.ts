@@ -1,12 +1,12 @@
 
-export type Setdown = () => void
-export type SetupFn = () => Setdown
+export type Unmount = () => void
+export type Mount = () => Unmount
 
-export type InitResult<R> = [R, Setdown]
-export type InitFn<R> = () => InitResult<R>
+export type InitResult<R> = [R, Unmount]
+export type Init<R> = () => InitResult<R>
 
-export type InitReturn<I extends InitFn<any>> = (
-	I extends InitFn<infer R>
+export type InitReturn<I extends Init<any>> = (
+	I extends Init<infer R>
 		? R
 		: never
 )

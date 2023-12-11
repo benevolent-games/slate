@@ -7,6 +7,7 @@ import {Shell} from "../parts/shell.js"
 import {make_view_root} from "../parts/root.js"
 import {UseShadowView} from "../parts/use/tailored.js"
 import {apply_details} from "../parts/apply_details.js"
+import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 import {ShadowViewInput, ShadowViewRenderer} from "../parts/types.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
@@ -20,7 +21,7 @@ export const prepare_shadow_view = (
 		#input?: ShadowViewInput<P>
 		#first_connection = true
 		#root = make_view_root({
-			afterRender: () => UseShadowView.afterRender(this.#use),
+			afterRender: () => this.#use[usekey].afterRender(),
 			onDisconnected: () => this.disconnected(),
 			onConnected: () => {
 				if (!this.#first_connection)
@@ -44,7 +45,7 @@ export const prepare_shadow_view = (
 			shell.context,
 		)
 
-		#rend = UseShadowView.wrap(this.#use, renderer(this.#use))
+		#rend = this.#use[usekey].wrap(renderer(this.#use))
 
 		#reactivity?: Reactivity<P> = setup_reactivity<P>(
 			this.#rend,
@@ -65,7 +66,7 @@ export const prepare_shadow_view = (
 		}
 
 		reconnected() {
-			UseShadowView.reconnect(this.#use)
+			this.#use[usekey].reconnect()
 			this.#reactivity = setup_reactivity<P>(
 				this.#rend,
 				this.#rerender,
@@ -73,7 +74,7 @@ export const prepare_shadow_view = (
 		}
 
 		disconnected() {
-			UseShadowView.disconnect(this.#use)
+			this.#use[usekey].disconnect()
 			if (this.#reactivity) {
 				this.#reactivity.stop()
 				this.#reactivity = undefined

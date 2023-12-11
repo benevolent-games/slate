@@ -5,6 +5,7 @@ import {SilverElement} from "../../element/silver.js"
 import {LightComponentRenderer} from "../parts/types.js"
 import {UseLightComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
+import { usekey } from "../parts/use/parts/utils/usekey.js"
 
 export const prepare_light_component = (
 	<C extends Context>(shell: Shell<C>) =>
@@ -17,12 +18,12 @@ export const prepare_light_component = (
 			shell.context,
 		)
 
-		#rend = UseLightComponent.wrap(this.#use, () => renderer(this.#use))
+		#rend = this.#use[usekey].wrap(() => renderer(this.#use))
 
 		#reactivity?: Reactivity<[]>
 
 		render() {
-			this.updateComplete.then(() => UseLightComponent.afterRender(this.#use))
+			this.updateComplete.then(() => this.#use[usekey].afterRender())
 			return this.#reactivity?.render()
 		}
 
@@ -32,7 +33,7 @@ export const prepare_light_component = (
 				this.#rend,
 				() => void this.requestUpdate(),
 			)
-			UseLightComponent.reconnect(this.#use)
+			this.#use[usekey].reconnect()
 		}
 
 		disconnectedCallback() {
@@ -41,7 +42,7 @@ export const prepare_light_component = (
 				this.#reactivity.stop()
 				this.#reactivity = undefined
 			}
-			UseLightComponent.disconnect(this.#use)
+			this.#use[usekey].disconnect()
 		}
 	}
 ))
