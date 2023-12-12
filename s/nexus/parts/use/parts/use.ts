@@ -7,6 +7,7 @@ import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
 import {flat, signals, watch} from "../../../state.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
+import { deep } from "../../../../pure.js"
 
 export class Use<C extends Context = Context> {
 	[usekey] = {
@@ -183,6 +184,33 @@ export class Use<C extends Context = Context> {
 				this.#rerender()
 			}),
 		)
+	}
+
+	#effects = new Map<number, [Unmount, any[]]>()
+
+	effect(mount: Mount, dependencies: any[]) {
+		dependencies = dependencies.map(
+			dep => dep instanceof Signal
+				? dep.value
+				: dep
+		)
+
+		const count = this.#counter.pull()
+		const effect = this.#effects.get(count)
+
+		if (effect) {
+			const [unmount, previous_deps] = effect
+			if (!deep.equal(dependencies, previous_deps)) {
+				unmount()
+				this.#effects.set(count, [mount(), dependencies])
+			}
+		}
+		else {
+			this.#mounts.set(count, mount)
+			const unmount = mount()
+			this.#unmounts.add(unmount)
+			this.#effects.set(count, [unmount, dependencies])
+		}
 	}
 }
 

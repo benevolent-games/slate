@@ -48,7 +48,8 @@ use
     - `InitFn` to `Init`
   - helpers
     - `setupFn` to `mountFn`
-- 🍏 add hook `use.defer(callback)` (all views and components)
+- 🍏 add hook `use.effect(fn, dependencies)` (all views and components)
+- 🍏 add hook `use.defer(fn)` (all views and components)
 - 🍏 add hook `use.name(name)` (all views)
 - 🍏 add hook `use.styles(styles)` (shadow_view and shadow_component)
 
