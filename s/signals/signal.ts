@@ -5,6 +5,14 @@ import {debounce} from "../tools/debounce/debounce.js"
 import {SignalCircularError} from "./parts/circular_error.js"
 
 export class Signal<V> {
+	static unwrap = (
+		<A>(anything: any): A extends Signal<infer V> ? V : A => {
+			return anything instanceof Signal
+				? anything.value
+				: anything
+		}
+	)
+
 	#value: V
 	#lock = false
 	#wait: Promise<V>

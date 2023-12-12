@@ -9,10 +9,6 @@ export const html = (
 		...values: any[]
 	): TemplateResult => (
 
-	lit_html(strings, ...values.map(value => (
-		(value instanceof Signal)
-			? value.value
-			: value
-	)))
+	lit_html(strings, ...values.map(Signal.unwrap))
 )
 

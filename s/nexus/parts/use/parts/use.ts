@@ -189,11 +189,7 @@ export class Use<C extends Context = Context> {
 	#effects = new Map<number, [Unmount, any[]]>()
 
 	effect(mount: Mount, dependencies: any[]) {
-		dependencies = dependencies.map(
-			dep => dep instanceof Signal
-				? dep.value
-				: dep
-		)
+		dependencies = dependencies.map(Signal.unwrap)
 
 		const count = this.#counter.pull()
 		const effect = this.#effects.get(count)
