@@ -3,11 +3,11 @@ import {usekey} from "./utils/usekey.js"
 import {Counter} from "./utils/counter.js"
 import {Context} from "../../../context.js"
 import {Init, Mount, Unmount} from "./types.js"
+import {deep} from "../../../../tools/deep/deep.js"
 import {Signal} from "../../../../signals/signal.js"
 import {maptool} from "../../../../tools/maptool.js"
 import {flat, signals, watch} from "../../../state.js"
 import {OpSignal} from "../../../../signals/op_signal.js"
-import { deep } from "../../../../pure.js"
 
 export class Use<C extends Context = Context> {
 	[usekey] = {
