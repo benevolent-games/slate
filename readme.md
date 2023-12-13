@@ -635,10 +635,10 @@ signals and flat both share the same reaction syntax, but they are separate stat
 
 - you can use one-function reaction syntax:
   ```ts
-  import {reactor, flat, signals} from "@benev/slate"
+  import {reactor, flatstate, signal} from "@benev/slate"
 
-  const state = flat.state({count: 0})
-  const count = signals.signal(0)
+  const state = state({count: 0})
+  const count = signal(0)
 
   // use the reactor to setup a reaction
   reactor.reaction(() => console.log(`
