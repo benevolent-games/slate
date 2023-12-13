@@ -75,6 +75,7 @@ export namespace Op {
 					? err
 					: "error"
 			set_op(error(reason))
+			throw err
 		}
 	}
 

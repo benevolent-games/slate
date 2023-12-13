@@ -62,6 +62,9 @@ views
 ops (and OpSignal)
 - 🟥 rename `Op.run` to `Op.load`
   - also rename `OpSignal->run` to `OpSignal->load`
+- 🟥 `Op.load` and `OpSignal->load` now throws errors
+  - it still sets the op to an error state
+  - but now it also throws an error, so you can catch it directly
 - 🟥 rename op 'mode' to 'status'
   - change `Op.Mode` to `Op.Status`
   - change `op.mode` to `op.status` on your op objects
