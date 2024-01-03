@@ -277,7 +277,7 @@ slate's hooks have the same rules as any other framework's hooks: the order that
   create an OpSignal in a loading/error/ready state, and it can hold a result value
   ```ts
   const count = use.op()
-  count.run(async() => fetchCount("/count"))
+  count.load(async() => fetchCount("/count"))
   ```
 
 ### flatstate hooks
@@ -500,14 +500,14 @@ this implementation is inspired by [preact signals](https://preactjs.com/blog/in
   ```ts
   const json = signals.op<MyJson>()
 
-  console.log(json.loading) //> true
+  console.log(json.isLoading()) //> true
 
-  await json.run(async() => {
+  await json.load(async() => {
     const data = await fetch_remote_data()
     return JSON.parse(data)
   })
 
-  console.log(json.ready) //> true
+  console.log(json.isReady()) //> true
   console.log(json.payload) //> {"your": "json data"}
   ```
 - **computed** — signal derived from other signals
@@ -682,13 +682,13 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   import {Op} from "@benev/slate"
 
   Op.loading()
-    //= {mode: "loading"}
+    //= {status: "loading"}
 
   Op.error("a fail occurred")
-    //= {mode: "error", reason: "a fail occurred"}
+    //= {status: "error", reason: "a fail occurred"}
 
   Op.ready(123)
-    //= {mode: "ready", payload: 123}
+    //= {status: "ready", payload: 123}
   ```
 - check an op's status (proper typescript type guards)
   ```ts
@@ -703,8 +703,8 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   ```
 - grab an op's payload (undefined when not ready)
   ```ts
-  const count = op.ready(123)
-  const loadingCount = op.loading()
+  const count = Op.ready(123)
+  const loadingCount = Op.loading()
 
   Op.payload(count)
     //= 123
@@ -716,7 +716,7 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   ```ts
   let my_op = Op.loading()
 
-  await Op.run(
+  await Op.load(
 
     // your setter designates which op to overwrite
     op => my_op = op,
@@ -733,7 +733,7 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   const count = signals.op()
 
   // run an async operation
-  await count.run(async() => {
+  await count.load(async() => {
     await sleep(1000)
     return 123
   })
