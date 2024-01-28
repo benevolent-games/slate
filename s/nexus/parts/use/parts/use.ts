@@ -173,17 +173,12 @@ export class Use<C extends Context = Context> {
 		) as OpSignal<T>
 	}
 
-	#watches = new Map<number, any>()
-
 	watch<T>(collector: () => T): T {
-		const count = this.#counter.pull()
-		return maptool(this.#watches).guarantee(
-			count,
-			() => watch.track(collector, data => {
-				this.#watches.set(count, data)
-				this.#rerender()
-			}),
-		)
+		return this.init(() => {
+			const data = collector()
+			const untrack = watch.track(collector, () => this.#rerender())
+			return [data, untrack]
+		})
 	}
 
 	#effects = new Map<number, [Unmount, any[]]>()

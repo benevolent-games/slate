@@ -91,6 +91,10 @@ tools
   - `is.array(x)`
   - `is.defined(x)`
 
+watch
+- 🟥 `watch.track` now returns an unsubscribe function, instead of the collector's data
+  - if you need the data from your collector, just run the collector yourself
+
 ## v0.0.0
 
 in this recent work, the `flat` and `signals` state management apis are converging.

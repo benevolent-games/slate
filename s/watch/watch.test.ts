@@ -61,6 +61,27 @@ export default <Suite>{
 		expect(calls).equals(2)
 		expect(lastCount).equals(1)
 	},
+	"we can unsubscribe from a track to stop listening": async() => {
+		const {watch, tree} = setup()
+		let calls = 0
+		let lastCount = 0
+		const untrack = watch.track(
+			() => tree.state.count,
+			count => {
+				calls++
+				lastCount = count
+			},
+		)
+		expect(calls).equals(1)
+		expect(lastCount).equals(0)
+		untrack()
+		tree.transmute(state => {
+			state.count++
+			return state
+		})
+		expect(calls).equals(1)
+		expect(lastCount).equals(0)
+	},
 	"we can track changes to specific state": async() => {
 		const {watch, tree} = setup()
 		let updates_for_count = 0

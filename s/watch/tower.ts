@@ -40,7 +40,8 @@ export class WatchTower {
 		}
 		listener()
 		this.#listeners.add(listener)
-		return collector()
+		const untrack = () => this.#listeners.delete(listener)
+		return untrack
 	}
 
 	stateTree<S>(state: S) {
