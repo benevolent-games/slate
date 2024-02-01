@@ -239,7 +239,7 @@ slate's hooks have the same rules as any other framework's hooks: the order that
     const scene = setup_3d_scene_for_example()
 
     return [
-      canvas, // value returned
+      scene, // value returned
       () => scene.cleanup(), // cleanup called on dom disconnect
     ]
   })
