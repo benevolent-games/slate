@@ -293,7 +293,7 @@ slate's hooks have the same rules as any other framework's hooks: the order that
   rerender when anything under part of a StateTree is changed.  
   *todo: document how this works via `watch.stateTree({})`.*  
   ```ts
-  const whatever = use.watch(use.context.state.whatever)
+  const whatever = use.watch(() => use.context.state.whatever)
   ```
 
 ### useful accessors
