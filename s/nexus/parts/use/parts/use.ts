@@ -183,6 +183,7 @@ export class Use<C extends Context = Context> {
 				}
 				item.untrack = watch.track(collector, data => {
 					item.data = data
+					this.#rerender()
 				})
 				return item
 			}
