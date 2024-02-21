@@ -179,10 +179,11 @@ export class Use<C extends Context = Context> {
 			() => {
 				const item: {data: any, untrack: () => void} = {
 					data: collector(),
-					untrack: watch.track(collector, data => {
-						item.data = data
-					}),
+					untrack: () => {},
 				}
+				item.untrack = watch.track(collector, data => {
+					item.data = data
+				})
 				return item
 			}
 		)
