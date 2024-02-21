@@ -30,6 +30,11 @@ export class Use<C extends Context = Context> {
 				down()
 			this.#initDowns.clear()
 			this.#initResults.clear()
+
+			// cleanup watches
+			for (const [,untrack] of this.#watches.values())
+				untrack()
+			this.#watches.clear()
 		},
 
 		reconnect: () => {
@@ -73,7 +78,6 @@ export class Use<C extends Context = Context> {
 
 	#mounts = new Map<number, Mount>()
 	#unmounts = new Set<Unmount>()
-
 	mount(fn: Mount) {
 		const count = this.#counter.pull()
 		if (!this.#mounts.has(count)) {
@@ -85,7 +89,6 @@ export class Use<C extends Context = Context> {
 	#initStarts = new Map<number, Init<any>>()
 	#initResults = new Map<number, any>()
 	#initDowns = new Set<Unmount>()
-
 	init<R>(fn: Init<R>): R {
 		const count = this.#counter.pull()
 		if (!this.#initStarts.has(count)) {
@@ -99,7 +102,6 @@ export class Use<C extends Context = Context> {
 	}
 
 	#onces = new Map<number, any>()
-
 	once<T>(prep: () => T): T {
 		const count = this.#counter.pull()
 		return maptool(this.#onces).guarantee(count, prep)
@@ -107,7 +109,6 @@ export class Use<C extends Context = Context> {
 
 	#deferred = new Map<number, () => any>()
 	#deferredResults = new Map<number, any>()
-
 	defer<T>(fn: () => T): T | undefined {
 		const count = this.#counter.pull()
 		if (!this.#deferred.has(count))
@@ -116,7 +117,6 @@ export class Use<C extends Context = Context> {
 	}
 
 	#states = new Map<number, any>()
-
 	state<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
 		const value: T = maptool(this.#states).guarantee(count, () => (
@@ -133,7 +133,6 @@ export class Use<C extends Context = Context> {
 	}
 
 	#flatstates = new Map<number, Record<string, any>>()
-
 	flatstate<S extends Record<string, any>>(init: S | (() => S)): S {
 		const count = this.#counter.pull()
 		return maptool(this.#flatstates).guarantee(count, () => (
@@ -146,7 +145,6 @@ export class Use<C extends Context = Context> {
 	}
 
 	#signals = new Map<number, any>()
-
 	signal<T>(init: T | (() => T)) {
 		const count = this.#counter.pull()
 		return maptool(this.#signals).guarantee(count, () => (
@@ -173,16 +171,17 @@ export class Use<C extends Context = Context> {
 		) as OpSignal<T>
 	}
 
+	#watches = new Map<number, [any, () => void]>()
 	watch<T>(collector: () => T): T {
-		return this.init(() => {
-			const data = collector()
-			const untrack = watch.track(collector, () => this.#rerender())
-			return [data, untrack]
-		})
+		const count = this.#counter.pull()
+		const [data] = maptool(this.#watches).guarantee(
+			count,
+			() => [collector(), watch.track(collector, () => this.#rerender)],
+		)
+		return data
 	}
 
 	#effects = new Map<number, [Unmount, any[]]>()
-
 	effect(mount: Mount, dependencies: any[]) {
 		dependencies = dependencies.map(Signal.unwrap)
 
