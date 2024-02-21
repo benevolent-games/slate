@@ -176,7 +176,7 @@ export class Use<C extends Context = Context> {
 		const count = this.#counter.pull()
 		const [data] = maptool(this.#watches).guarantee(
 			count,
-			() => [collector(), watch.track(collector, () => this.#rerender)],
+			() => [collector(), watch.track(collector, () => this.#rerender())],
 		)
 		return data
 	}
