@@ -32,7 +32,7 @@ export class Use<C extends Context = Context> {
 			this.#initResults.clear()
 
 			// cleanup watches
-			for (const [,untrack] of this.#watches.values())
+			for (const {untrack} of this.#watches.values())
 				untrack()
 			this.#watches.clear()
 		},
@@ -171,12 +171,20 @@ export class Use<C extends Context = Context> {
 		) as OpSignal<T>
 	}
 
-	#watches = new Map<number, [any, () => void]>()
+	#watches = new Map<number, {data: any, untrack: () => void}>()
 	watch<T>(collector: () => T): T {
 		const count = this.#counter.pull()
-		const [data] = maptool(this.#watches).guarantee(
+		const {data} = maptool(this.#watches).guarantee(
 			count,
-			() => [collector(), watch.track(collector, () => this.#rerender())],
+			() => {
+				const item: {data: any, untrack: () => void} = {
+					data: collector(),
+					untrack: watch.track(collector, data => {
+						item.data = data
+					}),
+				}
+				return item
+			}
 		)
 		return data
 	}
