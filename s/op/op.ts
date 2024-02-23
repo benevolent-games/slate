@@ -9,6 +9,7 @@ export namespace Op {
 
 	export type For<X> = Loading | Error | Ready<X>
 	export type Setter<X> = (op: For<X>) => void
+	export type Payload<O> = O extends Op.Ready<infer X> ? X : never;
 
 	export const loading = <X>(): For<X> => ({status: "loading"})
 	export const error = <X>(reason: string): For<X> => ({status: "error", reason})
@@ -85,6 +86,17 @@ export namespace Op {
 			error: reason => error(reason),
 			ready: a => ready(transmute(a)),
 		})
+	}
+
+	export function all<O extends For<any>[]>(...ops: O) {
+		const error = ops.find(is.error)
+		return (
+			error
+				? error
+				: ops.every(is.ready)
+					? ready(ops.map(payload))
+					: loading()
+		) as For<{[K in keyof O]: Payload<O[K]>}>
 	}
 }
 
