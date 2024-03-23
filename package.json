@@ -32,9 +32,9 @@
 		"http-server": "^14.1.1",
 		"importly": "^0.2.3",
 		"npm-run-all": "^4.1.5",
-		"rollup": "^4.12.0",
-		"terser": "^5.27.2",
-		"typescript": "^5.3.3"
+		"rollup": "^4.13.0",
+		"terser": "^5.29.2",
+		"typescript": "^5.4.3"
 	},
 	"keywords": [
 		"framework",
