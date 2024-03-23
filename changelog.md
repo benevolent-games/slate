@@ -94,6 +94,7 @@ tools
 watch
 - 🟥 `watch.track` now returns an unsubscribe function, instead of the collector's data
   - if you need the data from your collector, just run the collector yourself
+- 🍏 add `Historian` and `AppCore` for creating apps with undo/redo capabilities
 
 ## v0.0.0
 
