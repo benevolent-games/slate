@@ -35,4 +35,6 @@ export * from "./tools/requirement.js"
 export * from "./watch/tower.js"
 export * from "./watch/state_tree.js"
 export * from "./watch/zip/action.js"
+export * from "./watch/framework/app_core.js"
+export * from "./watch/framework/historian.js"
 
