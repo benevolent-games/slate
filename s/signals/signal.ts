@@ -27,7 +27,7 @@ export class Signal<V> {
 
 	subscribe(listener: SignalListener<V>) {
 		this.#listeners.add(listener)
-		return () => void this.#listeners.delete(listener)
+		return (): void => void this.#listeners.delete(listener)
 	}
 
 	once(listener: SignalListener<V>) {
@@ -36,7 +36,7 @@ export class Signal<V> {
 			this.#listeners.delete(actual_listener)
 		}
 		this.#listeners.add(actual_listener)
-		return () => void this.#listeners.delete(actual_listener)
+		return (): void => void this.#listeners.delete(actual_listener)
 	}
 
 	clear() {
