@@ -1,11 +1,11 @@
 
-export type MapSubset<K, V> = {
+export type MapBase<K, V> = {
 	has(key: K): boolean
 	get(key: K): V | undefined
 	set(key: K, value: V): void
 }
 
-export function maptool<K, V>(map: MapSubset<K, V>) {
+export function maptool<K, V>(map: MapBase<K, V>) {
 	return {
 		guarantee: (key: K, make: () => V) => (
 			mapGuarantee(map, key, make)
@@ -13,8 +13,8 @@ export function maptool<K, V>(map: MapSubset<K, V>) {
 	}
 }
 
-function mapGuarantee<K, V>(
-		map: MapSubset<K, V>,
+export function mapGuarantee<K, V>(
+		map: MapBase<K, V>,
 		key: K,
 		make: () => V,
 	) {

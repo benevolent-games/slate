@@ -77,7 +77,9 @@ ops (and OpSignal)
 - 🍏 fix signals.op return type to be OpSignal
 
 tools
+- 🟥 rename `MapSubset` type to `MapBase`
 - 🟥 rename `maptool(map).grab(..)` to `maptool(map).guarantee(..)`
+- 🍏 export `mapGuarantee(map, k, v)` function, technically more efficient than `maptool(map).guarantee(k, v)`
 - 🟥 rework `ob` tool syntax
   - `ob.map(object, transform)` becomes `ob(object).map(transform)`
   - `ob.filter(object, predicate)` becomes `ob(object).filter(predicate)`
