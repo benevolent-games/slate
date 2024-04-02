@@ -29,6 +29,7 @@ export * from "./tools/shockdrop/utils/dragleave_has_exited_current_target.js"
 export * from "./tools/shockdrop/utils/dropped_files.js"
 export * from "./tools/shockdrop/drag_drop.js"
 export * from "./tools/shockdrop/drop.js"
+export * from "./tools/lit_listener.js"
 export * from "./tools/fancy_event_listener.js"
 export * from "./tools/el.js"
 
