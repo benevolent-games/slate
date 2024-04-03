@@ -32,6 +32,7 @@ export * from "./tools/shockdrop/drop.js"
 export * from "./tools/lit_listener.js"
 export * from "./tools/fancy_event_listener.js"
 export * from "./tools/el.js"
+export * from "./tools/ev.js"
 
 export {
 	render,

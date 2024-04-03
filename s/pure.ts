@@ -31,6 +31,7 @@ export * from "./tools/pipe.js"
 export * from "./tools/pojo.js"
 export * from "./tools/pub.js"
 export * from "./tools/requirement.js"
+export * from "./tools/trashcan.js"
 
 export * from "./watch/tower.js"
 export * from "./watch/state_tree.js"
