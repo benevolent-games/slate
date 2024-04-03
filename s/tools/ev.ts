@@ -1,7 +1,8 @@
 
 import {Pojo} from "./pojo.js"
+import {LitListener} from "./lit_listener.js"
 
-export type EvListener = (...args: any[]) => void
+export type EvListener = LitListener | ((...args: any[]) => void)
 export type Ev = Pojo<EvListener>
 
 /** attach event listeners to dom elements */

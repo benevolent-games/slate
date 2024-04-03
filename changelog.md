@@ -12,7 +12,7 @@
 ## next
 
 - 🔶 rename `FancyEventListener` to `LitListener`
-- 🍏 add: tools `ev`, `Trashcan`, and `litListener`
+- 🍏 add: tools `ev`, `Trashcan`, `litListener`, and `pubsub`
 
 ## v0.1.0
 

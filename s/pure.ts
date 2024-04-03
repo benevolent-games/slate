@@ -30,6 +30,7 @@ export * from "./tools/ob.js"
 export * from "./tools/pipe.js"
 export * from "./tools/pojo.js"
 export * from "./tools/pub.js"
+export * from "./tools/pubsub.js"
 export * from "./tools/requirement.js"
 export * from "./tools/trashcan.js"
 
