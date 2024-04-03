@@ -9,6 +9,11 @@
 
 <br/>
 
+## next
+
+- 🔶 rename `FancyEventListener` to `LitListener`
+- 🍏 add: tools `ev`, `Trashcan`, and `litListener`
+
 ## v0.1.0
 
 nexus rewrite
