@@ -9,6 +9,12 @@
 
 <br/>
 
+## next
+
+- 🔶 rename `FancyEventListener` to `LitListener`
+- 🍏 add: tools `ev`, `Trashcan`, `litListener`, and `pubsub`
+- 🍏 views now expect a relaxed template type, `RenderResult`, which means views can return other views and strings etc
+
 ## v0.1.0
 
 nexus rewrite

@@ -5,20 +5,22 @@ import {DirectiveResult} from "lit/async-directive.js"
 import {Context} from "../context.js"
 import {UseShadowComponent, UseShadowView, UseLightComponent, UseLightView} from "./use/tailored.js"
 
+export type RenderResult = TemplateResult | DirectiveResult | string | void
+
 export type LightViewRenderer<C extends Context, P extends any[]> = (
-	(use: UseLightView<C>) => (...props: P) => (TemplateResult | void)
+	(use: UseLightView<C>) => (...props: P) => RenderResult
 )
 
 export type ShadowViewRenderer<C extends Context, P extends any[]> = (
-	(use: UseShadowView<C, HTMLElement>) => (...props: P) => (TemplateResult | void)
+	(use: UseShadowView<C, HTMLElement>) => (...props: P) => RenderResult
 )
 
 export type LightComponentRenderer<C extends Context> = (
-	(use: UseLightComponent<C>) => (TemplateResult | void)
+	(use: UseLightComponent<C>) => RenderResult
 )
 
 export type ShadowComponentRenderer<C extends Context> = (
-	(use: UseShadowComponent<C>) => (TemplateResult | void)
+	(use: UseShadowComponent<C>) => RenderResult
 )
 
 export type LightView<P extends any[]> = (

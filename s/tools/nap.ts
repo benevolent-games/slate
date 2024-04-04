@@ -1,5 +1,5 @@
 
 export const nap = (milliseconds: number = 0) => (
-	new Promise(resolve => setTimeout(resolve, milliseconds))
+	new Promise<void>(resolve => setTimeout(resolve, milliseconds))
 )
 

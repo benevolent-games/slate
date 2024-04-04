@@ -1,14 +1,14 @@
 
-import {TemplateResult} from "lit"
 import {reactor} from "../state.js"
+import {RenderResult} from "./types.js"
 
 export type Reactivity<P extends any[]> = {
-	render: (...props: P) => (TemplateResult | void)
+	render: (...props: P) => RenderResult
 	stop: () => void
 }
 
 export function setup_reactivity<P extends any[]>(
-		render: (...props: P) => (TemplateResult | void),
+		render: (...props: P) => RenderResult,
 		rerender: () => void,
 	): Reactivity<P> {
 

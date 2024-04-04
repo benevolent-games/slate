@@ -5,6 +5,7 @@ import {BaseElement} from "../base/element.js"
 import {MetallicElement} from "./part/metallic.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
+import { RenderResult } from "../nexus/parts/types.js"
 
 export class SilverElement extends MetallicElement implements BaseElement {
 	#init? = explode_promise<void>()
@@ -21,7 +22,7 @@ export class SilverElement extends MetallicElement implements BaseElement {
 		return this.#wait.then(() => true)
 	}
 
-	render(): TemplateResult | void {}
+	render(): RenderResult {}
 
 	#render_debounced = debounce(0, () => {
 		const template = this.render()
