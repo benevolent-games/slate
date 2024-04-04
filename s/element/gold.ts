@@ -1,8 +1,9 @@
 
-import {CSSResultGroup, TemplateResult, render} from "lit"
+import {CSSResultGroup, render} from "lit"
 
 import {BaseElement} from "../base/element.js"
 import {MetallicElement} from "./part/metallic.js"
+import {RenderResult} from "../nexus/parts/types.js"
 import {debounce} from "../tools/debounce/debounce.js"
 import {explode_promise} from "../tools/explode_promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
@@ -32,7 +33,7 @@ export class GoldElement extends MetallicElement implements BaseElement {
 		return this.#wait.then(() => true)
 	}
 
-	render(): TemplateResult | void {}
+	render(): RenderResult {}
 
 	#render_debounced = debounce(0, () => {
 		const root = this.#root

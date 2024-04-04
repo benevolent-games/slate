@@ -1,6 +1,7 @@
 
-import {TemplateResult, render} from "lit"
+import {render} from "lit"
 
+import {RenderResult} from "./types.js"
 import {SlateView} from "./slate_view_element.js"
 import {auto_exportparts} from "./auto_exportparts/auto.js"
 
@@ -28,7 +29,7 @@ export function make_view_root({
 			auto_exportparts_is_enabled = enabled
 		},
 
-		render_into_shadow(content: TemplateResult | void) {
+		render_into_shadow(content: RenderResult) {
 			render(content, shadow)
 
 			if (auto_exportparts_is_enabled)

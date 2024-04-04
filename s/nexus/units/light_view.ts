@@ -1,14 +1,14 @@
 
-import {Part, TemplateResult, render} from "lit"
+import {Part, render} from "lit"
 import {AsyncDirective, DirectiveResult, directive} from "lit/async-directive.js"
 
 import {Context} from "../context.js"
 import {Shell} from "../parts/shell.js"
-import {LightViewRenderer} from "../parts/types.js"
 import {UseLightView} from "../parts/use/tailored.js"
 import {SlateView} from "../parts/slate_view_element.js"
 import {debounce} from "../../tools/debounce/debounce.js"
 import {usekey} from "../parts/use/parts/utils/usekey.js"
+import {LightViewRenderer, RenderResult} from "../parts/types.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
 
 export const prepare_light_view = (
@@ -18,7 +18,7 @@ export const prepare_light_view = (
 	directive(class extends AsyncDirective {
 		#props?: P
 		#element = document.createElement(SlateView.tag) as SlateView
-		#render_into_element(template: TemplateResult | void) {
+		#render_into_element(template: RenderResult) {
 			render(template, this.#element)
 			this.#use[usekey].afterRender()
 			return this.#element

@@ -3,9 +3,9 @@ import {Context} from "../context.js"
 import {Shell} from "../parts/shell.js"
 import {SilverElement} from "../../element/silver.js"
 import {LightComponentRenderer} from "../parts/types.js"
+import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {UseLightComponent} from "../parts/use/tailored.js"
 import {Reactivity, setup_reactivity} from "../parts/setup_reactivity.js"
-import { usekey } from "../parts/use/parts/utils/usekey.js"
 
 export const prepare_light_component = (
 	<C extends Context>(shell: Shell<C>) =>

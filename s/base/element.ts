@@ -1,12 +1,13 @@
 
-import {CSSResultGroup, TemplateResult} from "lit"
+import {CSSResultGroup} from "lit"
+import {RenderResult} from "../nexus/parts/types.js"
 
 export type BaseElement = HTMLElement & {
 	connectedCallback(): void
 	disconnectedCallback(): void
 	requestUpdate(): void
 	readonly updateComplete: Promise<boolean>
-	render(): TemplateResult | void
+	render(): RenderResult
 }
 
 export type BaseElementClass = {
