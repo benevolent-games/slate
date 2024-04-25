@@ -3,22 +3,32 @@ import {StateTree} from "./state_tree.js"
 import {deep} from "../tools/deep/deep.js"
 import {Signal} from "../signals/signal.js"
 import {SignalTower} from "../signals/tower.js"
+import {debounce} from "../tools/debounce/debounce.js"
 
 export class WatchTower {
 	#signals: SignalTower
 	#computeds = new Set<() => void>()
 	#listeners = new Set<() => void>()
 	#memory = new Map<() => any, any>()
+	#dispatchPromise: Promise<void> = Promise.resolve()
 
 	constructor(signals: SignalTower) {
 		this.#signals = signals
 	}
 
-	dispatch() {
+	get wait() {
+		return this.#dispatchPromise
+	}
+
+	#dispatch = debounce(0, () => {
 		for (const computed of this.#computeds)
 			computed()
 		for (const listener of this.#listeners)
 			listener()
+	})
+
+	dispatch() {
+		this.#dispatchPromise = this.#dispatch()
 	}
 
 	computed<V>(fun: () => V): Signal<V> {

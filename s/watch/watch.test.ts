@@ -58,6 +58,7 @@ export default <Suite>{
 			state.count++
 			return state
 		})
+		await watch.wait
 		expect(calls).equals(2)
 		expect(lastCount).equals(1)
 	},
@@ -118,6 +119,7 @@ export default <Suite>{
 			state.count++
 			return state
 		})
+		await watch.wait
 		expect(updates_for_count).equals(1)
 		expect(updates_for_greeting).equals(0)
 		expect(updates_for_active).equals(0)
@@ -128,6 +130,7 @@ export default <Suite>{
 			state.group.greeting = "bonjour"
 			return state
 		})
+		await watch.wait
 		expect(updates_for_count).equals(0)
 		expect(updates_for_greeting).equals(1)
 		expect(updates_for_active).equals(0)
@@ -138,6 +141,7 @@ export default <Suite>{
 			state.group.active = true
 			return state
 		})
+		await watch.wait
 		expect(updates_for_count).equals(0)
 		expect(updates_for_greeting).equals(0)
 		expect(updates_for_active).equals(1)
@@ -168,12 +172,14 @@ export default <Suite>{
 			state.greeting = "bonjour"
 			return state
 		})
+		await watch.wait
 		expect(calls_alpha).equals(2)
 		expect(calls_bravo).equals(2)
 		tree.transmute(state => {
 			state.group.greeting = "hola"
 			return state
 		})
+		await watch.wait
 		expect(calls_alpha).equals(3)
 		expect(calls_bravo).equals(3)
 	},
