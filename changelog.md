@@ -9,7 +9,11 @@
 
 <br/>
 
-## next
+## v0.1.2
+
+- 🔶 added `watch.wait` promise, because watch tower dispatches are now debounced
+
+## v0.1.1
 
 - 🔶 rename `FancyEventListener` to `LitListener`
 - 🍏 add: tools `ev`, `Trashcan`, `litListener`, and `pubsub`
