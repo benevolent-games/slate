@@ -9,7 +9,7 @@
 
 <br/>
 
-## next
+## v0.2.0-0
 
 - 🟥 `use.defer`
   - now returns a `Signal`
