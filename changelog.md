@@ -9,6 +9,13 @@
 
 <br/>
 
+## next
+
+- 🟥 `use.defer`
+  - now returns a `Signal`
+  - it used to directly return a value
+  - the reason for this change, was that the old way created a footgun where it's very easy to accidentally hold an old reference to the deferred value that you wanted. so, now using a signal, your access to the signal's value is more likely to be an up-to-date reference
+
 ## v0.1.2
 
 - 🔶 added `watch.wait` promise, because watch tower dispatches are now debounced
