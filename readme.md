@@ -254,6 +254,16 @@ slate's hooks have the same rules as any other framework's hooks: the order that
     report_rect(rect)
   })
   ```
+  note that it returns a signal, which starts with an `undefined` value, but gets updated after every render.  
+  ```ts
+  const div = use.defer(() => document.querySelector("div"))
+
+  console.log(div.value)
+    // undefined (until the first render is complete)
+
+  const handleClick = () => console.log(div.value)
+    // HTMLDivElement (after the first render)
+  ```
 
 ### signal hooks
 - **use.signal**  
