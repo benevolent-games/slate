@@ -52,10 +52,8 @@ export class Use<C extends Context = Context> {
 		},
 
 		afterRender: () => {
-			for (const [count, fn] of this.#deferred) {
-				const result = fn()
-				this.#deferredResults.set(count, result)
-			}
+			for (const fn of this.#deferred.values())
+				fn()
 		},
 	}
 
@@ -107,13 +105,13 @@ export class Use<C extends Context = Context> {
 		return maptool(this.#onces).guarantee(count, prep)
 	}
 
-	#deferred = new Map<number, () => any>()
-	#deferredResults = new Map<number, any>()
-	defer<T>(fn: () => T): T | undefined {
+	#deferred = new Map<number, () => void>()
+	defer<T>(fn: () => T): Signal<T | undefined> {
+		const signal = this.signal<T | undefined>(undefined)
 		const count = this.#counter.pull()
 		if (!this.#deferred.has(count))
-			this.#deferred.set(count, fn)
-		return this.#deferredResults.get(count)
+			this.#deferred.set(count, () => { signal.value = fn() })
+		return signal
 	}
 
 	#states = new Map<number, any>()
