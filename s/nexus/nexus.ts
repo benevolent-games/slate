@@ -27,3 +27,5 @@ export class Nexus<C extends Context> extends Shell<C> {
 	}
 }
 
+export const defaultNexus = new Nexus(new Context())
+

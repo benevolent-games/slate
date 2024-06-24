@@ -24,6 +24,8 @@ export * from "./nexus/context.js"
 export * from "./nexus/html.js"
 export * from "./nexus/nexus.js"
 
+export * from "./op/loading.js"
+
 export * from "./tools/shockdrop/utils/drag_has_files.js"
 export * from "./tools/shockdrop/utils/dragleave_has_exited_current_target.js"
 export * from "./tools/shockdrop/utils/dropped_files.js"

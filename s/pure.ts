@@ -2,7 +2,7 @@
 export * from "./flatstate/flat.js"
 
 export * from "./op/op.js"
-export * from "./op/prep_render_op.js"
+export * from "./op/make-loading-effect.js"
 
 export * from "./reactor/reactor.js"
 export * from "./reactor/types.js"

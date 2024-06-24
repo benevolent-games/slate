@@ -9,12 +9,15 @@
 
 <br/>
 
-## v0.2.0-0
+## v0.2.0
 
 - 🟥 `use.defer`
   - now returns a `Signal`
   - it used to directly return a value
   - the reason for this change, was that the old way created a footgun where it's very easy to accidentally hold an old reference to the deferred value that you wanted. so, now using a signal, your access to the signal's value is more likely to be an up-to-date reference
+- op loading effects
+  - 🟥 `prep_op_effect` replaced by `makeLoadingEffect` or `makeAnimatedLoadingEffect`
+  - 🍏 added `loading` effects like `loading.binary(op, onReady)` and `loading.braille(op, onReady)`
 
 ## v0.1.2
 
