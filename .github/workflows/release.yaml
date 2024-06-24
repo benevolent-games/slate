@@ -27,18 +27,18 @@ jobs:
     steps:
 
     - name: 🔔 checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 🔧 setup node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '20.5'
+        node-version: 21
 
     - name: 📦 install dependencies
       run: npm ci
 
     - name: 🔨 build
-      run: npm run build
+      run: npm run build -s
 
     - name: 🧪 test
       run: npm test

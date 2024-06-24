@@ -11,30 +11,33 @@
 		"s"
 	],
 	"scripts": {
-		"build": "turtle-standard && ln -s $(realpath assets) x/assets",
-		"http": "http-server x",
-		"watch": "turtle-standard-watch",
-		"start": "run-p http watch",
-		"test-watch": "chokidar 'x/**/*.js' -c 'npm test'",
-		"test": "cynic node x/tests.test.js"
+		"build": "run-s build-code build-ssg",
+		"build-code": "turtle build --out=x -v",
+		"build-ssg": "turtle ssg --in=s,x --out=x -v",
+		"build-links": "ln -s $(realpath assets) x/assets",
+		"start": "run-p start-http start-watch",
+		"start-http": "http-server x",
+		"start-watch": "turtle watch --in=s,x --out=x -v",
+		"test": "cynic node x/tests.test.js",
+		"test-watch": "chokidar 'x/**/*.js' -c 'npm test'"
 	},
 	"dependencies": {
-		"lit": "^3.1.2"
+		"lit": "^3.1.4"
 	},
 	"devDependencies": {
-		"@benev/turtle": "^0.5.2",
+		"@benev/turtle": "^0.6.0-2",
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"@rollup/plugin-wasm": "^6.2.2",
 		"chokidar": "^3.6.0",
 		"chokidar-cli": "^3.0.0",
 		"cynic": "^0.2.1",
-		"es-module-shims": "^1.9.0",
+		"es-module-shims": "^1.10.0",
 		"http-server": "^14.1.1",
 		"importly": "^0.2.3",
 		"npm-run-all": "^4.1.5",
-		"rollup": "^4.14.0",
-		"terser": "^5.30.3",
-		"typescript": "^5.4.3"
+		"rollup": "^4.18.0",
+		"terser": "^5.31.1",
+		"typescript": "^5.5.2"
 	},
 	"keywords": [
 		"framework",

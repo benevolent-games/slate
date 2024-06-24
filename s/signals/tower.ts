@@ -25,6 +25,21 @@ export class SignalTower implements ReactorCore {
 		return signal
 	}
 
+	async computedAsync<X, V>(
+			collector: () => X,
+			responder: (x: X) => Promise<V>,
+		) {
+		const value = await responder(collector())
+		const signal = this.signal<V>(value)
+		this.reaction(
+			collector,
+			async x => {
+				signal.value = await responder(x)
+			},
+		)
+		return signal
+	}
+
 	op<V>(op: Op.For<V> = Op.loading()) {
 		const signal = new OpSignal<V>(op)
 		this.#signals.add(signal)

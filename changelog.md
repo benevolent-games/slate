@@ -9,12 +9,28 @@
 
 <br/>
 
-## v0.2.0-0
+## v0.2.0
 
+- 🟥 ***camel case!***
+  - `light_view` is now `lightView`
+  - `light_component` is now `lightComponent`
+  - `shadow_view` is now `shadowView`
+  - `shadow_component` is now `shadowComponent`
 - 🟥 `use.defer`
   - now returns a `Signal`
   - it used to directly return a value
   - the reason for this change, was that the old way created a footgun where it's very easy to accidentally hold an old reference to the deferred value that you wanted. so, now using a signal, your access to the signal's value is more likely to be an up-to-date reference
+- op loading effects
+  - 🟥 `prep_op_effect` replaced by `makeLoadingEffect` or `makeAnimatedLoadingEffect`
+  - 🍏 added `loading` effects like `loading.binary(op, onReady)` and `loading.braille(op, onReady)`
+- 🟥 for node environments: eliminated `@benev/slate/x/pure.js`
+  - `pure.js` was an alternative entrypoint for node to import the parts of slate that didn't touch any DOM apis
+  - instead, now, if you are importing slate into node, you should do this first:
+      ```ts
+      import "@benev/slate/x/node.js"
+      ```
+  - all this does is assign `global.HTMLElement = class {}` because extending HTMLElement is the only contact that slate has with the dom at import time
+  - thus, the new `node.js` is a little shim that lets you import all of slate in node (maybe for unit testing or to use some tools)
 
 ## v0.1.2
 
