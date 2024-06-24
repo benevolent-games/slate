@@ -2,7 +2,7 @@
 import {slate} from "../frontend.js"
 import {html} from "../../nexus/html.js"
 
-export const SlateOxygen = slate.light_component(use => {
+export const SlateOxygen = slate.lightComponent(use => {
 	const count = use.signal(256)
 	const decrease = () => count.value -= 8
 

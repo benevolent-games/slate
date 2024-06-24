@@ -3,7 +3,7 @@ import {css} from "lit"
 import {slate} from "../frontend.js"
 import {html} from "../../nexus/html.js"
 
-export const ObsidianQuadrupler = slate.shadow_view(use =>
+export const ObsidianQuadrupler = slate.shadowView(use =>
 		(start: number) => {
 
 	use.name("quadrupler")

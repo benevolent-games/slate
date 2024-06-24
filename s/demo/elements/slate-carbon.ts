@@ -4,7 +4,7 @@ import {css, html} from "../../nexus/html.js"
 
 const random = () => Math.ceil(Math.random() * 1000)
 
-export const SlateCarbon = slate.shadow_component(use => {
+export const SlateCarbon = slate.shadowComponent(use => {
 	use.styles(css`button { color: green }`)
 
 	const x = use.signal(random)

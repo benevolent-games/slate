@@ -8,7 +8,7 @@ const styles = css`span { color: green }`
 let outerRenders = 0
 let innerRenders = 0
 
-export const NestingOuter = slate.shadow_view(use =>
+export const NestingOuter = slate.shadowView(use =>
 	(start: number) => {
 
 	use.styles(styles)
@@ -24,7 +24,7 @@ export const NestingOuter = slate.shadow_view(use =>
 	`
 })
 
-export const NestingInner = slate.shadow_view(use =>
+export const NestingInner = slate.shadowView(use =>
 	(start: number) => {
 
 	use.styles(styles)

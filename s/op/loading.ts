@@ -16,7 +16,7 @@ const errorStyle = css`
 	}
 `
 
-const AsciiErrorIndicator = defaultNexus.shadow_view(use => (reason: string) => {
+const AsciiErrorIndicator = defaultNexus.shadowView(use => (reason: string) => {
 	use.name("error-indicator")
 	use.styles(errorStyle)
 
@@ -33,7 +33,7 @@ const loadingStyle = css`
 	}
 `
 
-const AsciiLoadingIndicator = defaultNexus.shadow_view(use => (hz: number, animation: RenderResult[]) => {
+const AsciiLoadingIndicator = defaultNexus.shadowView(use => (hz: number, animation: RenderResult[]) => {
 	use.name("loading-indicator")
 	use.styles(loadingStyle)
 

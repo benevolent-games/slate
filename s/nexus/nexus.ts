@@ -11,16 +11,16 @@ import {prepare_shadow_component} from "./units/shadow_component.js"
 export class Nexus<C extends Context> extends Shell<C> {
 	constructor(context?: C) {
 		super(context)
-		this.light_component = prepare_light_component(this)
-		this.shadow_component = prepare_shadow_component(this)
-		this.light_view = prepare_light_view(this)
-		this.shadow_view = prepare_shadow_view(this)
+		this.lightComponent = prepare_light_component(this)
+		this.shadowComponent = prepare_shadow_component(this)
+		this.lightView = prepare_light_view(this)
+		this.shadowView = prepare_shadow_view(this)
 	}
 
-	light_component: ReturnType<typeof prepare_light_component<C>>
-	shadow_component: ReturnType<typeof prepare_shadow_component<C>>
-	light_view: ReturnType<typeof prepare_light_view<C>>
-	shadow_view: ReturnType<typeof prepare_shadow_view<C>>
+	lightComponent: ReturnType<typeof prepare_light_component<C>>
+	shadowComponent: ReturnType<typeof prepare_shadow_component<C>>
+	lightView: ReturnType<typeof prepare_light_view<C>>
+	shadowView: ReturnType<typeof prepare_shadow_view<C>>
 
 	components<E extends BaseElementClasses>(elements: E) {
 		return apply.context(this.context)(elements)

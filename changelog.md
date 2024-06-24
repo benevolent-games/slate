@@ -11,6 +11,11 @@
 
 ## v0.2.0
 
+- 🟥 ***camel case!***
+  - `light_view` is now `lightView`
+  - `light_component` is now `lightComponent`
+  - `shadow_view` is now `shadowView`
+  - `shadow_component` is now `shadowComponent`
 - 🟥 `use.defer`
   - now returns a `Signal`
   - it used to directly return a value
@@ -18,7 +23,7 @@
 - op loading effects
   - 🟥 `prep_op_effect` replaced by `makeLoadingEffect` or `makeAnimatedLoadingEffect`
   - 🍏 added `loading` effects like `loading.binary(op, onReady)` and `loading.braille(op, onReady)`
-- 🟥 eliminated `@benev/slate/x/pure.js`
+- 🟥 for node environments: eliminated `@benev/slate/x/pure.js`
   - `pure.js` was an alternative entrypoint for node to import the parts of slate that didn't touch any DOM apis
   - instead, now, if you are importing slate into node, you should do this first:
       ```ts

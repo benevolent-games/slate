@@ -69,10 +69,10 @@ you want to think of web components as the tip of your iceberg — they are the 
 
 you can create custom html elements that work in plain html or any web framework.
 
-### `nexus.shadow_component`
+### `nexus.shadowComponent`
 
 ```ts
-export const MyShadowComponent = nexus.shadow_component(use => {
+export const MyShadowComponent = nexus.shadowComponent(use => {
   use.styles(css`span {color: yellow}`)
   const count = use.signal(0)
   const increment = () => count.value++
@@ -84,10 +84,10 @@ export const MyShadowComponent = nexus.shadow_component(use => {
 })
 ```
 
-### `nexus.light_component`
+### `nexus.lightComponent`
 
 ```ts
-export const MyLightComponent = nexus.light_component(use => {
+export const MyLightComponent = nexus.lightComponent(use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -126,10 +126,10 @@ instead, they are used via javascript.
 you import them, and inject them into your lit-html templates.  
 they accept js parameters called `props`, and are fully typescript-typed.  
 
-### `nexus.shadow_view`
+### `nexus.shadowView`
 
 ```ts
-export const MyShadowView = nexus.shadow_view(use => (start: number) => {
+export const MyShadowView = nexus.shadowView(use => (start: number) => {
   use.name("my-shadow-view")
   use.styles(css`span {color: yellow}`)
   const count = use.signal(start)
@@ -143,14 +143,14 @@ export const MyShadowView = nexus.shadow_view(use => (start: number) => {
 ```
 
 - **`auto_exportparts` is enabled by default.**
-  - auto exportparts is an experimental shadow_view feature that makes it bearable to use the shadow dom extensively.
+  - auto exportparts is an experimental shadowView feature that makes it bearable to use the shadow dom extensively.
   - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
   - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
-### `nexus.light_view`
+### `nexus.lightView`
 
 ```ts
-export const MyLightView = nexus.light_view(use => (start: number) => {
+export const MyLightView = nexus.lightView(use => (start: number) => {
   use.name("my-light-view")
   const count = use.signal(start)
   const increment = () => count.value++
@@ -198,13 +198,13 @@ export const MyLightView = nexus.light_view(use => (start: number) => {
 slate's hooks have the same rules as any other framework's hooks: the order that hooks are executed in matters, so you must not call hooks under an `if` statement or in any kind of `for` loop or anything like that.
 
 ### core hooks
-- **use.name** ~ *shadow_view, light_view*  
+- **use.name** ~ *shadowView, lightView*  
   assign a stylesheet to the shadow root.  
   only works on views, because having a name to differentiate views is handy (components have the names they were registered to the dom with).  
   ```ts
   use.name("my-cool-view")
   ```
-- **use.styles** ~ *shadow_view, shadow_component*  
+- **use.styles** ~ *shadowView, shadowComponent*  
   assign a stylesheet to the shadow root.  
   only works on shadow views or components (light views/components are styled from above).  
   ```ts
@@ -321,12 +321,12 @@ these are not hooks, just access to useful things you may need, so you're allowe
   ```ts
   use.element.querySelector("p")
   ```
-- **use.shadow** ~ *shadow_view, shadow_component*  
+- **use.shadow** ~ *shadowView, shadowComponent*  
   access to the shadow root
   ```ts
   use.shadow.querySelector("slot")
   ```
-- **use.attrs** ~ *shadow_component, light_component*  
+- **use.attrs** ~ *shadowComponent, lightComponent*  
   declare accessors for html attributes
   ```ts
   const attrs = use.attrs({
