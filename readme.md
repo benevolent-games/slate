@@ -19,7 +19,7 @@
 
 ### slate is my life journey to "solve frontend".
 i've iterated on this for many years, and it's always shifting and changing as i build real apps with it.  
-it's accumulating features and any handy tools.  
+features, handy tools, and state management patterns, are accumulating and being refined.  
 
 ### you see, most devs misunderstand how to leverage web components..
 
@@ -27,8 +27,8 @@ please don't make your whole app out of web components.. they're too cumbersome 
 
 - think of **web components** as an interface for *html authors*
   - components allow novices to easily paste complex features onto html pages
-  - but these components are html-native — not typescript-native — so they don't take typesafe props, and they're referred to by tag names with no/bad ide support
-- **views** are the right building blocks for typescript developers use to structure their app ui.
+  - but these components are html-native — not typescript-native — so they don't take typesafe props, and they're referred to by tag names with bad editor support
+- **views** are the right building blocks for typescript developers to structure their app ui
   - "slate views" are typescript-native — you import 'em, and they take typesafe props
   - slate views are built on `lit`
   - slate views have a hooks-based usage pattern inspired by react
@@ -36,7 +36,7 @@ please don't make your whole app out of web components.. they're too cumbersome 
   - slate offers signals and any other hip newfangled patterns that i fancy
   - slate also lets you build html web components with the *same* syntax and hooks as the views
 
-so, you want to think of web components as the tip of your iceberg — they are the entrypoints to your ui — they are the universal control surfaces to help html authors interact with your systems — but below the surface, most of your internals can be made of easily-composable views.
+so, you want to think of web components as the tip of your iceberg — they are the entrypoints to your ui — they are the universal control surfaces to help html authors interact with your systems — but below the surface, most of your internals can be made of nicely composable views.
 
 <br/>
 
@@ -129,10 +129,11 @@ export const MyLightComponent = nexus.lightComponent(use => {
     <my-light-component></my-light-component>
   </section>
   ```
+  - the camel case names like `MyComponentName` are automatically `dashify`'d into `my-component-name`
 
-### let registration happen all in one place
+#### psa: let component dom registration happen all in one place
 
-- now you can use slate's `apply` functions to manipulate components en masse
+- this opens the door for you to use slate's `apply` functions to manipulate components en masse
 - for example, apply a css theme *into the shadow dom* for all of the components:
   ```ts
   import {apply, css, register_to_dom} from "@benev/slate"
@@ -151,7 +152,11 @@ export const MyLightComponent = nexus.lightComponent(use => {
     })
   )
   ```
-- if you're authoring a library with components you want people to use — re-export `register_to_dom` and `apply`, and let your downstream users perform the dom registration themselves, so they have the opportunity to apply a custom css theme onto your shadow components
+- if you're authoring a library with components that you want people to use
+  - your should re-export `register_to_dom` and `apply` for them
+  - let your downstream users perform the dom registration themselves
+  - they get the opportunity to apply a custom css theme onto your shadow components
+  - they can then also easily rename components
 
 <br/>
 
@@ -852,7 +857,7 @@ you get a better dev-experience if you use ops via signals, but here is the docu
 
 ## 🧐 more useful utils
 
-ain't got no time to document these fully, but they're there
+ain't got no time to document these, but they're there
 
 - `debounce` — my trusty debouncer
 - `deep` — utilities for data structures like 'equal' and 'freeze'
@@ -866,3 +871,4 @@ ain't got no time to document these fully, but they're there
 - `pubsub` — easy pub/sub tool
 - `requirement` — pass required data to a group of things
 - `ShockDrop` and `ShockDragDrop` — for drag-and-drop integrations
+- `watch` — new heavy-duty state management pattern, with deep-watching in state trees, formalized actions, and even undo/redo history
