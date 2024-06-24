@@ -3,11 +3,11 @@
 
 <br/>
 
-# 🪨 `@benev/slate`
+# 🪨 `@benev/slate` by chase moskal
 
-> 🚧 prerelease wip under constructon subject to change
+> 🚧 prerelease, see [changelog](./changelog.md)
 
-- frontend ui framework, built on [lit](https://lit.dev/)
+- frontend ui library, built on [lit](https://lit.dev/)
 - wonderful web components
 - versatile views
 - hipster hooks syntax
@@ -17,14 +17,26 @@
 
 <br/>
 
-### most devs misunderstand how to leverage web components.
+### slate is my life journey to "solve frontend".
+i've iterated on this for many years, and it's always shifting and changing as i build real apps with it.  
+it's accumulating features and any handy tools.  
 
-you're not supposed to make your whole app out of web components.  
-they're too cumbersome — web components are html-native, not typescript-native — so they don't take typesafe props, they're referred to by html tag names with poor ide support, and juggling their dom registrations is a pain.
+### you see, most devs misunderstand how to leverage web components..
 
-this is why **views** are important, and are a central feature of *slate* — views are almost the same as components (they can use shadow-dom), except that views are ergonomically handled via javascript, they accept props, they don't need registration (they're simply imported) — and views enjoy full typescript typings.
+please don't make your whole app out of web components.. they're too cumbersome for that — *you need views!*
 
-you want to think of web components as the tip of your iceberg — they are the entrypoints to your ui — they are the universal control surfaces to help html authors interact with your systems — but below the surface, most of your internals can be made of easily-composable views.
+- think of **web components** as an interface for *html authors*
+  - components allow novices to easily paste complex features onto html pages
+  - but these components are html-native — not typescript-native — so they don't take typesafe props, and they're referred to by tag names with no/bad ide support
+- **views** are the right building blocks for typescript developers use to structure their app ui.
+  - "slate views" are typescript-native — you import 'em, and they take typesafe props
+  - slate views are built on `lit`
+  - slate views have a hooks-based usage pattern inspired by react
+  - slate helps you fully leverage the power of the `shadow dom`
+  - slate offers signals and any other hip newfangled patterns that i fancy
+  - slate also lets you build html web components with the *same* syntax and hooks as the views
+
+so, you want to think of web components as the tip of your iceberg — they are the entrypoints to your ui — they are the universal control surfaces to help html authors interact with your systems — but below the surface, most of your internals can be made of easily-composable views.
 
 <br/>
 
@@ -65,7 +77,7 @@ you want to think of web components as the tip of your iceberg — they are the 
 
 <br/>
 
-## ⚙️ components
+## ⚙️ slate components
 
 you can create custom html elements that work in plain html or any web framework.
 
@@ -74,6 +86,7 @@ you can create custom html elements that work in plain html or any web framework
 ```ts
 export const MyShadowComponent = nexus.shadowComponent(use => {
   use.styles(css`span {color: yellow}`)
+
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -117,9 +130,32 @@ export const MyLightComponent = nexus.lightComponent(use => {
   </section>
   ```
 
+### let registration happen all in one place
+
+- now you can use slate's `apply` functions to manipulate components en masse
+- for example, apply a css theme *into the shadow dom* for all of the components:
+  ```ts
+  import {apply, css, register_to_dom} from "@benev/slate"
+
+  const applyCustomTheme = apply.css(`
+    button {
+      color: red;
+    }
+  `)
+
+  register_to_dom(
+    applyCustomTheme({
+      NastyNavbar,
+      DopeDropdown,
+      MarvelousMarquee,
+    })
+  )
+  ```
+- if you're authoring a library with components you want people to use — re-export `register_to_dom` and `apply`, and let your downstream users perform the dom registration themselves, so they have the opportunity to apply a custom css theme onto your shadow components
+
 <br/>
 
-## 🖼️ views
+## 🖼️ slate views
 
 views are just like components, but are not registered to the dom as custom html elements.  
 instead, they are used via javascript.  
@@ -132,6 +168,7 @@ they accept js parameters called `props`, and are fully typescript-typed.
 export const MyShadowView = nexus.shadowView(use => (start: number) => {
   use.name("my-shadow-view")
   use.styles(css`span {color: yellow}`)
+
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -152,6 +189,7 @@ export const MyShadowView = nexus.shadowView(use => (start: number) => {
 ```ts
 export const MyLightView = nexus.lightView(use => (start: number) => {
   use.name("my-light-view")
+
   const count = use.signal(start)
   const increment = () => count.value++
 
@@ -186,7 +224,7 @@ export const MyLightView = nexus.lightView(use => (start: number) => {
   html`<div>${MyLightView(123)}</div>`
   ```
   - light views are beautifully simple
-  - they just take props as arguments
+  - they just take props as arguments, no array-wrapping
   - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
 - note
   - all views are rendered into a `<slate-view view="my-name">` component
@@ -212,7 +250,7 @@ slate's hooks have the same rules as any other framework's hooks: the order that
   ```
 - **use.state**  
   works like react useState hook.  
-  we actually recommend using signals instead (more on those later).
+  i actually recommend using signals instead (more on those later).
   ```ts
   const [count, setCount] = use.state(0)
   const increment = () => setCount(count + 1)
@@ -643,6 +681,8 @@ create reactions that listen to both signals and flatstates at the same time.
 
 signals and flat both share the same reaction syntax, but they are separate state management systems. `reactor` lets you combine both.
 
+slate components and views are already wired up to the reactor and will respond to changes automatically. you only need the reactor when you want to respond to state changes when you're *outside* of slate components or views.
+
 - you can use one-function reaction syntax:
   ```ts
   import {reactor, flatstate, signal} from "@benev/slate"
@@ -738,7 +778,7 @@ you get a better dev-experience if you use ops via signals, but here is the docu
     }
   )
   ```
-- **ops signals integration** — we recommend using ops via `signals.op()` or `use.op()`, the OpSignal these return has nicer ergonomics
+- **ops signals integration** — i recommend trying `use.op()` or `signals.op()` to create `OpSignal` instances which have nicer ergonomics *(an OpSignal is just an op that is wrapped in a signal, plus some handy methods)*
   ```ts
   const count = signals.op()
 
@@ -761,6 +801,20 @@ you get a better dev-experience if you use ops via signals, but here is the docu
   count.setError("big fail")
   count.setReady(123)
   ```
+- **loading effects for ops**
+  - i precooked some ascii loading indicators for you. import 'em:
+  ```ts
+  import {loading} from "@benev/slate"
+  ```
+  - then use 'em in your views or whatever.
+  ```ts
+  return loading.binary(videoOp, video => html`
+    <p>video is done loading!</p>
+    ${video}
+  `)
+  ```
+  - these loading effects can accept ops or op signals.
+  - to make your own, you can use the helpers `makeLoadingEffect` or `makeAnimatedLoadingEffect` *(if you can figure out how to use 'em)*
 
 <br/>
 
@@ -798,13 +852,17 @@ you get a better dev-experience if you use ops via signals, but here is the docu
 
 ## 🧐 more useful utils
 
-no time to document these fully, but they're there
+ain't got no time to document these fully, but they're there
 
-- `debounce` — is a pretty good debouncer
+- `debounce` — my trusty debouncer
 - `deep` — utilities for data structures like 'equal' and 'freeze'
 - `is` — proper type guards
+- `ob` — map over an object's values with `ob(object).map(fn)`
+- `ev` — to listen for events
+- `el` — small syntax to generate html without lit
+- `nap` — sleep for x milliseconds
 - `explode_promise` — make an inside-out promise
 - `generate_id` — generate a crypto-random hexadecimal id string
-- `pub` — easy pub/sub tool
+- `pubsub` — easy pub/sub tool
 - `requirement` — pass required data to a group of things
-
+- `ShockDrop` and `ShockDragDrop` — for drag-and-drop integrations
