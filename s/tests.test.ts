@@ -1,6 +1,9 @@
 
 import {Suite} from "cynic"
 
+import "./node.js"
+import "./index.js"
+
 import clone from "./tools/clone/clone.test.js"
 import signals from "./signals/signals.test.js"
 import flatstate from "./flatstate/flat.test.js"
