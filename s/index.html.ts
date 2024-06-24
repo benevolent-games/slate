@@ -6,10 +6,18 @@ export default template(async basics => {
 	return easypage({
 		path: basics.path(import.meta.url),
 		title: "@benev/slate",
+		dark: true,
 		head: html`
 			<link rel="stylesheet" href="${path.version.root('index.css')}"/>
 			<link rel="icon" href="${path.root('assets/s.webp')}"/>
-			${startup_scripts_with_dev_mode(path)}
+			${startup_scripts_with_dev_mode({
+				path,
+				scripts: [{
+					module: "demo.bundle.js",
+					bundle: "demo.bundle.min.js",
+					hash: true,
+				}],
+			})}
 		`,
 		body: html`
 			<div class=zone>
