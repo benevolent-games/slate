@@ -5,6 +5,7 @@ import {apply} from "../base/helpers/apply.js"
 import {BaseElementClasses} from "../base/element.js"
 import {prepare_light_view} from "./units/light_view.js"
 import {prepare_shadow_view} from "./units/shadow_view.js"
+import {shadowComponentify} from "./units/shadow_componentify.js"
 import {prepare_light_component} from "./units/light_component.js"
 import {prepare_shadow_component} from "./units/shadow_component.js"
 
@@ -21,6 +22,9 @@ export class Nexus<C extends Context> extends Shell<C> {
 	shadowComponent: ReturnType<typeof prepare_shadow_component<C>>
 	lightView: ReturnType<typeof prepare_light_view<C>>
 	shadowView: ReturnType<typeof prepare_shadow_view<C>>
+
+	/** wrap a shadow view into a shadow component */
+	shadowComponentify = shadowComponentify
 
 	components<E extends BaseElementClasses>(elements: E) {
 		return apply.context(this.context)(elements)
