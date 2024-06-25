@@ -26,6 +26,7 @@ export * from "./nexus/nexus.js"
 export * from "./nexus/state.js"
 
 export * from "./op/op.js"
+export * from "./op/loading.js"
 export * from "./op/make-loading-effect.js"
 
 export * from "./reactor/reactor.js"
