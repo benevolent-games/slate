@@ -26,6 +26,7 @@ export class Nexus<C extends Context> extends Shell<C> {
 	/** wrap a shadow view into a shadow component */
 	shadowComponentify = shadowComponentify
 
+	/** wire custom elements for slate reactivity and css theme */
 	components<E extends BaseElementClasses>(elements: E) {
 		return apply.context(this.context)(elements)
 	}
