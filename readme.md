@@ -332,6 +332,11 @@ slate's hooks have the same rules as any other framework's hooks: the order that
   const count = use.op()
   count.load(async() => fetchCount("/count"))
   ```
+- **use.load**  
+  shorthand for creating an OpSignal, and immediately loading something into it
+  ```ts
+  const count = use.load(() => fetchCount("/count"))
+  ```
 
 ### flatstate hooks
 - **use.flatstate**  

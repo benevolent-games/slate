@@ -169,6 +169,12 @@ export class Use<C extends Context = Context> {
 		) as OpSignal<T>
 	}
 
+	load<T>(fn: () => Promise<T>) {
+		const op = this.op<T>()
+		this.once(() => op.load(fn))
+		return op
+	}
+
 	#watches = new Map<number, {data: any, untrack: () => void}>()
 	watch<T>(collector: () => T): T {
 		const count = this.#counter.pull()
