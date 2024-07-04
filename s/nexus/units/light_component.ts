@@ -44,6 +44,6 @@ export const prepare_light_component = (
 			}
 			this.#use[usekey].disconnect()
 		}
-	}
+	} as typeof SilverElement
 ))
 
