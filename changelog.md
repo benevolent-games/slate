@@ -23,7 +23,8 @@
 - op loading effects
   - 🟥 `prep_op_effect` replaced by `makeLoadingEffect` or `makeAnimatedLoadingEffect`
   - 🍏 added `loading` effects like `loading.binary(op, onReady)` and `loading.braille(op, onReady)`
-- 🟥 for node environments: eliminated `@benev/slate/x/pure.js`
+- 🟥 eliminated `@benev/slate/x/pure.js`
+  - beware if you are using slate in a node.js environment
   - `pure.js` was an alternative entrypoint for node to import the parts of slate that didn't touch any DOM apis
   - instead, now, if you are importing slate into node, you should do this first:
       ```ts
@@ -31,6 +32,7 @@
       ```
   - all this does is assign `global.HTMLElement = class {}` because extending HTMLElement is the only contact that slate has with the dom at import time
   - thus, the new `node.js` is a little shim that lets you import all of slate in node (maybe for unit testing or to use some tools)
+- 🍏 added `use.load` helper for creating an op and immediately initiating a load operation
 
 ## v0.1.2
 
