@@ -32,7 +32,13 @@
       ```
   - all this does is assign `global.HTMLElement = class {}` because extending HTMLElement is the only contact that slate has with the dom at import time
   - thus, the new `node.js` is a little shim that lets you import all of slate in node (maybe for unit testing or to use some tools)
+- 🔶 deprecate tools:
+  - `Trashcan` (in favor of `Trashbin`)
+  - `pub` (in favor of `pubsub`)
 - 🍏 added `use.load` helper for creating an op and immediately initiating a load operation
+- 🍏 added tools:
+  - `wherefor`
+  - `ref` and `Ref`
 
 ## v0.1.2
 

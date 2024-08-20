@@ -8,6 +8,7 @@ export type Pub<X> = {
 	clear(): void
 }
 
+/** @deprecated use `pubsub` instead */
 export function pub<X>(): Pub<X> {
 	const listeners = new Set<Listener<X>>()
 

@@ -1,4 +1,5 @@
 
+/** @deprecated use `Trashbin` instead */
 export class Trashcan {
 	#can: (() => void)[] = []
 
