@@ -32,6 +32,10 @@
       ```
   - all this does is assign `global.HTMLElement = class {}` because extending HTMLElement is the only contact that slate has with the dom at import time
   - thus, the new `node.js` is a little shim that lets you import all of slate in node (maybe for unit testing or to use some tools)
+- 🟥 `interval` tool: changed arguments
+  - now it accepts plain milliseconds
+  - whereas the new `interval.hz` accepts hertz, replacing what used to be called `interval`
+  - thus, to upgrade, replace `interval(1, fn)` with `interval.hz(1, fn)`
 - 🔶 deprecate tools:
   - `Trashcan` (in favor of `Trashbin`)
   - `pub` (in favor of `pubsub`)

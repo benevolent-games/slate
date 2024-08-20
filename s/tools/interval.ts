@@ -1,7 +1,8 @@
 
-export function interval(hz: number, fn: () => void) {
-	const delay = 1000 / hz
-	const id = setInterval(fn, delay)
+export function interval(milliseconds: number, fn: () => void) {
+	const id = setInterval(fn, milliseconds)
 	return () => clearInterval(id)
 }
+
+interval.hz = (hz: number, fn: () => void) => interval(1000 / hz, fn)
 

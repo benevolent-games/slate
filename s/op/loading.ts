@@ -39,7 +39,7 @@ const AsciiLoadingIndicator = defaultNexus.shadowView(use => (hz: number, animat
 
 	const frame = use.signal(0)
 
-	use.mount(() => interval(hz, () => {
+	use.mount(() => interval.hz(hz, () => {
 		const next = frame.value + 1
 		frame.value = (next < animation.length)
 			? next
