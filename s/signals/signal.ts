@@ -25,7 +25,12 @@ export class Signal<V> {
 		this.#wait = Promise.resolve(v)
 	}
 
+	/** @deprecated use `on` method instead */
 	subscribe(listener: SignalListener<V>) {
+		return this.on(listener)
+	}
+
+	on(listener: SignalListener<V>) {
 		this.#listeners.add(listener)
 		return (): void => void this.#listeners.delete(listener)
 	}

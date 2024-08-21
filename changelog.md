@@ -36,6 +36,7 @@
   - now it accepts plain milliseconds
   - whereas the new `interval.hz` accepts hertz, replacing what used to be called `interval`
   - thus, to upgrade, replace `interval(1, fn)` with `interval.hz(1, fn)`
+- 🔶 deprecate `signal.subscribe` in favor of `signal.on`
 - 🔶 deprecate tools:
   - `Trashcan` (in favor of `Trashbin`)
   - `pub` (in favor of `pubsub`)
