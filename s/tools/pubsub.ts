@@ -1,5 +1,5 @@
 
-export interface Pubsub<P extends any[]> {
+export interface Pubsub<P extends any[] = []> {
 	(fn: (...p: P) => void): () => void
 	publish(...p: P): void
 	clear(): void
@@ -21,7 +21,7 @@ export interface Pubsub<P extends any[]> {
  *     stop()
  *
  */
-export function pubsub<P extends any[]>(): Pubsub<P> {
+export function pubsub<P extends any[] = []>(): Pubsub<P> {
 	const set = new Set<(...p: P) => void>()
 
 	function subscribe(fn: (...p: P) => void) {
