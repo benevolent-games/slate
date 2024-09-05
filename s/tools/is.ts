@@ -1,8 +1,16 @@
 
 export const is = {
+	available: <X>(x: X): x is NonNullable<X> =>
+		x !== undefined && x !== null,
+
+	unavailable: (x: any): x is (undefined | null) =>
+		x === undefined || x === null,
+
+	/** @deprecated use `unavailable` instead */
 	void: (x: any): x is (undefined | null) =>
 		x === undefined || x === null,
 
+	/** @deprecated use `available` instead */
 	defined: <X>(x: X): x is NonNullable<X> =>
 		x !== undefined && x !== null,
 

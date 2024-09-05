@@ -9,6 +9,11 @@
 
 <br/>
 
+## v0.2.1
+
+- 🔶 deprecated `is.void(x)`, renamed to `is.unavailable(x)`
+- 🔶 deprecated `is.defined(x)`, renamed to `is.available(x)`
+
 ## v0.2.0
 
 - 🟥 ***camel case!***
