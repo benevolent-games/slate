@@ -113,6 +113,16 @@ export class Use<C extends Context = Context> {
 			this.#deferred.set(count, () => { signal.value = fn() })
 		return signal
 	}
+	deferOnce<T>(fn: () => T): Signal<T | undefined> {
+		const signal = this.signal<T | undefined>(undefined)
+		const count = this.#counter.pull()
+		if (!this.#deferred.has(count))
+			this.#deferred.set(count, () => {
+				signal.value = fn()
+				this.#deferred.delete(count)
+			})
+		return signal
+	}
 
 	#states = new Map<number, any>()
 	state<T>(init: T | (() => T)) {

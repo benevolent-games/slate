@@ -11,6 +11,7 @@
 
 ## v0.2.1
 
+- 🍏 add `use.deferOnce`
 - 🔶 deprecated `is.void(x)`, renamed to `is.unavailable(x)`
 - 🔶 deprecated `is.defined(x)`, renamed to `is.available(x)`
 
