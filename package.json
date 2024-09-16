@@ -28,7 +28,7 @@
 		"@benev/turtle": "^0.6.0-8",
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"@rollup/plugin-wasm": "^6.2.2",
-		"chokidar": "^3.6.0",
+		"chokidar": "^4.0.0",
 		"chokidar-cli": "^3.0.0",
 		"cynic": "^0.2.1",
 		"es-module-shims": "^1.10.0",
