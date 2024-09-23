@@ -9,7 +9,12 @@
 
 <br/>
 
-## v0.2.1
+## v0.2.5
+
+- 🍏 add: `Map2` facility will replace maptool
+- 🔶 deprecated `maptool` in favor of `Map2`
+
+## v0.2.2
 
 - 🍏 add `use.deferOnce`
 - 🔶 deprecated `is.void(x)`, renamed to `is.unavailable(x)`
