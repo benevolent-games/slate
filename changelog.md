@@ -15,9 +15,10 @@
 
 ### v0.2.5
 
+- 🔶 ts target `es2023`, seems all evergreen browsers support it
+- 🔶 deprecated `maptool` in favor of `Map2`
 - 🍏 add: tool `requestAnimationFrameLoop`
 - 🍏 add: tool `Map2` facility will replace maptool
-- 🔶 deprecated `maptool` in favor of `Map2`
 
 ### v0.2.2
 
