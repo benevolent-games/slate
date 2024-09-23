@@ -15,7 +15,8 @@
 
 ### v0.2.5
 
-- 🍏 add: `Map2` facility will replace maptool
+- 🍏 add: tool `requestAnimationFrameLoop`
+- 🍏 add: tool `Map2` facility will replace maptool
 - 🔶 deprecated `maptool` in favor of `Map2`
 
 ### v0.2.2
