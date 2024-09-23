@@ -3,8 +3,8 @@
 		"strict": true,
 		"rootDir": "s",
 		"outDir": "x",
-		"target": "es2019",
-		"lib": ["es2019", "dom"],
+		"target": "es2023",
+		"lib": ["es2023", "dom"],
 		"module": "nodenext",
 		"moduleResolution": "nodenext",
 		"experimentalDecorators": true,
@@ -12,7 +12,7 @@
 		"esModuleInterop": true,
 		"sourceMap": true,
 		"declaration": true,
-		"skipLibCheck": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"s/**/*.ts",
@@ -20,5 +20,5 @@
 	],
 	"exclude": [
 		"s/**/_*"
-	],
+	]
 }
