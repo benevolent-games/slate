@@ -13,6 +13,11 @@
 
 <br/>
 
+### v0.2.6
+
+- 🔶 tweak generic type signature on `Pool`
+- 🍏 add: tool `concurrent`
+
 ### v0.2.5
 
 - 🔶 ts target `es2023`, seems all evergreen browsers support it
