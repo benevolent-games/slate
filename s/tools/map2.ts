@@ -27,9 +27,9 @@ export class Map2<K, V> extends Map<K, V> {
 	}
 }
 
-export type Identifiable = {id: any}
+export type Identifiable<Id = any> = {id: Id}
 
-export class Pool<K, V extends Identifiable> extends Map2<K, V> {
+export class Pool<V extends Identifiable> extends Map2<V["id"], V> {
 	got(value: V) {
 		return this.has(value.id)
 	}
