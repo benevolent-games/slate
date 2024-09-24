@@ -13,6 +13,8 @@
 
 <br/>
 
+## v0.2
+
 ### v0.2.6
 
 - 🔶 tweak generic type signature on `Pool`
@@ -67,7 +69,9 @@
   - `wherefor`
   - `ref` and `Ref`
 
---------------------------------
+<br/>
+
+## v0.1
 
 ### v0.1.2
 
@@ -168,7 +172,9 @@ watch
   - if you need the data from your collector, just run the collector yourself
 - 🍏 add `Historian` and `AppCore` for creating apps with undo/redo capabilities
 
---------------------------------
+<br/>
+
+## v0.0
 
 ### v0.0.0
 
@@ -202,7 +208,9 @@ in this recent work, the `flat` and `signals` state management apis are convergi
   - `watch` is fundamentally different than flatstate and signals, and is not suitable to become a ReactorCore
   - watch does not have any "automated" reactivity, it's always explicit, so it has `.track` instead of `.reaction`
 
---------------------------------
+<br/>
+
+## v0.0-dev
 
 ### v0.0.0-dev.28
 
