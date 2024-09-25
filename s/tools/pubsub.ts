@@ -1,7 +1,12 @@
 
-export interface Pubsub<P extends any[] = []> {
-	(fn: (...p: P) => void): () => void
-	publish(...p: P): void
+import {deferredPromise} from "./deferred-promise.js"
+
+export type PubsubListener<A extends any[]> = (...a: A) => (void | Promise<void>)
+
+export interface Pubsub<A extends any[] = []> {
+	(fn: PubsubListener<A>): () => void
+	publish(...a: A): Promise<void>
+	once(): Promise<A>
 	clear(): void
 }
 
@@ -21,20 +26,28 @@ export interface Pubsub<P extends any[] = []> {
  *     stop()
  *
  */
-export function pubsub<P extends any[] = []>(): Pubsub<P> {
-	const set = new Set<(...p: P) => void>()
+export function pubsub<A extends any[] = []>(): Pubsub<A> {
+	const set = new Set<PubsubListener<A>>()
 
-	function subscribe(fn: (...p: P) => void) {
+	function subscribe(fn: PubsubListener<A>) {
 		set.add(fn)
 		return () => { set.delete(fn) }
 	}
 
-	subscribe.publish = (...p: P) => {
-		for (const fn of set)
-			fn(...p)
+	subscribe.publish = async(...a: A) => {
+		await Promise.all([...set].map(fn => fn(...a)))
 	}
 
 	subscribe.clear = () => set.clear()
+
+	subscribe.once = async() => {
+		const {promise, resolve} = deferredPromise<A>()
+		const unsubscribe = subscribe((...a) => {
+			resolve(a)
+			unsubscribe()
+		})
+		return promise
+	}
 
 	return subscribe
 }

@@ -21,6 +21,10 @@
 - 🔶 deprecated `explode_promise` (prefer `deferredPromise`)
 - 🍏 add: tool `concurrent`
 - 🍏 add: tool `deferredPromise`
+- 🍏 enhance: `pubsub`
+  - added new `once` method
+  - now you can subscribe async functions
+  - publish now returns a promise, to wait for all subscribers to finish working
 
 ### v0.2.5
 
