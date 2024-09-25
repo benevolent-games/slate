@@ -18,7 +18,9 @@
 ### v0.2.6
 
 - 🔶 tweak generic type signature on `Pool`
+- 🔶 deprecated `explode_promise` (prefer `deferredPromise`)
 - 🍏 add: tool `concurrent`
+- 🍏 add: tool `deferredPromise`
 
 ### v0.2.5
 
