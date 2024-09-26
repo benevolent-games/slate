@@ -21,6 +21,7 @@
 - 🔶 deprecated `explode_promise` (prefer `deferPromise`)
 - 🍏 add: tool `concurrent`
 - 🍏 add: tool `deferPromise`
+- 🍏 add: tool `deadline`
 - 🍏 enhance: `pubsub`
   - added new `once` method
   - now you can subscribe async functions
