@@ -1,5 +1,5 @@
 
-import {deferredPromise} from "./deferred-promise.js"
+import {deferPromise} from "./defer-promise.js"
 
 export type PubsubListener<A extends any[]> = (...a: A) => (void | Promise<void>)
 
@@ -41,7 +41,7 @@ export function pubsub<A extends any[] = []>(): Pubsub<A> {
 	subscribe.clear = () => set.clear()
 
 	subscribe.once = async() => {
-		const {promise, resolve} = deferredPromise<A>()
+		const {promise, resolve} = deferPromise<A>()
 		const unsubscribe = subscribe((...a) => {
 			resolve(a)
 			unsubscribe()

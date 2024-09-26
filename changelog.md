@@ -18,9 +18,9 @@
 ### v0.2.6
 
 - 🔶 tweak generic type signature on `Pool`
-- 🔶 deprecated `explode_promise` (prefer `deferredPromise`)
+- 🔶 deprecated `explode_promise` (prefer `deferPromise`)
 - 🍏 add: tool `concurrent`
-- 🍏 add: tool `deferredPromise`
+- 🍏 add: tool `deferPromise`
 - 🍏 enhance: `pubsub`
   - added new `once` method
   - now you can subscribe async functions
