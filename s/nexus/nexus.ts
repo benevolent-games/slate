@@ -2,11 +2,12 @@
 import {Context} from "./context.js"
 import {Shell} from "./parts/shell.js"
 import {apply} from "../base/helpers/apply.js"
-import {BaseElementClasses} from "../base/element.js"
+import {mixin} from "../base/helpers/mixin.js"
 import {prepare_light_view} from "./units/light_view.js"
 import {prepare_shadow_view} from "./units/shadow_view.js"
 import {prepare_light_component} from "./units/light_component.js"
 import {prepare_shadow_component} from "./units/shadow_component.js"
+import {BaseElementClass, BaseElementClasses} from "../base/element.js"
 import {prepare_shadow_componentify} from "./units/shadow_componentify.js"
 
 export class Nexus<C extends Context> extends Shell<C> {
@@ -27,11 +28,29 @@ export class Nexus<C extends Context> extends Shell<C> {
 		this.shadowComponentify = prepare_shadow_componentify(this)
 	}
 
-	/** wire custom elements for slate reactivity and css theme */
-	components<E extends BaseElementClasses>(elements: E) {
-		return apply.context(this.context)(elements)
+	/** wire a custom element for css theme and state reactivity */
+	component = <E extends BaseElementClass>(Element: E) => {
+		return mixin.setup(this.context.theme)(Element)
+	}
+
+	/** wire custom elements for css theme and state reactivity */
+	components = <E extends BaseElementClasses>(elements: E) => {
+		return apply.setup(this.context.theme)(elements)
 	}
 }
 
-export const defaultNexus = new Nexus(new Context())
+export const nexus = new Nexus(new Context())
+
+/** @deprecated renamed to `nexus` */
+export const defaultNexus = nexus
+
+export const lightView = nexus.lightView
+export const lightComponent = nexus.lightComponent
+
+export const shadowView = nexus.shadowView
+export const shadowComponent = nexus.shadowComponent
+
+export const component = nexus.component
+export const components = nexus.components
+export const shadowComponentify = nexus.shadowComponentify
 

@@ -45,6 +45,7 @@ export namespace apply {
 		)
 	)
 
+	/** @deprecated use `setup` instead */
 	export const context = (
 		(context: Context) => (
 			<E extends BaseElementClasses>(elements: E) => (
@@ -52,6 +53,14 @@ export namespace apply {
 					.to(css(context.theme))
 					.to(reactor())
 					.done() as E
+			)
+		)
+	)
+
+	export const setup = (
+		(...styles: CSSResultGroup[]) => (
+			<E extends BaseElementClasses>(elements: E) => (
+				ob(elements).map((Element: any) => mixin.setup(...styles)(Element))
 			)
 		)
 	)

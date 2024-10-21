@@ -5,7 +5,7 @@
 
 - 🟥 *harmful -- breaking change*
 - 🔶 *maybe harmful -- deprecation, or possible breaking change*
-- 🍏 *harmlesss -- addition, fix, or enhancement*
+- 🍏 *harmless -- addition, fix, or enhancement*
 
 <br/>
 
@@ -14,6 +14,19 @@
 <br/>
 
 ## v0.2
+
+### v0.2.7
+- 🔶 deprecated `defaultNexus` (renamed to `nexus`)
+- 🔶 deprecated `apply.context` (prefer `apply.setup`)
+- 🍏 add `mixin.setup` (to match `apply.setup`)
+- 🍏 add new exports
+  - `lightView` (alias for `nexus.lightView`)
+  - `lightComponent` (alias for `nexus.lightComponent`)
+  - `shadowView` (alias for `nexus.shadowView`)
+  - `shadowComponent` (alias for `nexus.shadowComponent`)
+  - `shadowComponentify` (alias for `nexus.shadowComponentify`)
+  - `component` (alias for `nexus.component`)
+  - `components` (alias for `nexus.components`)
 
 ### v0.2.6
 
