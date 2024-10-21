@@ -18,8 +18,14 @@
 ### v0.2.7
 - 🔶 deprecated `defaultNexus` (renamed to `nexus`)
 - 🔶 deprecated `apply.context` (prefer `apply.setup`)
+- 🍏 enhance `use.styles` now accepts any number of stylesheet args
+  ```ts
+  // you can now pass multiple stylesheets this way
+  use.styles(cssA, cssB, cssC)
+  ```
+- 🍏 enhance `use.css` alias for `use.styles`
 - 🍏 add `mixin.setup` (to match `apply.setup`)
-- 🍏 add new exports
+- 🍏 add new package exports:
   - `lightView` (alias for `nexus.lightView`)
   - `lightComponent` (alias for `nexus.lightComponent`)
   - `shadowView` (alias for `nexus.shadowView`)

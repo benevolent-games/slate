@@ -1,5 +1,5 @@
 
-import {CSSResultGroup, css} from "lit"
+import {CSSResultGroup} from "lit"
 
 import {Use} from "./use.js"
 import {Context} from "../../../context.js"
@@ -13,11 +13,15 @@ export class UseShadow<C extends Context = Context, E extends HTMLElement = HTML
 	#shadow: ShadowRoot
 	get shadow() { return this.#shadow }
 
-	styles(styles: CSSResultGroup | undefined) {
+	styles(...styles: CSSResultGroup[]) {
 		this.once(() => apply_styles_to_shadow(
 			this.shadow,
-			[this.context.theme, styles ?? css``],
+			[this.context.theme, ...styles],
 		))
+	}
+
+	css(...styles: CSSResultGroup[]) {
+		return this.styles(...styles)
 	}
 
 	constructor(
