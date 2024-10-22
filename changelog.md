@@ -15,9 +15,13 @@
 
 ## v0.2
 
+### v0.2.8
+- 🔶 rename `mixin.reactor` to `mixin.reactive`
+- 🔶 rename `apply.reactor` to `apply.reactive`
+
 ### v0.2.7
-- 🔶 deprecated `defaultNexus` (renamed to `nexus`)
-- 🔶 deprecated `apply.context` (prefer `apply.setup`)
+- 🔶 rename `defaultNexus` to `nexus`
+- 🔶 rename `apply.context` to `apply.setup`
 - 🍏 enhance `use.styles` now accepts any number of stylesheet args
   ```ts
   // you can now pass multiple stylesheets this way

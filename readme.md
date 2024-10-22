@@ -46,28 +46,6 @@ so, you want to think of web components as the tip of your iceberg — they are 
     ```sh
     npm i @benev/slate
     ```
-1. **create your app's `nexus`**  
-    you'll use the nexus to create components and views which have hard-wired access to your *context* object.
-    ```ts
-    import {Nexus, Context} from "@benev/slate"
-
-    export const nexus = new Nexus(
-      new class extends Context {
-
-        // this theme is applied to all your components and views
-        theme = css`
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-        `
-
-        // add app-level stuff you'd like to make widely available
-        my_cool_thing = {my_awesome_data: 123}
-      }
-    )
-    ```
 1. **import templating functions**  
     these are augmented versions of `lit`'s templating functions, which directly implement `signals`.  
     they are fully compatible with lit.  
@@ -81,10 +59,12 @@ so, you want to think of web components as the tip of your iceberg — they are 
 
 you can create custom html elements that work in plain html or any web framework.
 
-### `nexus.shadowComponent`
+### shadowComponent
 
 ```ts
-export const MyShadowComponent = nexus.shadowComponent(use => {
+import {shadowComponent, html, css} from "@benev/slate"
+
+export const MyShadowComponent = shadowComponent(use => {
   use.styles(css`span {color: yellow}`)
 
   const count = use.signal(0)
@@ -97,10 +77,12 @@ export const MyShadowComponent = nexus.shadowComponent(use => {
 })
 ```
 
-### `nexus.lightComponent`
+### lightComponent
 
 ```ts
-export const MyLightComponent = nexus.lightComponent(use => {
+import {lightComponent, html, css} from "@benev/slate"
+
+export const MyLightComponent = lightComponent(use => {
   const count = use.signal(0)
   const increment = () => count.value++
 
@@ -117,10 +99,7 @@ export const MyLightComponent = nexus.lightComponent(use => {
   ```ts
   import {register_to_dom} from "@benev/slate"
 
-  register_to_dom({
-    MyShadowComponent,
-    MyLightComponent,
-  })
+  register_to_dom({MyShadowComponent, MyLightComponent})
   ```
 - now use your components via html
   ```html
@@ -130,33 +109,23 @@ export const MyLightComponent = nexus.lightComponent(use => {
   </section>
   ```
   - the camel case names like `MyComponentName` are automatically `dashify`'d into `my-component-name`
-
-#### psa: let component dom registration happen all in one place
-
-- this opens the door for you to use slate's `apply` functions to manipulate components en masse
-- for example, apply a css theme *into the shadow dom* for all of the components:
+- if you're making a library of components, please export the components so that the downstream app can register them
   ```ts
-  import {apply, css, register_to_dom} from "@benev/slate"
+  export {register_to_dom, apply, css} from "@benev/slate"
+  export const myComponents = {MyShadowComponent, MyLightComponent}
+  ```
+  that helps downstream developers to cool stuff like apply their own css theme, or rename components
+  ```ts
+  import {myComponents, register_to_dom, apply, css} from "@benev/slate"
 
-  const applyCustomTheme = apply.css(`
-    button {
-      color: red;
-    }
-  `)
+  const myCustomTheme = css`button { color: red; }`
 
   register_to_dom(
-    applyCustomTheme({
-      NastyNavbar,
-      DopeDropdown,
-      MarvelousMarquee,
-    })
+    apply.css(myCustomTheme)(
+      myComponents,
+    )
   )
   ```
-- if you're authoring a library with components that you want people to use
-  - your should re-export `register_to_dom` and `apply` for them
-  - let your downstream users perform the dom registration themselves
-  - they get the opportunity to apply a custom css theme onto your shadow components
-  - they can then also easily rename components
 
 <br/>
 
@@ -167,10 +136,12 @@ instead, they are used via javascript.
 you import them, and inject them into your lit-html templates.  
 they accept js parameters called `props`, and are fully typescript-typed.  
 
-### `nexus.shadowView`
+### shadowView
 
 ```ts
-export const MyShadowView = nexus.shadowView(use => (start: number) => {
+import {shadowView, html, css} from "@benev/slate"
+
+export const MyShadowView = shadowView(use => (start: number) => {
   use.name("my-shadow-view")
   use.styles(css`span {color: yellow}`)
 
@@ -189,10 +160,10 @@ export const MyShadowView = nexus.shadowView(use => (start: number) => {
   - if auto_exportparts is enabled, and you provide the view a `part` attribute, then it will automatically re-export all internal parts, using the part as a prefix.
   - thus, parts can bubble up: each auto_exportparts shadow boundary adds a new hyphenated prefix, so you can do css like `::part(search-input-icon)`.
 
-### `nexus.lightView`
+### lightView
 
 ```ts
-export const MyLightView = nexus.lightView(use => (start: number) => {
+export const MyLightView = lightView(use => (start: number) => {
   use.name("my-light-view")
 
   const count = use.signal(start)
@@ -211,8 +182,7 @@ export const MyLightView = nexus.lightView(use => (start: number) => {
   ```ts
   html`<div>${MyShadowView([123])}</div>`
   ```
-  - shadow views need their props wrapped in an array
-  - shadow views will accept a settings object
+  - shadow views need their props wrapped in an array, to separate them from the optional options object:
     ```ts
     html`
       <div>
@@ -230,9 +200,9 @@ export const MyLightView = nexus.lightView(use => (start: number) => {
   ```
   - light views are beautifully simple
   - they just take props as arguments, no array-wrapping
-  - without any shadow-dom, they have no stylesheet, and without a wrapping element, they have no attributes
+  - without any shadow-dom, they have no stylesheet and no attributes
 - note
-  - all views are rendered into a `<slate-view view="my-name">` component
+  - all views are rendered into a `<slate-view view="my-view-name">` component
 
 <br/>
 
@@ -399,36 +369,31 @@ these are not hooks, just access to useful things you may need, so you're allowe
 
 <br/>
 
-## 🥇 plain elements — gold and silver
+## 🥇 GoldElement and SilverElement – *plain elements*
 
-gold and silver are "plain" elements, which are alternatives to LitElement.  
-they're used as primitives underlying nexus components.  
-for most cases you probably want to stick with the nexus components, and only use gold/silver when you're doing some funky sorcery, or you yearn to go back to a simpler time without hooks.
+- they're alternatives to LitElement
+- they're used as primitives underlying shadowComponent and lightComponent
+- they're useful for cases where you expose public class members on the javascript elements
 
-consider these imports for the following examples:
-
-```ts
-import {GoldElement, SilverElement, attributes, flat} from "@benev/slate"
-```
-
-### gold element — *shadow-dom element*
+### GoldElement — *shadow-dom element*
 
 ```ts
+import {GoldElement, mixin, attributes, signal} from "@benev/slate"
+
+  @mixin.css(css`span {color: blue}`)
+  @mixin.reactivity()
 export class MyGold extends GoldElement {
-  static get styles() { return css`span {color: blue}` }
 
   #attrs = attributes(this as GoldElement, {
     label: String
   })
 
-  #state = flat.state({
-    count: 0,
-  })
+  #count = signal(0)
 
   render() {
     return html`
-      <span>${this.#state.count}</span>
-      <button @click=${() => this.#state.count++}>
+      <span>${this.#count.value}</span>
+      <button @click=${() => this.#count.value++}>
         ${this.#attrs.label}
       </button>
     `
@@ -436,9 +401,14 @@ export class MyGold extends GoldElement {
 }
 ```
 
-### silver element — *light-dom element*
+- note the usage of `mixin.reactivity`, which allows you to make GoldElement, SilverElement, or LitElement, reactive to slate's state management features like signals or flatstate.
+
+### SilverElement — *light-dom element*
 
 ```ts
+import {SilverElement, mixin, attributes, flat} from "@benev/slate"
+
+  @mixin.reactivity()
 export class MySilver extends SilverElement {
 
   #attrs = attributes(this as SilverElement, {
@@ -462,54 +432,8 @@ export class MySilver extends SilverElement {
 
 ### deploying plain elements
 
-if you want plain elements to have reactivity or have the context's css theme applied, you'll want to run them through `nexus.components` before you register them:
-
 ```ts
-register_to_dom({
-  ...nexus.components({
-    MyGold,
-    MySilver,
-  }),
-})
-```
-
-<br/>
-
-## 🔮 deferred context
-
-you can extend the context with anything you'd like to make easily available to your components and views:
-
-```ts
-export const nexus = new Nexus(
-  new class extends Context {
-    my_cool_thing = {my_awesome_data: 123}
-  }
-)
-```
-
-but since your components are importing `nexus`, the above example creates the context *at import-time.*
-
-you may instead prefer to *defer* the creation of your context until later, at *run-time:*
-
-```ts
-// define your context class
-export class MyContext extends Context {
-  my_cool_thing = {my_awesome_data: 123}
-}
-
-// create nexus *without yet* instancing the context
-export const nexus = new Nexus<MyContext>()
-
-//
-// ... later in another file,
-// maybe in your main.ts ...
-//
-
-// instance and assign your context, now, at runtime
-nexus.context = new MyContext()
-
-// just be sure to assign context *before* you register your components
-register_to_dom(myComponents)
+register_to_dom({MyGold, MySilver})
 ```
 
 <br/>
@@ -517,7 +441,7 @@ register_to_dom(myComponents)
 
 # 🛠️ standalone utilities
 
-if you're using nexus components and views, you'll probably be using these utilities via the `use` hooks, which will provide a better developer experience.
+if you're using components and views, you'll probably be using these utilities via the `use` hooks, which will provide a better developer experience.
 
 however, the following utilities are little libraries in their own right, and can be used in a standalone capacity.
 
@@ -877,3 +801,4 @@ ain't got no time to document these, but they're there
 - `requirement` — pass required data to a group of things
 - `ShockDrop` and `ShockDragDrop` — for drag-and-drop integrations
 - `watch` — new heavy-duty state management pattern, with deep-watching in state trees, formalized actions, and even undo/redo history
+

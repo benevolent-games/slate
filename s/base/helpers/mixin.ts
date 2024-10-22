@@ -3,12 +3,11 @@ import {CSSResultGroup} from "lit"
 
 import * as state from "../../nexus/state.js"
 
+import {Pipe} from "../../tools/pipe.js"
 import {Lean} from "../../reactor/types.js"
 import {Flat} from "../../flatstate/flat.js"
 import {BaseElementClass} from "../element.js"
 import {SignalTower} from "../../signals/tower.js"
-import { Context } from "../../nexus/context.js"
-import { Pipe } from "../../tools/pipe.js"
 
 export namespace mixin {
 
@@ -88,7 +87,7 @@ export namespace mixin {
 		}
 	}
 
-	export function reactor(r = state.reactor) {
+	export function reactive(r = state.reactor) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return class extends Base {
 				#lean: Lean | null = null
@@ -113,11 +112,14 @@ export namespace mixin {
 		}
 	}
 
+	/** @deprecated use `reactive` instead */
+	export const reactor = reactive
+
 	export function setup(...styles: CSSResultGroup[]) {
 		return function<C extends BaseElementClass>(Base: C): C {
 			return Pipe.with(Base)
 				.to(css(...styles))
-				.to(reactor())
+				.to(reactive())
 				.done() as C
 		}
 	}

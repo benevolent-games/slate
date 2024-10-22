@@ -37,13 +37,16 @@ export namespace apply {
 		)
 	)
 
-	export const reactor = (
+	export const reactive = (
 		(r = state.reactor) => (
 			<E extends BaseElementClasses>(elements: E) => (
-				ob(elements).map((Element: any) => mixin.reactor(r)(Element))
+				ob(elements).map((Element: any) => mixin.reactive(r)(Element))
 			)
 		)
 	)
+
+	/** @deprecated use `reactive` instead */
+	export const reactor = reactive
 
 	/** @deprecated use `setup` instead */
 	export const context = (
@@ -51,7 +54,7 @@ export namespace apply {
 			<E extends BaseElementClasses>(elements: E) => (
 				Pipe.with(elements)
 					.to(css(context.theme))
-					.to(reactor())
+					.to(reactive())
 					.done() as E
 			)
 		)
