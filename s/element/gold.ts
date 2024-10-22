@@ -5,14 +5,14 @@ import {BaseElement} from "../base/element.js"
 import {MetallicElement} from "./part/metallic.js"
 import {RenderResult} from "../nexus/parts/types.js"
 import {debounce} from "../tools/debounce/debounce.js"
-import {explode_promise} from "../tools/explode_promise.js"
+import {deferPromise} from "../tools/defer-promise.js"
 import {apply_styles_to_shadow} from "../base/utils/apply_styles_to_shadow.js"
 
-export class GoldElement extends MetallicElement implements BaseElement {
+export class ShadowElement extends MetallicElement implements BaseElement {
 	static get styles(): CSSResultGroup | undefined { return undefined }
 
 	#root: ShadowRoot
-	#init? = explode_promise<void>()
+	#init? = deferPromise<void>()
 	#wait = this.#init!.promise
 
 	init() {}
@@ -20,7 +20,7 @@ export class GoldElement extends MetallicElement implements BaseElement {
 	constructor() {
 		super()
 		this.#root = this.attachShadow({mode: "open"})
-		const C = this.constructor as typeof GoldElement
+		const C = this.constructor as typeof ShadowElement
 		apply_styles_to_shadow(this.#root, C.styles)
 		this.init()
 	}
@@ -59,4 +59,7 @@ export class GoldElement extends MetallicElement implements BaseElement {
 		this.requestUpdate()
 	}
 }
+
+/** @deprecated renamed to `ShadowElement` */
+export const GoldElement = ShadowElement
 

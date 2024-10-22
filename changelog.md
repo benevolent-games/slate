@@ -16,6 +16,8 @@
 ## v0.2
 
 ### v0.2.8
+- 🔶 rename `GoldElement` to `ShadowElement`
+- 🔶 rename `SilverElement` to `LightElement`
 - 🔶 rename `mixin.reactor` to `mixin.reactive`
 - 🔶 rename `apply.reactor` to `apply.reactive`
 

@@ -1,9 +1,9 @@
 
 import {html, css} from "lit"
 import {flat} from "../../nexus/state.js"
-import {GoldElement} from "../../element/gold.js"
+import {ShadowElement} from "../../element/gold.js"
 
-export class SlateGold extends GoldElement {
+export class SlateGold extends ShadowElement {
 	static get styles() { return css`span {color: orange}` }
 
 	#state = flat.state({

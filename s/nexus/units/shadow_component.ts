@@ -1,7 +1,7 @@
 
 import {Context} from "../context.js"
 import {Shell} from "../parts/shell.js"
-import {GoldElement} from "../../element/gold.js"
+import {ShadowElement} from "../../element/gold.js"
 import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {ShadowComponentRenderer} from "../parts/types.js"
 import {UseShadowComponent} from "../parts/use/tailored.js"
@@ -11,9 +11,9 @@ export const prepare_shadow_component = (
 	<C extends Context>(shell: Shell<C>) =>
 	(renderer: ShadowComponentRenderer<C>) => (
 
-	class extends GoldElement {
+	class extends ShadowElement {
 		#use = new UseShadowComponent(
-			this as GoldElement,
+			this as ShadowElement,
 			this.root,
 			() => void this.requestUpdate(),
 			shell.context,
@@ -45,6 +45,6 @@ export const prepare_shadow_component = (
 				this.#reactivity = undefined
 			}
 		}
-	} as typeof GoldElement
+	} as typeof ShadowElement
 ))
 

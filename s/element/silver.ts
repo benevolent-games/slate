@@ -5,10 +5,10 @@ import {BaseElement} from "../base/element.js"
 import {MetallicElement} from "./part/metallic.js"
 import {RenderResult} from "../nexus/parts/types.js"
 import {debounce} from "../tools/debounce/debounce.js"
-import {explode_promise} from "../tools/explode_promise.js"
+import {deferPromise} from "../tools/defer-promise.js"
 
-export class SilverElement extends MetallicElement implements BaseElement {
-	#init? = explode_promise<void>()
+export class LightElement extends MetallicElement implements BaseElement {
+	#init? = deferPromise<void>()
 	#wait = this.#init!.promise
 
 	init() {}
@@ -46,4 +46,7 @@ export class SilverElement extends MetallicElement implements BaseElement {
 		this.requestUpdate()
 	}
 }
+
+/** @deprecated renamed to `LightElement` */
+export const SilverElement = LightElement
 

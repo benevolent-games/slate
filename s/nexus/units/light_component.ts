@@ -1,7 +1,7 @@
 
 import {Context} from "../context.js"
 import {Shell} from "../parts/shell.js"
-import {SilverElement} from "../../element/silver.js"
+import {LightElement} from "../../element/silver.js"
 import {LightComponentRenderer} from "../parts/types.js"
 import {usekey} from "../parts/use/parts/utils/usekey.js"
 import {UseLightComponent} from "../parts/use/tailored.js"
@@ -11,9 +11,9 @@ export const prepare_light_component = (
 	<C extends Context>(shell: Shell<C>) =>
 	(renderer: LightComponentRenderer<C>) => (
 
-	class extends SilverElement {
+	class extends LightElement {
 		#use = new UseLightComponent(
-			this as SilverElement,
+			this as LightElement,
 			() => void this.requestUpdate(),
 			shell.context,
 		)
@@ -44,6 +44,6 @@ export const prepare_light_component = (
 			}
 			this.#use[usekey].disconnect()
 		}
-	} as typeof SilverElement
+	} as typeof LightElement
 ))
 

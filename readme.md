@@ -369,22 +369,22 @@ these are not hooks, just access to useful things you may need, so you're allowe
 
 <br/>
 
-## 🥇 GoldElement and SilverElement – *plain elements*
+## 🥇 ShadowElement and LightElement – *plain elements*
 
 - they're alternatives to LitElement
 - they're used as primitives underlying shadowComponent and lightComponent
 - they're useful for cases where you expose public class members on the javascript elements
 
-### GoldElement — *shadow-dom element*
+### ShadowElement — *shadow-dom element*
 
 ```ts
-import {GoldElement, mixin, attributes, signal} from "@benev/slate"
+import {ShadowElement, mixin, attributes, signal} from "@benev/slate"
 
   @mixin.css(css`span {color: blue}`)
   @mixin.reactivity()
-export class MyGold extends GoldElement {
+export class MyGold extends ShadowElement {
 
-  #attrs = attributes(this as GoldElement, {
+  #attrs = attributes(this as ShadowElement, {
     label: String
   })
 
@@ -401,17 +401,17 @@ export class MyGold extends GoldElement {
 }
 ```
 
-- note the usage of `mixin.reactivity`, which allows you to make GoldElement, SilverElement, or LitElement, reactive to slate's state management features like signals or flatstate.
+- note the usage of `mixin.reactivity`, which allows you to make ShadowElement, LightElement, or LitElement, reactive to slate's state management features like signals or flatstate.
 
-### SilverElement — *light-dom element*
+### LightElement — *light-dom element*
 
 ```ts
-import {SilverElement, mixin, attributes, flat} from "@benev/slate"
+import {LightElement, mixin, attributes, flat} from "@benev/slate"
 
   @mixin.reactivity()
-export class MySilver extends SilverElement {
+export class MySilver extends LightElement {
 
-  #attrs = attributes(this as SilverElement, {
+  #attrs = attributes(this as LightElement, {
     label: String
   })
 
@@ -605,7 +605,7 @@ flatstate is inspired by mobx and snapstate, but designed to be simpler. flatsta
 
   const elements2 = apply.flat(flat)(elements)
   ```
-  - this works on any BaseElement, which includes LitElement, GoldElement, SilverElement, ShadowView, and LightView
+  - this works on any BaseElement, which includes LitElement, ShadowElement, LightElement
 
 <br/>
 
