@@ -45,6 +45,7 @@ export * from "./tools/shockdrop/drag_drop.js"
 export * from "./tools/shockdrop/drop.js"
 export * from "./tools/lit_listener.js"
 export * from "./tools/el.js"
+export * from "./tools/escape-regex.js"
 export * from "./tools/ev.js"
 
 export * from "./tools/clone/clone.js"
