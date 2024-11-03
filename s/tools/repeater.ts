@@ -2,7 +2,9 @@
 export class Repeater {
 	active = true
 
-	constructor(public milliseconds: number, public fn: () => Promise<void>) {}
+	constructor(public milliseconds: number, public fn: () => Promise<void>) {
+		this.execute()
+	}
 
 	async execute() {
 		if (this.active === true) {
