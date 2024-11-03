@@ -15,6 +15,16 @@
 
 ## v0.2
 
+### v0.2.9
+- 🔶 rename `generate_id` to `hexId` (old name deprecated)
+- 🍏 add tools:
+  - `escapeRegex`
+  - `hash`
+  - `hat`
+  - `randomFullName`
+  - `MemeNames`
+  - `repeater`
+
 ### v0.2.8
 - 🔶 rename `GoldElement` to `ShadowElement`
 - 🔶 rename `SilverElement` to `LightElement`
