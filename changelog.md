@@ -1,15 +1,9 @@
 
 # @benev/slate changelog
 
-### legend
-
 - 🟥 *harmful -- breaking change*
 - 🔶 *maybe harmful -- deprecation, or possible breaking change*
 - 🍏 *harmless -- addition, fix, or enhancement*
-
-<br/>
-
---------------------------------
 
 <br/>
 
