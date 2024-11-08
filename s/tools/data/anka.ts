@@ -54,7 +54,7 @@ export const Anka = Object.freeze({
 		return new Uint8Array([...code].map(char => {
 			const index = characters.indexOf(char)
 			if (index === -1)
-				throw new Error(`invalid crunch character "${char}"`)
+				throw new Error(`invalid anka character "${char}"`)
 			return index
 		}))
 	},
