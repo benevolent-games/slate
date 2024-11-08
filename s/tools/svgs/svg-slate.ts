@@ -1,6 +1,6 @@
 
 import {svg} from "lit"
-import {TemplateParts} from "../template-string.js"
+import {TemplateParts} from "../templating.js"
 
 export const svgSlate = (parts: TemplateParts) => svg(parts.strings, ...parts.values)
 

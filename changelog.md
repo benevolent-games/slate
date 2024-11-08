@@ -15,6 +15,24 @@
 
 ## v0.2
 
+### v0.2.10
+
+- 🍏 add tools
+  - `templateString` -- template no-op, it's just a string
+  - `templateParts` -- return the strings and injected values
+  - `svgSlate` -- for ingesting icons in turtle
+  - `svgTurtle` -- for ingesting icons in slate, requires manual import
+    - `import {svgTurtle} from "@benev/slate/x/tools/svgs/svg-turtle.js"`
+- 🍏 add data tools:
+  - `Anka` -- display binary data with random indian characters
+  - `Base58` -- standard data encoding
+  - `Base64` -- standard data encoding
+  - `Base64url` -- standard data encoding
+  - `Bytename` -- encode arbitrary bytes as human-readable names
+  - `Bytes` -- helper fns like `random` to generate random binary
+  - `Hex` -- encode arbitrary data in hexadecimal
+  - `Text` -- convert between text and bytes
+
 ### v0.2.9
 - 🔶 rename `generate_id` to `hexId` (old name deprecated)
 - 🍏 add tools:

@@ -37,7 +37,7 @@ function dedupe(arr: string[]) {
 	return [...new Set(arr)]
 }
 
-export const xox = dedupe(subsample(
+const xox = dedupe(subsample(
 	256,
 	consonants.map(
 		a => vowels.map(
@@ -48,7 +48,7 @@ export const xox = dedupe(subsample(
 	).flat(2).filter(x => !bad.has(x)),
 ))
 
-export const oxo = dedupe(subsample(
+const oxo = dedupe(subsample(
 	256,
 	vowels.map(
 		a => consonants.map(
@@ -57,9 +57,11 @@ export const oxo = dedupe(subsample(
 	).flat(2).filter(x => !bad.has(x)),
 ))
 
-export const combo = dedupe(subsample(256, [...xox, ...oxo]))
+const combo = dedupe(subsample(256, [...xox, ...oxo]))
 
 if (xox.length !== 256) throw new Error("xox not 256")
 if (oxo.length !== 256) throw new Error("oxo not 256")
 if (combo.length !== 256) throw new Error("syllables not 256")
+
+export const syllables = {xox, oxo, combo}
 
