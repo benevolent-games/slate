@@ -3,13 +3,9 @@ const vowels = [..."aeiou"]
 const consonants = [..."bcdfghjklmnprstvwxyz"]
 
 const bad = new Set([
-	"cum", "kum", "cok", "kok", "coc", "tit", "ass", "fuk",
-	"fuc", "fux", "sex", "dic", "dik", "dix", "suk", "pus",
-	"vag", "jiz", "bum", "koc", "fag", "hoe", "fap", "pee",
-	"poo", "zit", "nut", "hag", "jis", "gay", "but", "hag",
-	"sac", "sak", "jap", "kik", "wop", "piv", "nob", "nad",
-	"sux", "nig", "cox", "pep", "jew", "goy", "suc", "pen",
-	"nip",
+	"fuc", "sex", "cum", "dic", "coc", "pen",
+	"vag", "pus", "gay", "fap", "jiz", "fag",
+	"cun", "nig", "jew", "goy", "sem", "bal",
 ])
 
 function subsample(n: number, arr: string[]) {
