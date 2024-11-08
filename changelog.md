@@ -15,8 +15,13 @@
 
 ## v0.2
 
-### v0.2.10
+### v0.2.11
+- 🍏 add tools
+  - `isNode`
+  - `isDeno`
+  - `isColorSupported`
 
+### v0.2.10
 - 🍏 add tools
   - `templateString` -- template no-op, it's just a string
   - `templateParts` -- return the strings and injected values
