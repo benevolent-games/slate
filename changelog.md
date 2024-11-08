@@ -10,6 +10,7 @@
 ## v0.2
 
 ### v0.2.11
+- 🔶 change `Bytename` syllable dictionaries: names will change
 - 🍏 add tools
   - `isNode`
   - `isDeno`
