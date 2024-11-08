@@ -6,6 +6,10 @@ const bad = new Set([
 	"fuc", "sex", "cum", "dic", "coc", "pen",
 	"vag", "pus", "gay", "fap", "jiz", "fag",
 	"cun", "nig", "jew", "goy", "sem", "bal",
+	"fat", "god", "big", "dog", "cow", "pet",
+	"vax", "sis", "rot", "zog", "ana", "uti",
+	"cat", "bag", "cuc", "fuk", "fak", "wet",
+	"cux", "bug",
 ])
 
 function subsample(n: number, arr: string[]) {
@@ -53,7 +57,10 @@ const oxo = dedupe(subsample(
 	).flat(2).filter(x => !bad.has(x)),
 ))
 
-const combo = dedupe(subsample(256, [...xox, ...oxo]))
+const combo = dedupe([
+	...subsample(192, xox),
+	...subsample(64, oxo),
+])
 
 if (xox.length !== 256) throw new Error("xox not 256")
 if (oxo.length !== 256) throw new Error("oxo not 256")

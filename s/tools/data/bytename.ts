@@ -78,8 +78,11 @@ export const Bytename = {
 	},
 }
 
-// // TESTING
-// for (const _ of Array(25)) {
+// TESTING
+
+// for (const s of syllables.combo)
+// 	console.log(s)
+
+// for (const _ of Array(100))
 // 	console.log(Bytename.random(5, "Xxxxxx Xxxxxxxxx "))
-// }
 
