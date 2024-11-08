@@ -1,6 +1,6 @@
 
 export const Bytes = {
-	random(count = 32) {
+	random(count: number) {
 		return crypto.getRandomValues(new Uint8Array(count))
 	},
 }
