@@ -9,6 +9,9 @@
 
 ## v0.2
 
+### v0.2.13
+- 🍏 isColorSupported accepts env var `FORCE_COLOR`
+
 ### v0.2.12
 - 🔶 change `Bytename` syllable dictionaries (names will change)
 
