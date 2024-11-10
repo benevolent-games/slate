@@ -1,4 +1,24 @@
 
+export async function repeat(milliseconds: number, fn: () => Promise<void>) {
+	let active = true
+
+	const execute = async() => {
+		if (active) {
+			await fn()
+			setTimeout(() => execute(), milliseconds)
+		}
+	}
+
+	await execute()
+
+	return () => { active = false }
+}
+
+repeat.hz = (hertz: number, fn: () => Promise<void>) => repeat(1000 / hertz, fn)
+
+/////////////////////////////////////////////////////
+
+/** @deprecated use `repeat` instead */
 export class Repeater {
 	active = true
 
@@ -18,9 +38,11 @@ export class Repeater {
 	}
 }
 
+/** @deprecated use `repeat` instead */
 export function repeater(milliseconds: number, fn: () => Promise<void>) {
 	return new Repeater(milliseconds, fn)
 }
 
+/** @deprecated use `repeat.hz` instead */
 repeater.hz = (hertz: number, fn: () => Promise<void>) => repeater(1000 / hertz, fn)
 

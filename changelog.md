@@ -9,6 +9,11 @@
 
 ## v0.2
 
+### v0.2.14
+- 🔶 deprecated `repeater` in favor of leaner `repeat` implementation
+  - deprecated `Repeater` class is now obsolete
+  - deprecated `repeater.hz` in favor of `repeat.hz`
+
 ### v0.2.13
 - 🍏 isColorSupported accepts env var `FORCE_COLOR`
 
