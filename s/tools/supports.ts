@@ -14,6 +14,9 @@ export function isNode() {
 }
 
 export function isColorSupported() {
+	if (process.env.FORCE_COLOR)
+		return true
+
 	if (isNode())
 		return process.stdout.isTTY && process.env.TERM !== "dumb"
 
