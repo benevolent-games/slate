@@ -9,6 +9,9 @@
 
 ## v0.2
 
+### v0.2.15
+- 🔶 fix: `repeat` wasn't supposed to be async
+
 ### v0.2.14
 - 🔶 deprecated `repeater` in favor of leaner `repeat` implementation
   - deprecated `Repeater` class is now obsolete

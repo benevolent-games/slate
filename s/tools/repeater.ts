@@ -1,5 +1,5 @@
 
-export async function repeat(milliseconds: number, fn: () => Promise<void>) {
+export function repeat(milliseconds: number, fn: () => Promise<void>) {
 	let active = true
 
 	const execute = async() => {
@@ -9,7 +9,7 @@ export async function repeat(milliseconds: number, fn: () => Promise<void>) {
 		}
 	}
 
-	await execute()
+	execute()
 
 	return () => { active = false }
 }
