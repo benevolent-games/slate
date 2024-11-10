@@ -5,12 +5,11 @@ export function repeat(milliseconds: number, fn: () => Promise<void>) {
 	const execute = async() => {
 		if (active) {
 			await fn()
-			setTimeout(() => execute(), milliseconds)
+			setTimeout(execute, milliseconds)
 		}
 	}
 
-	execute()
-
+	setTimeout(execute, milliseconds)
 	return () => { active = false }
 }
 
