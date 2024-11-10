@@ -14,14 +14,17 @@ export function isNode() {
 }
 
 export function isColorSupported() {
-	if (process.env.FORCE_COLOR)
-		return true
-
 	if (isNode())
-		return process.stdout.isTTY && process.env.TERM !== "dumb"
+		return (process.env.FORCE_COLOR) || (
+			process.stdout.isTTY &&
+			process.env.TERM !== "dumb"
+		)
 
 	else if (isDeno())
-		return Deno.isatty(Deno.stdout.rid) && Deno.env.get("TERM") !== "dumb"
+		return (Deno.env.get("FORCE_COLOR")) || (
+			Deno.isatty(Deno.stdout.rid) &&
+			Deno.env.get("TERM") !== "dumb"
+		)
 
 	else
 		return false
