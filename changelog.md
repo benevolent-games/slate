@@ -9,6 +9,10 @@
 
 ## v0.2
 
+### v0.2.16
+- 🔶 `repeat` function no longer immediately invokes your fn (works more like setTimeout now)
+- 🍏 add export `computed`, alias for `signals.computed`
+
 ### v0.2.15
 - 🔶 fix: `repeat` wasn't supposed to be async
 
