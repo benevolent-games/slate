@@ -9,6 +9,9 @@
 
 ## v0.2
 
+### next
+- 🍏 add `Content` type, which may be preferable to `RenderResult`
+
 ### v0.2.16
 - 🔶 `repeat` function no longer immediately invokes your fn (works more like setTimeout now)
 - 🍏 add export `computed`, alias for `signals.computed`

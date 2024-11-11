@@ -6,6 +6,7 @@ import {Context} from "../context.js"
 import {UseShadowComponent, UseShadowView, UseLightComponent, UseLightView} from "./use/tailored.js"
 
 export type RenderResult = TemplateResult | DirectiveResult | string | null | undefined | void
+export type Content = TemplateResult | DirectiveResult | HTMLElement | string | null | undefined | void
 
 export type LightViewRenderer<C extends Context, P extends any[]> = (
 	(use: UseLightView<C>) => (...props: P) => RenderResult
