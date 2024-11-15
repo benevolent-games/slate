@@ -27,8 +27,9 @@ export const Hex = {
 		return bytes
 	},
 
-	random(count = 32) {
-		return this.string(Bytes.random(count))
+	/** generate a random hex string. byteCount defaults to 32. */
+	random(byteCount = 32) {
+		return this.string(Bytes.random(byteCount))
 	},
 }
 

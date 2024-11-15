@@ -73,16 +73,9 @@ export const Bytename = {
 		return re1 === re2
 	},
 
-	random(count = 5, pattern = defaultPattern) {
-		return this.string(Bytes.random(count), pattern)
+	/** generate a random bytename. byteCount defaults to 5. */
+	random(byteCount = 5, pattern = defaultPattern) {
+		return this.string(Bytes.random(byteCount), pattern)
 	},
 }
-
-// TESTING
-
-// for (const s of syllables.combo)
-// 	console.log(s)
-
-// for (const _ of Array(100))
-// 	console.log(Bytename.random(5, "Xxxxxx Xxxxxxxxx "))
 
