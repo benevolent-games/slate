@@ -11,6 +11,7 @@
 
 ### next
 - 🍏 add `Content` type, which may be preferable to `RenderResult`
+- 🍏 improve `opSignal.load` with deconfliction: now only the latest run will update the signal
 
 ### v0.2.16
 - 🔶 `repeat` function no longer immediately invokes your fn (works more like setTimeout now)

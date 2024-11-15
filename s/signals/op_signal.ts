@@ -3,15 +3,20 @@ import {Op} from "../op/op.js"
 import {Signal} from "./signal.js"
 
 export class OpSignal<V> extends Signal<Op.For<V>> {
+	#relevant = 0
 
 	constructor(op: Op.For<V>) {
 		super(op)
 	}
 
-	async load(operation: () => Promise<V>) {
+	async load(fn: () => Promise<V>) {
+		const id = ++this.#relevant
 		return Op.load(
-			op => this.value = op,
-			operation,
+			op => {
+				if (this.#relevant === id)
+					this.value = op
+			},
+			fn,
 		)
 	}
 
