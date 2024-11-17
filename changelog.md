@@ -7,6 +7,16 @@
 
 <br/>
 
+## v0.3
+- 🟥 eliminated the default css theme (which was a css reset)
+  - now, by default, slate shadow doms have no default styling at all, it's up to you
+  - renamed slate export `defaultTheme` to `cssReset`
+  - to restore the original behavior, do this:
+    ```js
+    import {nexus, cssReset} from "@benev/slate"
+    nexus.context.theme = cssReset
+    ```
+
 ## v0.2
 
 ### v0.2.17
