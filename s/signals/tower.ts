@@ -46,6 +46,12 @@ export class SignalTower implements ReactorCore {
 		return signal
 	}
 
+	load<V>(fn: () => Promise<V>) {
+		const signal = this.op<V>(Op.loading())
+		signal.load(fn)
+		return signal
+	}
+
 	many<S extends {[key: string]: any}>(states: S) {
 		return (
 			ob(states).map(state => this.signal(state))

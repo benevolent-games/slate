@@ -9,12 +9,6 @@ export class OpSignal<V> extends Signal<Op.For<V>> {
 		super(op)
 	}
 
-	static load<V>(fn: () => Promise<V>) {
-		const ops = new this<V>(Op.loading())
-		ops.load(fn)
-		return ops
-	}
-
 	async load(fn: () => Promise<V>) {
 		const id = ++this.#relevant
 		return Op.load(

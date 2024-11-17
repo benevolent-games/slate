@@ -16,6 +16,7 @@
     import {nexus, cssReset} from "@benev/slate"
     nexus.context.theme = cssReset
     ```
+- 🟥 replace `OpSignal.load(~)` helper with `signals.load(~)`
 
 ## v0.2
 
