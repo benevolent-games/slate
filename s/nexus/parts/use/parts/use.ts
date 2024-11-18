@@ -113,13 +113,20 @@ export class Use<C extends Context = Context> {
 			this.#deferred.set(count, () => { signal.value = fn() })
 		return signal
 	}
+	#deferredOnceDone = new Set<number>()
 	deferOnce<T>(fn: () => T): Signal<T | undefined> {
+		this.mount(() => {
+			this.#deferredOnceDone.clear()
+			return () => {}
+		})
 		const signal = this.signal<T | undefined>(undefined)
 		const count = this.#counter.pull()
 		if (!this.#deferred.has(count))
 			this.#deferred.set(count, () => {
-				signal.value = fn()
-				this.#deferred.delete(count)
+				if (!this.#deferredOnceDone.has(count)) {
+					this.#deferredOnceDone.add(count)
+					signal.value = fn()
+				}
 			})
 		return signal
 	}
