@@ -1,5 +1,5 @@
 
-export function repeat(milliseconds: number, fn: () => Promise<void>) {
+export function repeat(milliseconds: number, fn: () => (void | Promise<void>)) {
 	let active = true
 
 	const execute = async() => {
