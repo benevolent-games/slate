@@ -18,6 +18,10 @@ export class Map2<K, V> extends Map<K, V> {
 		return value
 	}
 
+	array() {
+		return [...this]
+	}
+
 	require(key: K) {
 		return Map2.require(this, key)
 	}
