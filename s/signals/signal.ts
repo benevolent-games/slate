@@ -1,4 +1,5 @@
 
+import {deep} from "../tools/deep/deep.js"
 import {SignalListener} from "./parts/listener.js"
 import {accessed} from "./parts/accessed_symbol.js"
 import {debounce} from "../tools/debounce/debounce.js"
@@ -84,8 +85,40 @@ export class Signal<V> {
 		}
 	}
 
-	setValueNoPublish(v: V) {
+	/** set the signal value and publish, only if a deep change is detected (uses deep.equal to scan whole object trees) */
+	setDeep(v: V) {
+		if (this.#lock)
+			throw new SignalCircularError(
+				"you can't set a signal in a signal's subscription listener (infinite loop forbidden)"
+			)
+		if (!deep.equal(v, this.#value)) {
+			this.#value = v
+			this.publish()
+		}
+	}
+
+	/** set the signal value and publish, even if there's no change detected */
+	setAndPublish(v: V) {
+		if (this.#lock)
+			throw new SignalCircularError(
+				"you can't set a signal in a signal's subscription listener (infinite loop forbidden)"
+			)
 		this.#value = v
+		this.publish()
+	}
+
+	/** set the signal value, but do not publish (perhaps to prevent views rerendering) */
+	setWithoutPublish(v: V) {
+		if (this.#lock)
+			throw new SignalCircularError(
+				"you can't set a signal in a signal's subscription listener (infinite loop forbidden)"
+			)
+		this.#value = v
+	}
+
+	/** @deprecated use `setWithoutPublish` instead */
+	setValueNoPublish(v: V) {
+		return this.setWithoutPublish(v)
 	}
 }
 

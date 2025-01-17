@@ -22,6 +22,11 @@
   - in other words, signals now only react to genuine changes
   - the comparison is shallow, so setting the same object over and over will not publish any changes
   - the new preferred pattern is to call `mySignal.publish()` manually
+- 🔶 rename `mySignal.setValueNoPublish(v)` to `mySignal.setWithoutPublish(v)` (deprecated old name)
+- 🍏 add new signal methods
+  - `mySignal.setDeep(v)`
+  - `mySignal.setAndPublish(v)`
+  - `mySignal.setWithoutPublish(v)`
 
 ## v0.2
 
