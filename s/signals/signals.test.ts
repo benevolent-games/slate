@@ -162,13 +162,17 @@ export default <Suite>{
 				void doubled.value
 				doubled_calls++
 			})
+			await tower.wait
+			expect(count.value).equals(1)
+			expect(doubled.value).equals(2)
 			expect(count_calls).equals(1)
 			expect(doubled_calls).equals(1)
 			count.value = 5
 			await tower.wait
+			expect(count.value).equals(5)
+			expect(doubled.value).equals(10)
 			expect(count_calls).equals(2)
 			expect(doubled_calls).equals(2)
-			expect(doubled.value).equals(10)
 		},
 		"lean tracking": async() => {
 			const tower = new SignalTower()

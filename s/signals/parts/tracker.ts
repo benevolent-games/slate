@@ -24,7 +24,8 @@ export class SignalTracker {
 	#stoppers = new Set<() => void>()
 
 	constructor({
-			all_signals, waiters,
+			all_signals,
+			waiters,
 		}: {
 			all_signals: Set<Signal<any>>
 			waiters: Set<Promise<void>>
@@ -71,7 +72,7 @@ export class SignalTracker {
 		for (const signal of recording) {
 			this.#relevant_signals.add(signal)
 			this.#stoppers.add(
-				signal.subscribe(
+				signal.on(
 					() => this.#waiters.add(this.#actuate(track))
 				)
 			)

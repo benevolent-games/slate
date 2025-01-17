@@ -85,10 +85,17 @@ export class SignalTower implements ReactorCore {
 		}
 	}
 
-	get wait(): Promise<void> {
-		return Promise.all([...this.#signals].map(s => s.wait))
+	// TODO this is a hack, we shouldn't have to wait two cycles to be sure everything's done
+	async #waitOneCycle() {
+		return await Promise.all([...this.#signals].map(s => s.wait))
 			.then(() => Promise.all([...this.#waiters]))
 			.then(() => { this.#waiters.clear() })
+	}
+
+	get wait(): Promise<void> {
+		return Promise.resolve()
+			.then(() => this.#waitOneCycle())
+			.then(() => this.#waitOneCycle())
 	}
 }
 
