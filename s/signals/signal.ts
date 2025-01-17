@@ -78,8 +78,10 @@ export class Signal<V> {
 			throw new SignalCircularError(
 				"you can't set a signal in a signal's subscription listener (infinite loop forbidden)"
 			)
-		this.#value = v
-		this.publish()
+		if (this.#value !== v) {
+			this.#value = v
+			this.publish()
+		}
 	}
 
 	setValueNoPublish(v: V) {

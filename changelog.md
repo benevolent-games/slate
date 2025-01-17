@@ -17,6 +17,11 @@
     nexus.context.theme = cssReset
     ```
 - 🟥 replace `OpSignal.load(~)` helper with `signals.load(~)`
+- 🟥 signals now only publish when their values actually change
+  - there's this common pattern where to trigger a signal publish, we simply set it's value again -- but this will now fail if the value is the same as it was previously
+  - in other words, signals now only react to genuine changes
+  - the comparison is shallow, so setting the same object over and over will not publish any changes
+  - the new preferred pattern is to call `mySignal.publish()` manually
 
 ## v0.2
 
