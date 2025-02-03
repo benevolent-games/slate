@@ -1,74 +1,69 @@
 
 import {Bytes} from "./bytes.js"
-import {syllables} from "./utils/syllables.js"
 
-const standardPrefixes = [
-	"Ael",
-	"Ang",
-	"Eil",
-	"Cha",
-	"Esk",
-	"Gal",
-	"Dal",
-	"Tho",
-	"Tir",
-	"Vel",
-	"Fen",
-	"Fal",
-	"Nyl",
-	"Mor",
-	"Nor",
-	"Lom",
+const prefixes = [
+	"Ael", "Ång", "Éil", "Chå",
+	"End", "Gäl", "Gar", "Thó",
+	"Tír", "Vel", "Fen", "Fâl",
+	"Nýl", "Mór", "Nor", "Lom",
 ]
 
-const standardSuffixes = [
-	"il",
-	"lo",
-	"le",
-	"sk",
-	"ar",
-	"or",
-	"yn",
-	"vn",
-	"by",
-	"cy",
-	"gy",
-	"ky",
-	"ly",
-	"th",
-	"vy",
-	"ny",
+const doublets1 = [
+	"rá", "rë", "ri", "ró",
+	"va", "ve", "vi", "vo",
+	"aʼ", "eʼ", "iʼ", "oʼ",
+	"la", "le", "ýi", "yø",
 ]
 
-const standardTriplets = syllables.oxo
+const doublets2 = [
+	"ar", "er", "ir", "or",
+	"rn", "rd", "ln", "el",
+	"th", "ey", "aý", "oy",
+	"un", "ur", "us", "es",
+]
+
+const suffixes = [
+	"il", "lo", "le", "sk",
+	"âr", "or", "ýn", "vn",
+	"by", "cy", "gy", "ky",
+	"ly", "th", "vy", "ny",
+]
 
 export class Byterunes {
 	static standard = new Byterunes()
-
+	pattern: number[]
 	prefixes: string[]
+	doublets1: string[]
+	doublets2: string[]
 	suffixes: string[]
-	triplets: string[]
 
 	static validate(label: string, dictionary: string[], charlength: number, phrasecount: number) {
 		dictionary = [...new Set(dictionary)]
+
 		if (dictionary.length !== phrasecount)
 			throw new Error(`byterunes invalid ${label} dictionary length, got ${dictionary.length} where ${phrasecount} must be provided`)
+
 		for (const phrase of dictionary) {
 			if (phrase.length !== charlength)
 				throw new Error(`byterunes invalid ${label} dictionary entry, "${phrase}" is the wrong length ${phrase.length} where ${charlength} is required`)
 		}
+
 		return dictionary
 	}
 
 	constructor(options: {
-			triplets?: string[]
+			pattern?: number[]
 			prefixes?: string[]
+			doublets1?: string[]
+			doublets2?: string[]
 			suffixes?: string[]
 		} = {}) {
 
-		this.triplets = Byterunes.validate("triplets", options.triplets ?? standardTriplets, 3, 256)
-		this.prefixes = Byterunes.validate("prefixes", options.prefixes ?? standardPrefixes, 3, 16)
-		this.suffixes = Byterunes.validate("suffixes", options.suffixes ?? standardSuffixes, 2, 16)
+		this.pattern = options.pattern ?? [1, 2]
+		this.prefixes = Byterunes.validate("prefixes", options.prefixes ?? prefixes, 3, 16)
+		this.doublets1 = Byterunes.validate("doublets2", options.doublets1 ?? doublets1, 2, 16)
+		this.doublets2 = Byterunes.validate("doublets1", options.doublets2 ?? doublets2, 2, 16)
+		this.suffixes = Byterunes.validate("suffixes", options.suffixes ?? suffixes, 2, 16)
 	}
 
 	string(bytes: Uint8Array) {
@@ -81,30 +76,40 @@ export class Byterunes {
 		return words.join(" ")
 	}
 
-	random(byteCount = 5) {
+	random(byteCount = 3) {
 		return this.string(Bytes.random(byteCount))
 	}
 
-	#nibbles(byte: number) {
+	#splitByteIntoNibbles(byte: number) {
 		const high = (byte >> 4) & 0x0F
 		const low = byte & 0x0F
 		return [high, low] as [number, number]
 	}
 
-	#capitalize(name: string) {
-		const [first, ...rest] = name
-		return [first.toUpperCase(), ...rest].join("")
+	#nibblize(bytes: number[]) {
+		return bytes.flatMap(byte => this.#splitByteIntoNibbles(byte))
 	}
 
-	#generateWord([firstByte, ...moreBytes]: number[]) {
-		const [prefixNibble, suffixNibble] = this.#nibbles(firstByte)
-		const middleTriplets = moreBytes.map(byte => this.triplets.at(byte)!)
-		const parts = [this.prefixes.at(prefixNibble)!, ...middleTriplets, this.suffixes.at(suffixNibble)!]
-		return this.#capitalize(parts.join(""))
+	#generateWord(bytes: number[]) {
+		bytes = [...bytes]
+		const nibbles = this.#nibblize(bytes)
+
+		const prefix = this.prefixes[nibbles.shift()!]
+		const suffix = this.suffixes[nibbles.pop()!]
+
+		const pattern = [this.doublets1, this.doublets2]
+		const middles: string[] = []
+
+		for (const middle of nibbles) {
+			const middleSource = pattern[middles.length % pattern.length]!
+			middles.push(middleSource[middle])
+		}
+
+		return [prefix, ...middles, ...suffix].join("")
 	}
 
 	#organizeByteGroups(bytes: Uint8Array) {
-		const pattern = [1, 2, 2]
+		const {pattern} = this
 		const byteGroups: number[][] = []
 		let group: number[] = []
 
@@ -139,7 +144,7 @@ export class Byterunes {
 	}
 }
 
-for (const _ of Array(100))
+for (const _ of Array(20))
 	console.log(Byterunes.standard.random())
 
 // const potionRunes = new Byterunes({
