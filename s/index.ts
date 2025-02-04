@@ -50,6 +50,8 @@ export * from "./tools/el.js"
 export * from "./tools/escape-regex.js"
 export * from "./tools/ev.js"
 
+export * from "./tools/data/nomen/index.js"
+
 export * from "./tools/data/utils/syllables.js"
 export * from "./tools/data/anka.js"
 export * from "./tools/data/base58.js"

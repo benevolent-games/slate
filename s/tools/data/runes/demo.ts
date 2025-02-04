@@ -4,7 +4,7 @@ import {Runes} from "./runes.js"
 const runes = new Runes()
 
 for (const _ of Array(20)) {
-	const string1 = runes.random()
+	const string1 = runes.random(8)
 	const bytes = runes.bytes(string1)
 	const string2 = runes.string(bytes)
 	if (string1 !== string2)
