@@ -76,10 +76,34 @@ export class Grammar<P extends PhraseFns> {
 export const falryskNomen = Nomen
 	.dictionary({
 		prefix: [
-			"Aed", "Ång", "Éil", "War",
-			"End", "Gäl", "Gar", "Thó",
-			"Tír", "Ven", "Fen", "Fâl",
-			"Nýz", "Mór", "Nor", "Lom",
+			"Aed", "Ael", "Aer", "Aeg",
+			"Aes", "Aet", "Aeon", "Aek",
+			"Årg", "Ard", "Arn", "Ayn",
+			"Ar", "Ad", "Atl", "An",
+			"And", "Anr", "Ain", "Ayn",
+			"End", "Esk", "Eld", "Ŏln",
+			"Elg", "Erd", "Eyn", "Esn",
+			"Olf", "Of", "Oy", "Oc",
+			"War", "Wer", "Wot", "Wal",
+			"Gäl", "Gar", "Gra", "Gir",
+			"Gor", "Gil", "Ger", "Gan",
+			"Thós", "Thès", "Tír", "Tal",
+			"Fâl", "Fen", "Fel", "Fol",
+			"Fír", "For", "Feyt", "Fern",
+			"Feyn", "Fayn", "Feln", "Faln",
+			"Ven", "Van", "Vèl", "Val",
+			"Veyn", "Vayn", "Veyl", "Vayl",
+			"Nýz", "Nor", "Nal", "Nyn",
+			"Mór", "Mar", "Myor", "Mor",
+			"Lom", "Lem", "Lorn", "Leyn",
+			"Kal", "Kel", "Kyel", "Kol",
+			"Shel", "Shen", "Shal", "Shey",
+			"Pip", "Par", "Pyot", "Poy",
+			"Thar", "Ther", "Thor", "Thel",
+			"Uyn", "Uer", "Usn", "Uin",
+			"Yön", "Yès", "Yol", "Yel",
+			"Xen", "Zael", "Zaer", "Zod",
+			"Aʼ", "Oʼ",
 		],
 
 		suffix: [
@@ -87,33 +111,54 @@ export const falryskNomen = Nomen
 			"sk", "rk", "rd", "nd",
 			"by", "cy", "ry", "ny",
 			"yn", "vn", "vy", "ly",
+			"rik", "rek", "nok", "rôk",
+			"bie", "rie", "lie",
+			"nar", "råg", "lg", "rn",
 		],
 
-		a: [
-			"b", "c", "d", "f",
-			"g", "h", "k", "l",
-			"m", "n", "r", "s",
-			"t", "v", "w", "y",
-		],
+		o: [..."aaeeiou"],
+		x: [..."bcdfghjklmnprstvwxyz"],
 
-		b: [
-			"ak", "ëk", "ud", "ok",
-			"ár", "th", "ýg", "sk",
-			"fy", "ég", "ug", "øg",
-			"aʼ", "st", "kn", "gh",
-		],
-
-		c: [
-			"au", "ea", "ia", "oa",
-			"ae", "ës", "ie", "oé",
-			"ai", "ei", "iu", "uî",
+		oo: [
+			"au", "ea", "ía", "oa",
+			"áe", "ës", "ie", "oé",
+			"aí", "ei", "iû", "uî",
 			"al", "eo", "io", "us",
+		],
+
+		ox: [
+			"ës", "us", "is", "os",
+			"as", "ar", "er", "or",
+			"ad", "ed", "id", "od",
+			"aw", "ew", "iw", "ow",
+		],
+
+		xox: [
+			"nak", "nëk", "nud", "nok",
+			"rár", "råth", "ýeg", "rin",
+			"wég", "wug", "wøg",
+		],
+
+		oxo: [
+			"ana", "ëna", "anu", "irá",
+			"arna", "erna", "arnû", "irna",
+			"ánla", "ënla", "arlu", "irla",
+			"ára", "atho", "oýo", "ina",
+			"éwe", "uwa", "øga",
 		],
 	})
 	.patterns([
-		[["prefix", "suffix"]],
-		[["prefix", "b", "suffix"]],
-		[["prefix", "b", "c", "suffix"]],
+		[["prefix", "o"]],
+		[["prefix", "oo"]],
+		[["prefix", "ox"]],
+		[["prefix", "ox"]],
+		[["prefix", "oxo"]],
+		[["prefix", "o", "suffix"]],
+		[["prefix", "o", "suffix"]],
+		[["prefix", "oxo", "suffix"]],
+		[["prefix", "oo", "suffix"]],
+		[["prefix", "oo", "x", "oo", "suffix"]],
+		[["prefix", "o", "x", "oo", "suffix"]],
 	])
 
 const grammar = Grammar
@@ -122,13 +167,11 @@ const grammar = Grammar
 		last: bytes => falryskNomen.generate(bytes),
 	})
 	.templates([
-		o => `${o.first}`,
-		o => `${o.first}`,
+		o => `${o.first} ${o.last}`,
 		o => `${o.first} ${o.last}`,
 		o => `${o.first} ${o.last}`,
 		o => `${o.first} of ${o.last}`,
 		o => `${o.first} from ${o.last}`,
-		o => `${o.first} of the ${o.last}`,
 	])
 
 for (const _ of Array(20))
