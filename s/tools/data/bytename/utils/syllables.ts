@@ -1,6 +1,6 @@
 
-const vowels = [..."aeiou"]
-const consonants = [..."bcdfghjklmnprstvwxyz"]
+export const vowels = [..."aeiou"]
+export const consonants = [..."bcdfghjklmnprstvwxyz"]
 
 const bad = new Set<string>([
 	"fuc", "sex", "cum", "dic", "coc", "pen",
