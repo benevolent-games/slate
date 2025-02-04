@@ -20,7 +20,7 @@ export class Runes {
 		return this.encoder.string(bytes)
 	}
 
-	random(byteCount = 3) {
+	random(byteCount = 4) {
 		const bytes = Bytes.random(byteCount)
 		return this.string(bytes)
 	}

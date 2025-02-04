@@ -11,19 +11,19 @@ export const falrysk = (runeSpec()
 			"Nýz", "Mór", "Nor", "Lom",
 		],
 
-		alpha: [
-			"b", "c", "d", "f",
-			"g", "h", "k", "l",
-			"m", "n", "r", "s",
-			"t", "v", "w", "y",
-		],
-
 		// alpha: [
-		// 	"ak", "ëk", "ud", "ok",
-		// 	"ár", "th", "ýg", "sk",
-		// 	"fy", "ég", "ug", "øg",
-		// 	"aʼ", "st", "kn", "gh",
+		// 	"b", "c", "d", "f",
+		// 	"g", "h", "k", "l",
+		// 	"m", "n", "r", "s",
+		// 	"t", "v", "w", "y",
 		// ],
+
+		alpha: [
+			"ak", "ëk", "ud", "ok",
+			"ár", "th", "ýg", "sk",
+			"fy", "ég", "ug", "øg",
+			"aʼ", "st", "kn", "gh",
+		],
 
 		bravo: [
 			"au", "ea", "ia", "oa",
@@ -41,8 +41,8 @@ export const falrysk = (runeSpec()
 	})
 
 	.pattern([
-		["prefix", "suffix"],
-		["prefix", "alpha", "bravo", "suffix"],
+		["prefix", "bravo", "suffix"],
+		["prefix", "alpha", "alpha", "bravo", "suffix"],
 	])
 )
 
