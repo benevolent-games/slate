@@ -11,12 +11,13 @@ every three letters is a syllable, which represents one byte.
 
 */
 
-import {Bytes} from "./bytes.js"
+import {Bytes} from "../bytes.js"
 import {syllables} from "./utils/syllables.js"
 
 const dictionary = syllables.combo
 const defaultPattern = "Xxxxxx Xxxxxxxxx "
 
+/** @deprecated use `Urname` instead */
 export const Bytename = {
 	dictionary,
 
