@@ -25,23 +25,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-
-    - name: 🔔 checkout
-      uses: actions/checkout@v4
-
-    - name: 🔧 setup node
-      uses: actions/setup-node@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: 21
+        node-version: "22"
+    - uses: actions/configure-pages@v5
 
-    - name: 📦 install dependencies
-      run: npm ci
-
-    - name: 🔨 build
-      run: npm run build -s
-
-    - name: 🧪 test
-      run: npm test
+    - run: npm ci
+    - run: npm run build -s
+    - run: npm test
 
     - name: 🚚 tracking ignored stuff
       run: |
@@ -60,15 +52,12 @@ jobs:
         cp -r s/ x/
         cp -r assets/ x/
 
-    - name: 📝 configure pages
-      uses: actions/configure-pages@v2
-
     - name: 📤 upload pages artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
-        path: 'x'
+        path: "x"
 
     - name: 🚀 deploy to github pages
       id: deployment
-      uses: actions/deploy-pages@v1
+      uses: actions/deploy-pages@v4
 
