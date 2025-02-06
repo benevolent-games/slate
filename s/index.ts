@@ -51,7 +51,7 @@ export * from "./tools/escape-regex.js"
 export * from "./tools/ev.js"
 
 export * from "./tools/data/nomen/index.js"
-export * from "./tools/data/urname/index.js"
+export * from "./tools/data/barname/index.js"
 export * from "./tools/data/bytename/index.js"
 
 export * from "./tools/data/anka.js"

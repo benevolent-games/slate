@@ -3,7 +3,9 @@ import {Bytes} from "../bytes.js"
 import {prefixes} from "./utils/prefixes.js"
 import {suffixes} from "./utils/suffixes.js"
 
-export const Urname = {
+const separator = "_"
+
+export const Barname = {
 	random(byteCount: number) {
 		return this.string(Bytes.random(byteCount))
 	},
@@ -28,11 +30,16 @@ export const Urname = {
 		if (currentWord.length)
 			words.push(currentWord.join(""))
 
-		return words.join("-")
+		return words.join(separator)
 	},
 
 	bytes(string: string) {
-		const letters = string.toLowerCase().trim().replace(/\s+/g, "").replace(/-/g, "")
+		const letters = string
+			.toLowerCase()
+			.trim()
+			.replace(/\s+/g, "")
+			.replaceAll("_", "")
+
 		const count = letters.length / 3
 		if ((count % 1) !== 0)
 			throw new Error(`invalid triplet count, ${letters.length} does not divide into triplets`)

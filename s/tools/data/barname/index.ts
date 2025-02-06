@@ -1,0 +1,3 @@
+
+export * from "./barname.js"
+
