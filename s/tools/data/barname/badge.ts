@@ -24,10 +24,13 @@ export class Badge {
 			public readonly bytes: Uint8Array,
 			public readonly leadCount = Badge.defaultLeadCount,
 		) {
+
 		if (leadCount < 1)
 			throw new Error(`badge leadCount must be greater than 0 (was ${leadCount})`)
+
 		this.hex = Hex.string(this.bytes)
 		this.preview = Barname.string(this.bytes.slice(0, leadCount))
+
 		this.string = (bytes.length > leadCount)
 			? `${this.preview}.${Base58.string(this.bytes.slice(leadCount))}`
 			: this.preview
@@ -54,6 +57,18 @@ export class Badge {
 	static fromHex(hex: string, leadCount = this.defaultLeadCount) {
 		const bytes = Hex.bytes(hex)
 		return new this(bytes, leadCount)
+	}
+
+	static string(bytes: Uint8Array, leadCount = this.defaultLeadCount) {
+		return new this(bytes, leadCount).string
+	}
+
+	static bytes(badge: string) {
+		return this.parse(badge)
+	}
+
+	static hex(badge: string) {
+		return this.parse(badge).hex
 	}
 
 	toString() {
