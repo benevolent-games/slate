@@ -24,6 +24,7 @@
   - the new preferred pattern is to call `mySignal.publish()` manually
 - 🔶 deprecate `Bytename`, recommend new `Barname` and `Badge` systems instead
 - 🔶 rename `mySignal.setValueNoPublish(v)` to `mySignal.setWithoutPublish(v)` (deprecated old name)
+- 🍏 add `dedupe` tool, helper to deduplicate arrays using a set
 - 🍏 add new signal methods
   - `mySignal.setDeep(v)`
   - `mySignal.setAndPublish(v)`
