@@ -1,7 +1,7 @@
 
 import {Signal} from "../signals/signal.js"
 
-export function wherefor<X, R>(
+export function whereby<X, R>(
 		x: X | undefined | null | Signal<X | undefined | null>,
 		fn: (x: X) => R,
 	) {
@@ -14,4 +14,7 @@ export function wherefor<X, R>(
 		? undefined
 		: fn(y)
 }
+
+/** @deprecated renamed to `whereby` */
+export const wherefor = whereby
 

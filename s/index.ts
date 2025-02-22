@@ -95,7 +95,7 @@ export * from "./tools/supports.js"
 export * from "./tools/templating.js"
 export * from "./tools/trashbin.js"
 export * from "./tools/trashcan.js"
-export * from "./tools/wherefor.js"
+export * from "./tools/whereby.js"
 
 export * from "./watch/tower.js"
 export * from "./watch/state_tree.js"
