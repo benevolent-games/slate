@@ -81,27 +81,32 @@ export function falryskNameGrammar() {
 			[["prefix", "o"]],
 			[["prefix", "oo"]],
 			[["prefix", "ox"]],
-			[["prefix", "ox"]],
 			[["prefix", "oxo"]],
+
 			[["prefix", "o", "suffix"]],
 			[["prefix", "o", "suffix"]],
-			[["prefix", "oxo", "suffix"]],
+			[["prefix", "o", "suffix"]],
+			[["prefix", "o", "suffix"]],
+
 			[["prefix", "oo", "suffix"]],
-			[["prefix", "oo", "x", "oo", "suffix"]],
-			[["prefix", "o", "x", "oo", "suffix"]],
+			[["prefix", "oxo", "suffix"]],
+
+			// // long names
+			// [["prefix", "oo", "x", "oo", "suffix"]],
+			// [["prefix", "o", "x", "oo", "suffix"]],
 		])
 
 	return Grammar
 		.phrases({
-			first: bytes => person.generate(bytes),
-			last: bytes => person.generate(bytes),
+			first: b => person.generate(b),
+			last: b => person.generate(b),
 		})
 		.templates([
 			o => `${o.first} ${o.last}`,
-			o => `${o.first} ${o.last}`,
-			o => `${o.first} ${o.last}`,
-			o => `${o.first} of ${o.last}`,
-			o => `${o.first} from ${o.last}`,
+
+			// // long names
+			// o => `${o.first} of ${o.last}`,
+			// o => `${o.first} from ${o.last}`,
 		])
 }
 

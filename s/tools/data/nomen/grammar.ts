@@ -4,7 +4,10 @@ import {Bytes} from "../bytes.js"
 import {GrammarTemplate, PhraseFns} from "./types.js"
 
 export class Grammar<P extends PhraseFns> {
-	constructor(public phraseFns: P, public templates: GrammarTemplate<P>[]) {}
+	constructor(
+		public phraseFns: P,
+		public templates: GrammarTemplate<P>[],
+	) {}
 
 	static phrases = <P extends PhraseFns>(phrases: P) => ({
 		templates: (templates: GrammarTemplate<P>[]) => (
