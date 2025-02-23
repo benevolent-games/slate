@@ -1,5 +1,5 @@
 
-export function repeat(milliseconds: number, fn: () => (void | Promise<void>)) {
+export function repeating(milliseconds: number, fn: () => (void | Promise<void>)) {
 	let active = true
 
 	const execute = async() => {
@@ -13,7 +13,7 @@ export function repeat(milliseconds: number, fn: () => (void | Promise<void>)) {
 	return () => { active = false }
 }
 
-repeat.hz = (hertz: number, fn: () => Promise<void>) => repeat(1000 / hertz, fn)
+repeating.hz = (hertz: number, fn: () => Promise<void>) => repeating(1000 / hertz, fn)
 
 /////////////////////////////////////////////////////
 

@@ -117,4 +117,5 @@ export {
 
 export {AsyncDirective} from "lit/async-directive.js"
 export {DirectiveClass, DirectiveResult, PartInfo} from "lit/directive.js"
+export {repeat} from "lit/directives/repeat.js"
 

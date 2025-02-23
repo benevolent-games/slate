@@ -22,6 +22,7 @@
   - in other words, signals now only react to genuine changes
   - the comparison is shallow, so setting the same object over and over will not publish any changes
   - the new preferred pattern is to call `mySignal.publish()` manually
+- 🟥 rename `repeat` to `repeating`, to make room to export lit's `repeat` directive
 - 🔶 deprecate `wherefor`, renamed to `whereby`
 - 🔶 deprecate `Bytename`, recommend new `Barname` and `Badge` systems instead
 - 🔶 rename `mySignal.setValueNoPublish(v)` to `mySignal.setWithoutPublish(v)` (deprecated old name)
