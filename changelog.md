@@ -26,6 +26,7 @@
 - 🔶 deprecate `wherefor`, renamed to `whereby`
 - 🔶 deprecate `Bytename`, recommend new `Barname` and `Badge` systems instead
 - 🔶 rename `mySignal.setValueNoPublish(v)` to `mySignal.setWithoutPublish(v)` (deprecated old name)
+- 🍏 Barname upgraded to support word-groups, and more resilient parsing
 - 🍏 add `dedupe` tool, helper to deduplicate arrays using a set
 - 🍏 add new signal methods
   - `mySignal.setDeep(v)`
