@@ -1,5 +1,5 @@
 
-export const Text = {
+export const Txt = {
 	string(bytes: Uint8Array) {
 		return new TextDecoder().decode(bytes)
 	},
@@ -8,4 +8,7 @@ export const Text = {
 		return new TextEncoder().encode(string)
 	},
 }
+
+/** @deprecated renamed to `Txt` */
+export const Text = Txt
 
