@@ -1,12 +1,12 @@
 
-/** @deprecated use `Map2` instead */
+/** @deprecated use `MapG` instead */
 export type MapBase<K, V> = {
 	has(key: K): boolean
 	get(key: K): V | undefined
 	set(key: K, value: V): void
 }
 
-/** @deprecated use `Map2` instead */
+/** @deprecated use `MapG` instead */
 export function maptool<K, V>(map: MapBase<K, V>) {
 	return {
 		guarantee: (key: K, make: () => V) => (
@@ -15,7 +15,7 @@ export function maptool<K, V>(map: MapBase<K, V>) {
 	}
 }
 
-/** @deprecated use `Map2` instead */
+/** @deprecated use `MapG` instead */
 export function mapGuarantee<K, V>(
 		map: MapBase<K, V>,
 		key: K,

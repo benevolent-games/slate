@@ -23,6 +23,7 @@
   - the comparison is shallow, so setting the same object over and over will not publish any changes
   - the new preferred pattern is to call `mySignal.publish()` manually
 - 🟥 rename `repeat` to `repeating`, to make room to export lit's `repeat` directive
+- 🔶 deprecate `Map2`, renamed to `MapG` (to avoid confusion with vectors like Vec2)
 - 🔶 deprecate `Text`, renamed to `Txt` (avoiding name collision with builtin)
 - 🔶 deprecate `wherefor`, renamed to `whereby`
 - 🔶 deprecate `Bytename`, recommend new `Barname` and `Badge` systems instead

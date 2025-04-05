@@ -1,5 +1,5 @@
 
-export class Map2<K, V> extends Map<K, V> {
+export class MapG<K, V> extends Map<K, V> {
 	static require<K, V>(map: Map<K, V>, key: K) {
 		const value = map.get(key)
 		if (value === undefined)
@@ -23,17 +23,17 @@ export class Map2<K, V> extends Map<K, V> {
 	}
 
 	require(key: K) {
-		return Map2.require(this, key)
+		return MapG.require(this, key)
 	}
 
 	guarantee(key: K, make: () => V) {
-		return Map2.guarantee(this, key, make)
+		return MapG.guarantee(this, key, make)
 	}
 }
 
 export type Identifiable<Id = any> = {id: Id}
 
-export class Pool<V extends Identifiable> extends Map2<V["id"], V> {
+export class Pool<V extends Identifiable> extends MapG<V["id"], V> {
 	got(value: V) {
 		return this.has(value.id)
 	}
@@ -47,4 +47,7 @@ export class Pool<V extends Identifiable> extends Map2<V["id"], V> {
 		return this.delete(value.id)
 	}
 }
+
+/** @deprecated renamed to `MapG`, to avoid confusion with vectors like Vec2 */
+export const Map2 = MapG
 
