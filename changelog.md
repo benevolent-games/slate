@@ -1,13 +1,17 @@
 
 # @benev/slate changelog
-
-- 🟥 *harmful -- breaking change*
-- 🔶 *maybe harmful -- deprecation, or possible breaking change*
-- 🍏 *harmless -- addition, fix, or enhancement*
+- 🟥 breaking change
+- 🔶 deprecation or possible breaking change
+- 🍏 harmless addition, fix, or enhancement
 
 <br/>
 
 ## v0.3
+
+### v0.3.1
+- 🍏 `register_to_dom` now auto-upgrades elements by default
+
+### v0.3.0
 - 🟥 eliminated the default css theme (which was a css reset)
   - now, by default, slate shadow doms have no default styling at all, it's up to you
   - renamed slate export `defaultTheme` to `cssReset`
