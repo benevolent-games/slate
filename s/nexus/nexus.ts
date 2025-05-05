@@ -3,12 +3,18 @@ import {Context} from "./context.js"
 import {Shell} from "./parts/shell.js"
 import {apply} from "../base/helpers/apply.js"
 import {mixin} from "../base/helpers/mixin.js"
+import {isDeno, isNode} from "../tools/supports.js"
+import {SlateView} from "./parts/slate_view_element.js"
 import {prepare_light_view} from "./units/light_view.js"
 import {prepare_shadow_view} from "./units/shadow_view.js"
+import {register_to_dom} from "../base/helpers/register_to_dom.js"
 import {prepare_light_component} from "./units/light_component.js"
 import {prepare_shadow_component} from "./units/shadow_component.js"
 import {BaseElementClass, BaseElementClasses} from "../base/element.js"
 import {prepare_shadow_componentify} from "./units/shadow_componentify.js"
+
+if (!isNode() && !isDeno())
+	register_to_dom({SlateView}, {soft: true})
 
 export class Nexus<C extends Context> extends Shell<C> {
 	lightComponent: ReturnType<typeof prepare_light_component<C>>

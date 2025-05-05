@@ -17,5 +17,3 @@ export class SlateView extends HTMLElement {
 	}
 }
 
-register_to_dom({SlateView}, {soft: true})
-
