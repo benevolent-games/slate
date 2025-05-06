@@ -4,7 +4,7 @@ export * from "./flatstate/flat.js"
 export * from "./base/addons/attributes.js"
 export * from "./base/helpers/apply.js"
 export * from "./base/helpers/mixin.js"
-export * from "./base/helpers/register_to_dom.js"
+export * from "./base/helpers/register.js"
 export * from "./base/element.js"
 
 export * from "./element/gold.js"

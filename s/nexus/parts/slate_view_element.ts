@@ -1,6 +1,5 @@
 
 import {pub} from "../../tools/pub.js"
-import {register_to_dom} from "../../base/helpers/register_to_dom.js"
 
 export class SlateView extends HTMLElement {
 	static tag = "slate-view"

@@ -7,7 +7,7 @@ import {SlateCarbon} from "./demo/elements/slate-carbon.js"
 import {SlateOxygen} from "./demo/elements/slate-oxygen.js"
 
 import {DemoContext, slate} from "./demo/frontend.js"
-import {register_to_dom} from "./base/helpers/register_to_dom.js"
+import {register_to_dom} from "./base/helpers/register.js"
 
 slate.context = new DemoContext(css`
 	button {

@@ -8,6 +8,9 @@
 
 ## v0.3
 
+### v0.3.3
+- 🔶 rename `register_to_dom` to merely `register`
+
 ### v0.3.1
 - 🍏 `register_to_dom` now auto-upgrades elements by default
 
