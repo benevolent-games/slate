@@ -26,7 +26,7 @@
 	},
 	"devDependencies": {
 		"@benev/turtle": "^0.6.12",
-		"@types/node": "^22.15.14",
+		"@types/node": "^22.15.18",
 		"chokidar": "^4.0.3",
 		"chokidar-cli": "^3.0.0",
 		"cynic": "^0.2.1",
