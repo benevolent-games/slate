@@ -105,6 +105,8 @@ export * from "./watch/framework/historian.js"
 
 export {
 	render,
+	nothing,
+	unsafeCSS,
 	CSSResultGroup,
 	CSSResult,
 	CSSResultOrNative,
