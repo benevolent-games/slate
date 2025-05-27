@@ -117,6 +117,8 @@ export {
 	Disconnectable,
 } from "lit"
 
+export {unsafeHTML} from "lit/directives/unsafe-html.js"
+
 export {AsyncDirective} from "lit/async-directive.js"
 export {DirectiveClass, DirectiveResult, PartInfo} from "lit/directive.js"
 export {repeat} from "lit/directives/repeat.js"
