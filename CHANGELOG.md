@@ -8,6 +8,15 @@
 
 ## v0.3
 
+### v0.3.6
+- 🍏 integrate [stz](https://github.com/e280/stz) tracker into reactor for automatic [strata](https://github.com/e280/strata) reactivity
+
+### v0.3.5
+- 🍏 export lit's `unsafeHTML`
+
+### v0.3.4
+- 🍏 export lit's `unsafeCSS` and `nothing`
+
 ### v0.3.3
 - 🔶 rename `register_to_dom` to merely `register`
 
