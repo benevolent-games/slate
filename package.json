@@ -22,11 +22,12 @@
 		"test-watch": "chokidar 'x/**/*.js' -c 'npm test'"
 	},
 	"dependencies": {
+		"@e280/stz": "^0.0.0-27",
 		"lit": "^3.3.0"
 	},
 	"devDependencies": {
 		"@benev/turtle": "^0.6.12",
-		"@types/node": "^22.15.21",
+		"@types/node": "^24.0.4",
 		"chokidar": "^4.0.3",
 		"chokidar-cli": "^3.0.0",
 		"cynic": "^0.2.1",
