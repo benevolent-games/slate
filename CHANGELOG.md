@@ -8,6 +8,9 @@
 
 ## v0.3
 
+### v0.3.7
+- 🔶 replace temporary `stz` tracker with the new `strata` tracker
+
 ### v0.3.6
 - 🍏 integrate [stz](https://github.com/e280/stz) tracker into reactor for automatic [strata](https://github.com/e280/strata) reactivity
 

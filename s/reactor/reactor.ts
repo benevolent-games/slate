@@ -1,5 +1,5 @@
 
-import {tracker} from "@e280/stz"
+import {tracker} from "@e280/strata"
 import {Flat} from "../flatstate/flat.js"
 import {SignalTower} from "../signals/tower.js"
 import {Collector, Lean, ReactorCore, Responder} from "./types.js"
@@ -49,7 +49,7 @@ export class Reactor implements ReactorCore {
 						const {seen, result} = tracker.seen(collector)
 						for (const saw of seen) {
 							if (!trackingDisposers.has(saw))
-								trackingDisposers.set(saw, tracker.changed(saw, actor))
+								trackingDisposers.set(saw, tracker.changed(saw, async() => actor()))
 						}
 						return result
 					})
