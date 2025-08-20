@@ -46,10 +46,10 @@ export class Reactor implements ReactorCore {
 			collect(collector) {
 				return lean1.collect(() =>
 					lean2.collect(() => {
-						const {seen, result} = tracker.seen(collector)
+						const {seen, result} = tracker.observe(collector)
 						for (const saw of seen) {
 							if (!trackingDisposers.has(saw))
-								trackingDisposers.set(saw, tracker.changed(saw, async() => actor()))
+								trackingDisposers.set(saw, tracker.subscribe(saw, async() => actor()))
 						}
 						return result
 					})

@@ -8,6 +8,15 @@
 
 ## v0.3
 
+### v0.3.10
+- 🍏 update dependencies
+- 🔶 upgraded to strata v0.0.0, whose tracker breaks compat with older strata versions
+  - (all strata users are required to up to at least strata v0.0.0)
+
+### v0.3.9
+### v0.3.8
+- 🍏 update dependencies
+
 ### v0.3.7
 - 🔶 replace temporary `stz` tracker with the new `strata` tracker
 
