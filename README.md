@@ -1,11 +1,19 @@
 
+> [!IMPORTANT]
+> # ⚠️ *SLATE IS DEPRECATED.*
+> slate has been succeeded by [**@e280/sly**](https://github.com/e280/sly).  
+> please use sly instead.  
+
+<br/>
+
+---
+---
+
 ![](./assets/s.webp)
 
 <br/>
 
 # 🪨 `@benev/slate` by chase moskal
-
-> 🚧 prerelease, see [changelog](./changelog.md)
 
 - frontend ui library, built on [lit](https://lit.dev/)
 - wonderful web components

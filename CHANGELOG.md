@@ -9,6 +9,7 @@
 ## v0.3
 
 ### v0.3.10
+- 🟥 ***SLATE IS NOW DEPRECATED.*** please use slate's successor, [**@e280/sly**](https://github.com/e280/sly) instead.
 - 🍏 update dependencies
 - 🔶 upgraded to strata v0.0.0, whose tracker breaks compat with older strata versions
   - (all strata users are required to up to at least strata v0.0.0)
